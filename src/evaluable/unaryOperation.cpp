@@ -1,4 +1,5 @@
 #include <evaluable/unaryOperation.hpp>
+#include<visitor/visitor.hpp>
 
 UnaryOperation::UnaryOperation(Token::Type type, std::shared_ptr<Evaluable> child) : type(type), child(child) {}
 

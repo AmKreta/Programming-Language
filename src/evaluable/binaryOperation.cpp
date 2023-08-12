@@ -1,4 +1,5 @@
 #include <evaluable/binaryOperation.hpp>
+#include<visitor/visitor.hpp>
 
 BinaryOperation::BinaryOperation(std::shared_ptr<Evaluable> leftChild, Token::Type operation, std::shared_ptr<Evaluable> rightChild) : leftChild(leftChild), rightChild(rightChild), operation(operation) {}
 

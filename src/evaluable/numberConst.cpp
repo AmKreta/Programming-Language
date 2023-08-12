@@ -1,4 +1,5 @@
 #include <evaluable/numberConst.hpp>
+#include<visitor/visitor.hpp>
 
 NumberConst::NumberConst(double data) : RValConst<double>(data) {}
 

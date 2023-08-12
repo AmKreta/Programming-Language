@@ -4,4 +4,4 @@ class AstNode
 {
 public:
     virtual ~AstNode() = default;
-}
+};

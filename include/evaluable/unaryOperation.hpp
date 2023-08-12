@@ -3,7 +3,6 @@
 #include <token/token.hpp>
 #include <evaluable/evaluable.hpp>
 #include <rValConst/rValConst.hpp>
-#include <visitor/visitor.hpp>
 
 class UnaryOperation : public Evaluable
 {

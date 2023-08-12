@@ -1,7 +1,9 @@
 #pragma once
 
 #include <astNode/astNode.hpp>
-#include <visitor/visitor.hpp>
+
+
+class Visitor;
 
 class Evaluable : public AstNode
 {

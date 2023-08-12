@@ -11,4 +11,6 @@ add_executable(main main.cpp)
 
 target_link_libraries(main PRIVATE token)
 target_link_libraries(main PRIVATE lexer)
+target_link_libraries(main PRIVATE rValConst)
+target_link_libraries(main PRIVATE evaluable)
 
