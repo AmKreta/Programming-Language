@@ -13,4 +13,6 @@ target_link_libraries(main PRIVATE token)
 target_link_libraries(main PRIVATE lexer)
 target_link_libraries(main PRIVATE rValConst)
 target_link_libraries(main PRIVATE evaluable)
-
+target_link_libraries(main PRIVATE parser)
+#target_link_libraries(main PRIVATE interpreter)
+target_link_libraries(main PRIVATE exception)
