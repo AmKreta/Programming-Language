@@ -7,5 +7,5 @@ class ExceptionFactory
 {
 public:
     template <typename... Args>
-    static Exception create(int, int, Args...);
+    static Exception create(Args...);
 };
