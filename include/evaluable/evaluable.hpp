@@ -6,6 +6,6 @@
 class Evaluable : public AstNode
 {
 public:
-    virtual int acceptVisitor(Visitor *) = 0;
+    virtual double acceptVisitor(Visitor *) = 0;
     virtual ~Evaluable() = 0;
 };

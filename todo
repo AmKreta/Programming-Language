@@ -1,0 +1,4 @@
+- create a parser that can parse +,-,/,*, variable, assignment, number, string, array, object
+- create a visitor for each class
+- create a symbol table that extends visitor for sementic analysis
+- create an interpreter that extends visitor for interpreting the program
