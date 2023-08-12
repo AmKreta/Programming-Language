@@ -36,3 +36,6 @@ build/
 
 # vs code config
 .vscode/
+
+
+.DS_Store
