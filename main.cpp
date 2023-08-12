@@ -21,8 +21,9 @@ int main()
     //     std::cout << a<<std::endl;
     // }
 
-    std::string input{"2+2"};
-    Parser parser{input};
+    std::string input{"2+2*5+(7**2)/(2+5)"};
+    Lexer lexer{input};
+    Parser parser{lexer};
     Interpreter interpreter{parser};
     std::cout << interpreter.interpret() << std::endl;
     return 0;
