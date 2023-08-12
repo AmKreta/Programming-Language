@@ -5,7 +5,7 @@ class RValConst{
     protected:
         T data;
     public:
-        RValConst(T);
+        RValConst(T data) : data(data) {}
         virtual T getData() = 0;
-        ~RValConst() = default;
+        virtual ~RValConst() = default;
 };

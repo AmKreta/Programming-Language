@@ -9,5 +9,5 @@ class Evaluable : public AstNode
 {
 public:
     virtual double acceptVisitor(Visitor *) = 0;
-    virtual ~Evaluable() = 0;
+    virtual ~Evaluable() = default;
 };

@@ -12,15 +12,11 @@ double Interpreter::visitUnaryOperation(UnaryOperation *unaryOperation)
 {
     double child = unaryOperation->getChild() ? unaryOperation->getChild()->acceptVisitor(this) : 0;
     auto type = unaryOperation->getType();
-    switch (type)
-    {
-    case Token::Type::PLUS:
+    if (type == Token::Type::PLUS)
         return child;
-    case Token::Type::MINUS:
+    if (type == Token::Type::MINUS)
         return -1 * child;
-    default:
-        throw ExceptionFactory::create("operator", Token::getTokenTypeString(type), "not defined or not expected as unary operator");
-    }
+    // throw ExceptionFactory::create("operator", Token::getTokenTypeString(type), "not defined or not expected as unary operator");
 }
 
 double Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
@@ -28,21 +24,17 @@ double Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
     double left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : 0;
     double right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : 0;
     auto op = binaryOperation->getOperation();
-    switch (op)
-    {
-    case Token::Type::PLUS:
+    if (op == Token::Type::PLUS)
         return left + right;
-    case Token::Type::MINUS:
+    if (op == Token::Type::MINUS)
         return left - right;
-    case Token::Type::MULTIPLY:
+    if (op == Token::Type::MULTIPLY)
         return left * right;
-    case Token::Type::DIVIDE:
+    if (op == Token::Type::DIVIDE)
         return left / right;
-    case Token::Type::POWER:
+    if (op == Token::Type::POWER)
         return std::pow(left, right);
-    default:
-        throw ExceptionFactory::create("operator", Token::getTokenTypeString(op), "not defined or not expected as binary operator");
-    }
+    // throw ExceptionFactory::create("operator", Token::getTokenTypeString(op), "not defined or not expected as binary operator");
 }
 
 double Interpreter::interpret()

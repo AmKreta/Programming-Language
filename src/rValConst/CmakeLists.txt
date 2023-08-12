@@ -1,2 +1,0 @@
-add_library(rValConst STATIC rValConst.cpp)
-target_include_directories(rValConst PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../include)

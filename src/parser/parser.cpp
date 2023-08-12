@@ -13,46 +13,40 @@ void Parser::eat(Token::Type type)
         this->currentToken = this->lexer.getNextToken();
     else
     {
-        throw ExceptionFactory::create(this->lexer.getLine(), ":", this->lexer.getColumn(), " -> ", "expected", this->currentToken.getTokenTypeString(), "got", Token::getTokenTypeString(type));
+        //throw ExceptionFactory::create(this->lexer.getLine(), ":", this->lexer.getColumn(), " -> ", "expected", this->currentToken.getTokenTypeString(), "got", Token::getTokenTypeString(type));
     }
     // std::cout << "after eat>>" << this->currentToken << ", sent type -> " << Token::getTokenTypeStr(type) << std::endl;
 }
 
 std::shared_ptr<Evaluable> Parser::factor()
 {
-    switch (this->currentToken.getTokenType())
-    {
-    case Token::Type::NUMBER_CONST:
+    auto currentTokenType = this->currentToken.getTokenType();
+
+    if(currentTokenType == Token::Type::NUMBER_CONST)
     {
         auto res = std::make_shared<NumberConst>(stod(this->currentToken.getTokenValue()));
         this->eat(Token::Type::NUMBER_CONST);
         return res;
     }
 
-        // case Token::Type::STRING:
-        //  auto res = std::make_shared<Const>(stod(this->currentToken.getTokenValue()));
-        //     this->eat(Token::Type::STRING_CONST);
-        //     return res;
-
-    case Token::Type::PLUS:
+    if(currentTokenType == Token::Type::PLUS)
     {
         this->eat(Token::Type::PLUS);
         return std::make_shared<UnaryOperation>(Token::Type::PLUS, this->factor());
     }
 
-    case Token::Type::MINUS:
+    if(currentTokenType == Token::Type::MINUS)
     {
         this->eat(Token::Type::MINUS);
         return std::make_shared<UnaryOperation>(Token::Type::MINUS, this->factor());
     }
 
-    case Token::Type::L_PAREN:
+    if(currentTokenType == Token::Type::L_PAREN)
     {
         this->eat(Token::Type::L_PAREN);
         auto res = this->expr();
         this->eat(Token::Type::R_PAREN);
         return res;
-    }
     }
 }
 
