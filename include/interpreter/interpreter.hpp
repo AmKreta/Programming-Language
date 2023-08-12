@@ -13,5 +13,5 @@ public:
     double visitNumberConst(NumberConst *) override;
     double visitUnaryOperation(UnaryOperation *) override;
     double visitBinaryOperation(BinaryOperation *) override;
-    void interpret();
-}
+    double interpret();
+};
