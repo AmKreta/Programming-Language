@@ -13,7 +13,7 @@ void Parser::eat(Token::Type type)
         this->currentToken = this->lexer.getNextToken();
     else
     {
-        //throw ExceptionFactory::create(this->lexer.getLine(), ":", this->lexer.getColumn(), " -> ", "expected", this->currentToken.getTokenTypeString(), "got", Token::getTokenTypeString(type));
+        throw ExceptionFactory::create(this->lexer.getLine(), ":", this->lexer.getColumn(), " -> ", "expected", this->currentToken.getTokenTypeString(), "got", Token::getTokenTypeString(type));
     }
     // std::cout << "after eat>>" << this->currentToken << ", sent type -> " << Token::getTokenTypeStr(type) << std::endl;
 }

@@ -16,7 +16,7 @@ double Interpreter::visitUnaryOperation(UnaryOperation *unaryOperation)
         return child;
     if (type == Token::Type::MINUS)
         return -1 * child;
-    // throw ExceptionFactory::create("operator", Token::getTokenTypeString(type), "not defined or not expected as unary operator");
+    throw ExceptionFactory::create("operator", Token::getTokenTypeString(type), "not defined or not expected as unary operator");
 }
 
 double Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
@@ -34,7 +34,7 @@ double Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
         return left / right;
     if (op == Token::Type::POWER)
         return std::pow(left, right);
-    // throw ExceptionFactory::create("operator", Token::getTokenTypeString(op), "not defined or not expected as binary operator");
+    throw ExceptionFactory::create("operator", Token::getTokenTypeString(op), "not defined or not expected as binary operator");
 }
 
 double Interpreter::interpret()
