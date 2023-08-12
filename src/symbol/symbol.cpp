@@ -1,8 +1,6 @@
 #include <symbol/symbol.hpp>
 #include <sstream>
 
-// #pragma once
-
 Symbol::Symbol(Symbol::Type type) : type(type) {}
 
 std::vector<std::string> Symbol::typeString = {

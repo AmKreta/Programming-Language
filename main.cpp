@@ -3,7 +3,6 @@
 #include <lexer/lexer.hpp>
 #include <interpreter/interpreter.hpp>
 #include <symbol/varSymbol.hpp>
-#include <symbol/symbol.hpp>
 
 int main()
 {
@@ -28,5 +27,8 @@ int main()
     // Parser parser{lexer};
     // Interpreter interpreter{parser};
     // std::cout << interpreter.interpret() << std::endl;
+
+    // std::cout << Symbol{Symbol::Type::CLASS}.toString()<<std::endl;
+    // std::cout<< VarSymbol{Symbol::Type::VARIABLE, "string"}.toString();
     return 0;
 }

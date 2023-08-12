@@ -97,12 +97,12 @@ public:
 private:
     Token::Type type;
     std::string value;
-
-public:
     Token(Token::Type, std::string);
+public:
     Token::Type getTokenType();
     std::string getTokenValue();
     std::string getTokenTypeString();
     static std::string getTokenTypeString(Token::Type);
     friend std::ostream &operator<<(std::ostream &, Token &);
+    friend class TokenFactory;
 };
