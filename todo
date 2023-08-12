@@ -1,4 +1,7 @@
-- create a parser that can parse +,-,/,*, variable, assignment, number, string, array, object
-- create a visitor for each class
+✅ create a parser that can parse +,-,/,*, variable, assignment, number, string, array, object ✅
+✅ create a visitor for each class
 - create a symbol table that extends visitor for sementic analysis
-- create an interpreter that extends visitor for interpreting the program
+✅ create an interpreter that extends visitor for interpreting the program
+- add ability to parse var decleration, function decleration, function call, var resolution, if-else, loops
+
+

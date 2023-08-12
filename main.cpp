@@ -2,6 +2,8 @@
 #include <token/token.hpp>
 #include <lexer/lexer.hpp>
 #include <interpreter/interpreter.hpp>
+#include <symbol/varSymbol.hpp>
+#include <symbol/symbol.hpp>
 
 int main()
 {
@@ -21,10 +23,10 @@ int main()
     //     std::cout << a<<std::endl;
     // }
 
-    std::string input{"2+2*5+(7**2)/(2+5)"};
-    Lexer lexer{input};
-    Parser parser{lexer};
-    Interpreter interpreter{parser};
-    std::cout << interpreter.interpret() << std::endl;
+    // std::string input{"2+2*5+(7**2)/(2+5)"};
+    // Lexer lexer{input};
+    // Parser parser{lexer};
+    // Interpreter interpreter{parser};
+    // std::cout << interpreter.interpret() << std::endl;
     return 0;
 }
