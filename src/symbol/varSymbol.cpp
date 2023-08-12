@@ -1,7 +1,7 @@
 #include <symbol/varSymbol.hpp>
 #include <sstream>
 
-VarSymbol::VarSymbol(Symbol::Type type, std::string instanceOf = VarSymbol::inTemporalDeadzone) : Symbol(type), instanceOf(instanceOf) {}
+VarSymbol::VarSymbol(Symbol::Type type, std::string instanceOf) : Symbol(type), instanceOf(instanceOf) {}
 
 std::string VarSymbol::toString()
 {
@@ -20,4 +20,4 @@ void VarSymbol::setInstanceOf(std::string instanceOf)
     this->instanceOf = instanceOf;
 }
 
-std::string VarSymbol::inTemporalDeadzone = "__DANGER_VARIABLE_IS_NOT_DECLEARED_YET__";
+std::string VarSymbol::inTemporalDeadzone = "__DANGER_VARIABLE_IS_CURRENTLY_IN_TEMPORAL_DEADZONE__";

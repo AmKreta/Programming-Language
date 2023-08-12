@@ -2,7 +2,7 @@
 #include <token/token.hpp>
 #include <lexer/lexer.hpp>
 #include <interpreter/interpreter.hpp>
-#include <symbol/varSymbol.hpp>
+#include <symbol/symbolFactory.hpp>
 
 int main()
 {
@@ -28,7 +28,8 @@ int main()
     // Interpreter interpreter{parser};
     // std::cout << interpreter.interpret() << std::endl;
 
-    // std::cout << Symbol{Symbol::Type::CLASS}.toString()<<std::endl;
-    // std::cout<< VarSymbol{Symbol::Type::VARIABLE, "string"}.toString();
+    std::cout<<SymbolFactory::create(Symbol::Type::VARIABLE, "String")->toString()<<std::endl;
+    std::cout<<SymbolFactory::create(Symbol::Type::VARIABLE)->toString()<<std::endl;
+    std::cout<<SymbolFactory::create(Symbol::Type::FUNCTION)->toString();
     return 0;
 }

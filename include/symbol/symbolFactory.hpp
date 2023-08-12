@@ -6,5 +6,6 @@
 
 class SymbolFactory
 {
-    static std::shared_ptr<Symbol> create(Symbol::Type, std::string);
+    public:
+    static std::shared_ptr<Symbol> create(Symbol::Type, std::string instanOf = "");
 };

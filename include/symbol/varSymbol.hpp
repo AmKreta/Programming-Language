@@ -6,8 +6,8 @@ class VarSymbol : public Symbol
 {
 private:
     std::string instanceOf;
-    static std::string inTemporalDeadzone;
 public:
+    static std::string inTemporalDeadzone;
     VarSymbol(Symbol::Type, std::string);
     void setInstanceOf(std::string);
     std::string getInstanceOf();

@@ -21,6 +21,6 @@ public:
     static std::vector<std::string> typeString;
     static std::string getTokenTypeString(Symbol::Type);
     std::string getTokenTypeString();
-    std::string toString();
+    virtual std::string toString();
     ~Symbol() = default;
 };
