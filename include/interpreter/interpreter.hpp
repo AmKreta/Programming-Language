@@ -13,5 +13,5 @@ public:
     RVal *visitRValConst(RVal *) override;
     RVal *visitUnaryOperation(UnaryOperation *) override;
     RVal *visitBinaryOperation(BinaryOperation *) override;
-    double interpret();
+    void interpret();
 };

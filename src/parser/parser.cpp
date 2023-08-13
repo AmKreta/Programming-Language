@@ -22,8 +22,15 @@ std::shared_ptr<Evaluable> Parser::factor()
 {
     if (this->currentToken.getTokenType() == Token::Type::NUMBER_CONST)
     {
-        auto res = std::make_shared<RValConst<double>>(stod(this->currentToken.getTokenValue()), RVal::Type::NUMBER);
+        auto res = RValConstFactory::createNumberConstSharedPtr(stod(this->currentToken.getTokenValue()));
         this->eat(Token::Type::NUMBER_CONST);
+        return res;
+    }
+
+    if (this->currentToken.getTokenType() == Token::Type::STRING_CONST)
+    {
+        auto res = RValConstFactory::createStringConstSharedPtr(this->currentToken.getTokenValue());
+        this->eat(Token::Type::STRING_CONST);
         return res;
     }
 

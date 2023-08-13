@@ -37,6 +37,7 @@ RVal *Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
     auto left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : nullptr;
     auto right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : nullptr;
     auto op = binaryOperation->getOperation();
+
     if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
     {
         auto leftNum = dynamic_cast<NumberConst *>(left)->getData();
@@ -51,19 +52,32 @@ RVal *Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
             return RValConstFactory::createNumberConstPtr(leftNum / rightNum);
         if (op == Token::Type::POWER)
             return RValConstFactory::createNumberConstPtr(std::pow(leftNum, rightNum));
-        throw ExceptionFactory::create("operator", Token::getTokenTypeString(op), "not defined or not expected as binary operator");
+        throw ExceptionFactory::create("operator", Token::getTokenTypeString(op), "not defined or not expected as binary operator for number and number");
+    }
+
+    if (left->getType() == RVal::Type::STRING && right->getType() == RVal::Type::STRING)
+    {
+        auto leftStr = dynamic_cast<StringConst *>(left)->getData();
+        auto rightStr = dynamic_cast<StringConst *>(right)->getData();
+        if (op == Token::Type::PLUS)
+            return RValConstFactory::createStringConstPtr(leftStr + rightStr);
+        throw ExceptionFactory::create("operator", Token::getTokenTypeString(op), "not defined or not expected as binary operator for string and string");
     }
     throw ExceptionFactory::create("DataType", RVal::getTypeString(left->getType()), " ", RVal::getTypeString(right->getType()), "are not compatible for binary operation", Token::getTokenTypeString(op));
 }
 
-double Interpreter::interpret()
+void Interpreter::interpret()
 {
     auto eval = this->parser.parse();
     auto res = eval->acceptVisitor(this);
     if (res->getType() == RVal::Type::NUMBER)
     {
         auto num = dynamic_cast<NumberConst *>(res);
-        return num->getData();
+        std::cout<<num->getData();
     }
-    return 0.0;
+    if (res->getType() == RVal::Type::STRING)
+    {
+        auto num = dynamic_cast<StringConst *>(res);
+        std::cout<<num->getData();
+    }
 }

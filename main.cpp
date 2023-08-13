@@ -22,11 +22,11 @@ int main()
     //     std::cout << a<<std::endl;
     // }
 
-    std::string input{"2+2*5+(7**2)/(2+5)"};
+    std::string input{"'Hello' + ' ' + 'world'"};
     Lexer lexer{input};
     Parser parser{lexer};
     Interpreter interpreter{parser};
-    std::cout << interpreter.interpret() << std::endl;
+    interpreter.interpret();
 
     // std::cout<<SymbolFactory::create(Symbol::Type::VARIABLE, "String")->toString()<<std::endl;
     // std::cout<<SymbolFactory::create(Symbol::Type::VARIABLE)->toString()<<std::endl;
