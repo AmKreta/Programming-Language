@@ -10,8 +10,8 @@ private:
 
 public:
     Interpreter(Parser);
-    RVal* visitNumberConst(NumberConst *) override;
-    RVal* visitUnaryOperation(UnaryOperation *) override;
-    RVal* visitBinaryOperation(BinaryOperation *) override;
+    RVal *visitRValConst(RVal *) override;
+    RVal *visitUnaryOperation(UnaryOperation *) override;
+    RVal *visitBinaryOperation(BinaryOperation *) override;
     double interpret();
 };
