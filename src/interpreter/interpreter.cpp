@@ -74,11 +74,11 @@ void Interpreter::interpret()
     if (res->getType() == RVal::Type::NUMBER)
     {
         auto num = dynamic_cast<NumberConst *>(res);
-        std::cout<<num->getData();
+        std::cout<<num->getData()<<std::endl;
     }
     if (res->getType() == RVal::Type::STRING)
     {
         auto num = dynamic_cast<StringConst *>(res);
-        std::cout<<num->getData();
+        std::cout<<num->getData()<<std::endl;
     }
 }
