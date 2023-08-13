@@ -24,5 +24,8 @@ public:
     RVal::Type getType();
     std::string getTypeString();
     static std::string getTypeString(RVal::Type);
+    virtual void fn(){}
     // also add size of operator
+    // toString
+    //cout overload virtual function
 };

@@ -9,7 +9,7 @@ double NumberConst::getData()
     return this->data;
 }
 
-double NumberConst::acceptVisitor(Visitor *visitor)
+RVal* NumberConst::acceptVisitor(Visitor *visitor)
 {
     return visitor->visitNumberConst(this);
 }
