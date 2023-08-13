@@ -1,29 +1,37 @@
 #include <parser/parser.hpp>
-#include <evaluable/numberConst.hpp>
+#include <evaluable/rValConst.hpp>
 #include <evaluable/unaryOperation.hpp>
 #include <evaluable/binaryOperation.hpp>
 #include <exception/exceptionFactory.hpp>
+#include <evaluable/rValueConstFactory.hpp>
 
 Parser::Parser(Lexer lexer) : lexer(lexer), currentToken(this->lexer.getNextToken()) {}
 
 void Parser::eat(Token::Type type)
 {
-    //std::cout << "before eat>>   " << this->currentToken << ", sent type -> " << Token::getTokenTypeString(type) << std::endl;
+    // std::cout << "before eat>>   " << this->currentToken << ", sent type -> " << Token::getTokenTypeString(type) << std::endl;
     if (this->currentToken.getTokenType() == type)
         this->currentToken = this->lexer.getNextToken();
     else
     {
         throw ExceptionFactory::create(this->lexer.getLine(), ":", this->lexer.getColumn(), " -> ", "expected", Token::getTokenTypeString(type), "got", this->currentToken.getTokenTypeString());
     }
-    //std::cout << "after eat>>   " << this->currentToken << ", sent type -> " << Token::getTokenTypeString(type) << std::endl << std::endl;
+    // std::cout << "after eat>>   " << this->currentToken << ", sent type -> " << Token::getTokenTypeString(type) << std::endl << std::endl;
 }
 
 std::shared_ptr<Evaluable> Parser::factor()
 {
     if (this->currentToken.getTokenType() == Token::Type::NUMBER_CONST)
     {
-        auto res = std::make_shared<NumberConst>(stod(this->currentToken.getTokenValue()));
+        auto res = RValConstFactory::createNumberConstSharedPtr(stod(this->currentToken.getTokenValue()));
         this->eat(Token::Type::NUMBER_CONST);
+        return res;
+    }
+
+    if (this->currentToken.getTokenType() == Token::Type::STRING_CONST)
+    {
+        auto res = RValConstFactory::createStringConstSharedPtr(this->currentToken.getTokenValue());
+        this->eat(Token::Type::STRING_CONST);
         return res;
     }
 

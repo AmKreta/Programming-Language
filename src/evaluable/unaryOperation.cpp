@@ -13,7 +13,7 @@ std::shared_ptr<Evaluable> UnaryOperation::getChild()
     return this->child;
 }
 
-double UnaryOperation::acceptVisitor(Visitor *visitor)
+RVal* UnaryOperation::acceptVisitor(Visitor *visitor)
 {
     return visitor->visitUnaryOperation(this);
 }
