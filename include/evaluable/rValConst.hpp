@@ -44,6 +44,8 @@ private:
     }
 
 public:
+
+    // for number const
     static RValConst<double> *createNumberConstPtr(double data)
     {
         return RValConstFactory::createPtr<double>(data, RVal::Type::NUMBER);
@@ -51,8 +53,21 @@ public:
 
     static std::shared_ptr<RValConst<double>> createNumberConstSharedPtr(double data)
     {
-        return RValConstFactory::createSharedPtr(data, RVal::Type::NUMBER);
+        return RValConstFactory::createSharedPtr<double>(data, RVal::Type::NUMBER);
     }
+
+    // for string const
+    static RValConst<std::string> *createStringConstPtr(std::string data)
+    {
+        return RValConstFactory::createPtr<std::string>(data, RVal::Type::STRING);
+    }
+
+    static std::shared_ptr<RValConst<std::string>> createStringConstSharedPtr(std::string data)
+    {
+        return RValConstFactory::createSharedPtr<std::string>(data, RVal::Type::STRING);
+    }
+
+    
 };
 
 // type alias
