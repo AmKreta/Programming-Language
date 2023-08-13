@@ -1,5 +1,6 @@
 add_subdirectory(token)
 add_subdirectory(lexer)
+add_subdirectory(rVal)
 add_subdirectory(evaluable)
 add_subdirectory(parser)
 add_subdirectory(interpreter)

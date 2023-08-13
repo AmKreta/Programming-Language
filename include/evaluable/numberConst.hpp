@@ -1,7 +1,7 @@
 #pragma once
 
 #include <evaluable/evaluable.hpp>
-#include <rValConst/rValConst.hpp>
+#include <rVal/rValConst.hpp>
 
 class NumberConst : public Evaluable, public RValConst<double>
 {
