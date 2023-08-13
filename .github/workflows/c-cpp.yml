@@ -1,0 +1,34 @@
+name: Build with CMake
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup CMake
+        uses: actions/setup-cmake@v2
+        with:
+          cmake-version: '3.21'  # Set the desired CMake version
+
+      - name: Create build directory
+        run: mkdir build
+        working-directory: ${{github.workspace}}
+
+      - name: Configure CMake
+        run: cmake ../
+        working-directory: ${{github.workspace}}/build
+
+      - name: Build with make
+        run: make
+        working-directory: ${{github.workspace}}/build
