@@ -10,8 +10,8 @@ private:
 
 public:
     Interpreter(Parser);
-    RVal *visitRValConst(RVal *) override;
-    RVal *visitUnaryOperation(UnaryOperation *) override;
-    RVal *visitBinaryOperation(BinaryOperation *) override;
+    std::shared_ptr<RVal> visitRValConst(RVal *) override;
+    std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) override;
+    std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) override;
     void interpret();
 };

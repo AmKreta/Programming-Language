@@ -5,7 +5,7 @@
 
 // need to define template class in header itlself
 template <typename T>
-class RValConst : public RVal, public Evaluable
+class RValConst : public RVal, public Evaluable, public std::enable_shared_from_this<RValConst<T>>
 {
 protected:
     T data;
@@ -18,14 +18,14 @@ public:
         return this->data;
     }
 
-    void setDate(T data)
+    void setData(T data)
     {
         this->data = data;
     }
 
-    RVal *acceptVisitor(Visitor *visitor)
+    std::shared_ptr<RVal> acceptVisitor(Visitor *visitor)
     {
-        return this;
+        return this->shared_from_this();
     }
 };
 

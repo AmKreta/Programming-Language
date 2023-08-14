@@ -8,6 +8,6 @@ class Visitor;
 class Evaluable : public AstNode
 {
 public:
-    virtual RVal* acceptVisitor(Visitor *) = 0;
+    virtual std::shared_ptr<RVal> acceptVisitor(Visitor *) = 0;
     virtual ~Evaluable() = default;
 };

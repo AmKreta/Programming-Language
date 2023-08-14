@@ -7,8 +7,8 @@
 class Visitor
 {
 public:
-    virtual RVal* visitRValConst(RVal *) = 0;
-    virtual RVal* visitUnaryOperation(UnaryOperation *) = 0;
-    virtual RVal* visitBinaryOperation(BinaryOperation *) = 0;
+    virtual std::shared_ptr<RVal> visitRValConst(RVal *) = 0;
+    virtual std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) = 0;
+    virtual std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) = 0;
     virtual ~Visitor() = default;
 };

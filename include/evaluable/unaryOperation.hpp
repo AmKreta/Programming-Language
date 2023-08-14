@@ -13,5 +13,5 @@ public:
     UnaryOperation(Token::Type, std::shared_ptr<Evaluable>);
     Token::Type getType();
     std::shared_ptr<Evaluable> getChild();
-    RVal* acceptVisitor(Visitor *) override;
+    std::shared_ptr<RVal> acceptVisitor(Visitor *) override;
 };

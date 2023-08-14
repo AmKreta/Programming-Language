@@ -18,7 +18,7 @@ std::shared_ptr<Evaluable> BinaryOperation::getRightChild()
     return this->rightChild;
 }
 
-RVal* BinaryOperation::acceptVisitor(Visitor *visitor)
+std::shared_ptr<RVal> BinaryOperation::acceptVisitor(Visitor *visitor)
 {
     return visitor->visitBinaryOperation(this);
 }

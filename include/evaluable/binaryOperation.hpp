@@ -15,5 +15,5 @@ public:
     Token::Type getOperation();
     std::shared_ptr<Evaluable> getLeftChild();
     std::shared_ptr<Evaluable> getRightChild();
-    RVal *acceptVisitor(Visitor *) override;
+    std::shared_ptr<RVal> acceptVisitor(Visitor *) override;
 };
