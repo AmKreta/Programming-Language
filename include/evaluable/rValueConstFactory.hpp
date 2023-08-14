@@ -19,10 +19,14 @@ private:
 
 public:
     // for number const
-    static RValConst<double> *createNumberConstPtr(double);
-    static std::shared_ptr<RValConst<double>> createNumberConstSharedPtr(double);
+    static NumberConst *createNumberConstPtr(double);
+    static std::shared_ptr<NumberConst> createNumberConstSharedPtr(double);
 
     // for string const
-    static RValConst<std::string> *createStringConstPtr(std::string);
-    static std::shared_ptr<RValConst<std::string>> createStringConstSharedPtr(std::string);
+    static StringConst *createStringConstPtr(std::string);
+    static std::shared_ptr<StringConst> createStringConstSharedPtr(std::string);
+
+    // for array const
+    static ArrayConst *createArrayConstPtr(ArrayElement);
+    static std::shared_ptr<ArrayConst> createArrayConstSharedPtr(ArrayElement);
 };

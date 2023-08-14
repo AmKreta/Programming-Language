@@ -15,9 +15,10 @@ void run(std::string input){
 
 int main()
 {
-    run("'Hello' + ' ' + 'world'");
-    run("(5 ** ( 2 + 1 ) ) / ( 200 - 25 * 3 )");
-    run("+\"123\"");
-    run("-'123'");
+    // run("'Hello' + ' ' + 'world'");
+    // run("(5 ** ( 2 + 1 ) ) / ( 200 - 25 * 3 )");
+    // run("+\"123\"");
+    // run("-'123'");
+    run("[1+2, 2**10, 3, \"Hello world\"]");
     return 0;
 }

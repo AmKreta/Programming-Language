@@ -13,5 +13,6 @@ public:
     std::shared_ptr<RVal> visitRValConst(RVal *) override;
     std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) override;
     std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) override;
+    std::shared_ptr<RVal> visitArrayAst(ArrayAst *) override;
     void interpret();
 };

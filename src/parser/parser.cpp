@@ -4,6 +4,7 @@
 #include <evaluable/binaryOperation.hpp>
 #include <exception/exceptionFactory.hpp>
 #include <evaluable/rValueConstFactory.hpp>
+#include <evaluable/arrayAst.hpp>
 
 Parser::Parser(Lexer lexer) : lexer(lexer), currentToken(this->lexer.getNextToken()) {}
 
@@ -53,6 +54,26 @@ std::shared_ptr<Evaluable> Parser::factor()
         auto res = this->expr();
         this->eat(Token::Type::R_PAREN);
         return res;
+    }
+
+    if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
+    {
+        // [ (expr (, expr)*)]
+        this->eat(Token::Type::L_BRACKET);
+        std::vector<std::shared_ptr<Evaluable>> arrAst;
+        if (this->currentToken.getTokenType() == Token::Type::R_BRACKET)
+        {
+            this->eat(Token::Type::R_BRACKET);
+            return std::make_shared<ArrayAst>(arrAst);
+        }
+        arrAst.push_back(this->expr());
+        while (this->currentToken.getTokenType() == Token::Type::COMMA)
+        {
+            this->eat(Token::Type::COMMA);
+            arrAst.push_back(this->expr());
+        }
+        this->eat(Token::Type::R_BRACKET);
+        return std::make_shared<ArrayAst>(arrAst);
     }
 }
 
