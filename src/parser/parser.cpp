@@ -5,6 +5,7 @@
 #include <exception/exceptionFactory.hpp>
 #include <evaluable/rValueConstFactory.hpp>
 #include <evaluable/arrayAst.hpp>
+#include <evaluable/mapAst.hpp>
 
 Parser::Parser(Lexer lexer) : lexer(lexer), currentToken(this->lexer.getNextToken()) {}
 
@@ -63,6 +64,7 @@ std::shared_ptr<Evaluable> Parser::factor()
         std::vector<std::shared_ptr<Evaluable>> arrAst;
         if (this->currentToken.getTokenType() == Token::Type::R_BRACKET)
         {
+            // empty array
             this->eat(Token::Type::R_BRACKET);
             return std::make_shared<ArrayAst>(arrAst);
         }
@@ -74,6 +76,35 @@ std::shared_ptr<Evaluable> Parser::factor()
         }
         this->eat(Token::Type::R_BRACKET);
         return std::make_shared<ArrayAst>(arrAst);
+    }
+
+    if (this->currentToken.getTokenType() == Token::Type::L_BRACES)
+    {
+        // maybe a map, maybe a block
+        this->eat(Token::Type::L_BRACES);
+        std::unordered_map<std::shared_ptr<Evaluable>, std::shared_ptr<Evaluable>> mapAst;
+
+        if (this->currentToken.getTokenType() == Token::Type::R_BRACES)
+        {
+            // empty map
+            this->eat(Token::Type::R_BRACES);
+            return std::make_shared<MapAst>(mapAst);
+        }
+        auto addKeyValPair = [&mapAst, this]()
+        {
+            auto key = this->expr();
+            this->eat(Token::Type::COLON);
+            auto val = this->expr();
+            mapAst.insert(std::pair(key, val));
+        };
+        addKeyValPair();  // adding first key, val pair
+        while (this->currentToken.getTokenType() == Token::Type::COMMA)
+        {
+            this->eat(Token::Type::COMMA);
+            addKeyValPair();
+        }
+        this->eat(Token::Type::R_BRACES);
+        return std::make_shared<MapAst>(mapAst);
     }
 }
 

@@ -2,6 +2,7 @@
 #include <exception/exceptionFactory.hpp>
 #include <evaluable/rValueConstFactory.hpp>
 #include <operations/mathemeticalOperation.hpp>
+#include <modules/console.hpp>
 
 Interpreter::Interpreter(Parser parser) : parser(parser) {}
 
@@ -12,10 +13,18 @@ std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 
 std::shared_ptr<RVal> Interpreter::visitArrayAst(ArrayAst *arrayAst)
 {
-    std::vector<std::shared_ptr<RVal>> arr;
+    RValPointerArray arr;
     for (auto children : arrayAst->getChildren())
         arr.push_back(children->acceptVisitor(this));
-    return std::make_shared<ArrayConst>(arr, RVal::Type::ARRAY);
+    return RValConstFactory::createArrayConstSharedPtr(arr);
+}
+
+std::shared_ptr<RVal> Interpreter::visitMapAst(MapAst *mapAst)
+{
+    RValPointerMap map;
+    for (auto &[key, val] : mapAst->getEntries())
+        map.insert(std::pair(key->acceptVisitor(this), val->acceptVisitor(this)));
+    return RValConstFactory::createMapConstSharedPtr(map);
 }
 
 std::shared_ptr<RVal> Interpreter::visitUnaryOperation(UnaryOperation *unaryOperation)
@@ -37,39 +46,5 @@ void Interpreter::interpret()
 {
     auto eval = this->parser.parse();
     auto res = eval->acceptVisitor(this);
-    if (res->getType() == RVal::Type::NUMBER)
-    {
-        auto num = std::dynamic_pointer_cast<NumberConst>(res);
-        std::cout << num->getData() << std::endl;
-    }
-    if (res->getType() == RVal::Type::STRING)
-    {
-        auto num = std::dynamic_pointer_cast<StringConst>(res);
-        std::cout << num->getData() << std::endl;
-    }
-
-    if (res->getType() == RVal::Type::ARRAY)
-    {
-        auto arr = std::dynamic_pointer_cast<ArrayConst>(res);
-        std::cout<<"[";
-        auto children = arr->getData();
-        int size = children.size();
-        for(int i=0;i<size;i++){
-            auto child = children[i];
-              if (child->getType() == RVal::Type::NUMBER)
-            {
-                auto num = std::dynamic_pointer_cast<NumberConst>(child);
-                std::cout << num->getData();
-            }
-            else if (child->getType() == RVal::Type::STRING)
-            {
-                auto num = std::dynamic_pointer_cast<StringConst>(child);
-                std::cout << num->getData();
-            }
-
-            if(i<size-1)
-                std::cout<<", ";
-        }
-        std::cout<<"]";
-    }
+    Console::log(res);
 }

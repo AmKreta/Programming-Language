@@ -23,12 +23,23 @@ std::shared_ptr<StringConst> RValConstFactory::createStringConstSharedPtr(std::s
 }
 
 // for Array Const
-ArrayConst *RValConstFactory::createArrayConstPtr(ArrayElement data)
+ArrayConst *RValConstFactory::createArrayConstPtr(RValPointerArray data)
 {
-    return RValConstFactory::createPtr<ArrayElement>(data, RVal::Type::ARRAY);
+    return RValConstFactory::createPtr<RValPointerArray>(data, RVal::Type::ARRAY);
 }
 
-std::shared_ptr<ArrayConst> RValConstFactory::createArrayConstSharedPtr(ArrayElement data)
+std::shared_ptr<ArrayConst> RValConstFactory::createArrayConstSharedPtr(RValPointerArray data)
 {
-    return RValConstFactory::createSharedPtr<ArrayElement>(data, RVal::Type::ARRAY);
+    return RValConstFactory::createSharedPtr<RValPointerArray>(data, RVal::Type::ARRAY);
+}
+
+// for map const
+MapConst *RValConstFactory::createMapConstPtr(RValPointerMap data)
+{
+    return RValConstFactory::createPtr<RValPointerMap>(data, RVal::Type::MAP);
+}
+
+std::shared_ptr<MapConst> RValConstFactory::createMapConstSharedPtr(RValPointerMap data)
+{
+    return RValConstFactory::createSharedPtr<RValPointerMap>(data, RVal::Type::MAP);
 }

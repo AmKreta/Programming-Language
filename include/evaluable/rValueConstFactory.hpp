@@ -27,6 +27,10 @@ public:
     static std::shared_ptr<StringConst> createStringConstSharedPtr(std::string);
 
     // for array const
-    static ArrayConst *createArrayConstPtr(ArrayElement);
-    static std::shared_ptr<ArrayConst> createArrayConstSharedPtr(ArrayElement);
+    static ArrayConst *createArrayConstPtr(RValPointerArray);
+    static std::shared_ptr<ArrayConst> createArrayConstSharedPtr(RValPointerArray);
+
+    // for map const
+    static MapConst *createMapConstPtr(RValPointerMap);
+    static std::shared_ptr<MapConst> createMapConstSharedPtr(RValPointerMap);
 };
