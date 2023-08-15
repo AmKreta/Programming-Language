@@ -1,22 +1,3 @@
-// #pragma once
-
-// #include<rval/rVal.hpp>
-// #include<evaluable/rValConst.hpp>
-
-// class Console{
-//     private:
-//         static logNumberCOnst(std::shared_ptr<NumberConst>);
-
-//         static logStringConst(std::shared_ptr<StringConst>);
-
-//         static logArrayConst(std::shared_ptr<ArrayConst>);
-
-//         static logMapConst(std::shared_ptr<MapConst>);
-
-//     public:
-//         static log(std::shared_ptr<RVal>);
-// }
-
 #include <modules/console.hpp>
 #include <iostream>
 
