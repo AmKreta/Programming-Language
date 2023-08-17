@@ -52,7 +52,8 @@ std::unordered_map<Token::Type, std::string> TokenFactory::tokenTypeValMap = {
     {Token::Type::SINGLE_QUOTE, "'"},
     {Token::Type::DOUBLE_QUOTE, "\""},
     {Token::Type::BACK_TICK, "`"},
-    {Token::Type::END_OF_FILE, "end of file"}};
+    {Token::Type::END_OF_FILE, "end of file"},
+    {Token::Type::START_OF_FILE, "START_OF_FILE"}};
 
 Token TokenFactory::build(Token::Type type)
 {

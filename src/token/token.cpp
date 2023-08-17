@@ -110,4 +110,5 @@ std::vector<std::string> Token::TypeStr = {
 
     // return
     "RETURN",
-    "END OF FILE"};
+    "END OF FILE",
+    "START_OF_FILE"};

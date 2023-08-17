@@ -50,7 +50,7 @@ Token Lexer::getNextToken()
     this->skipSkippable();
 
     if (this->currentPosition >= this->input.size())
-        return TokenFactory::build(Token::Type::END_OF_FILE);
+        return this->currentToken =  TokenFactory::build(Token::Type::END_OF_FILE);
 
     while (this->currentPosition < this->input.size())
     {
@@ -61,132 +61,132 @@ Token Lexer::getNextToken()
             if (this->peek() == "<=")
             {
                 this->advance(2);
-                return TokenFactory::build(Token::Type::LESS_THAN_EQUAL_TO);
+                return this->currentToken =  TokenFactory::build(Token::Type::LESS_THAN_EQUAL_TO);
             }
             this->advance();
-            return TokenFactory::build(Token::Type::LESS_THAN);
+            return this->currentToken =  TokenFactory::build(Token::Type::LESS_THAN);
 
         case '>':
             if (this->peek() == ">=")
             {
                 this->advance(2);
-                return TokenFactory::build(Token::Type::GREATER_THAN_EQUAL_TO);
+                return this->currentToken =  TokenFactory::build(Token::Type::GREATER_THAN_EQUAL_TO);
             }
             this->advance();
-            return TokenFactory::build(Token::Type::GREATER_THAN);
+            return this->currentToken =  TokenFactory::build(Token::Type::GREATER_THAN);
 
         case '=':
             if (this->peek() == "==")
             {
                 this->advance(2);
-                return TokenFactory::build(Token::Type::EQUAL_TO);
+                return this->currentToken =  TokenFactory::build(Token::Type::EQUAL_TO);
             }
             this->advance();
-            return TokenFactory::build(Token::Type::ASSIGNMENT);
+            return this->currentToken =  TokenFactory::build(Token::Type::ASSIGNMENT);
 
         case '!':
             if (this->peek() == "!=")
             {
                 this->advance(2);
-                return TokenFactory::build(Token::Type::NOT_EQUAL_TO);
+                return this->currentToken =  TokenFactory::build(Token::Type::NOT_EQUAL_TO);
             }
             this->advance();
-            return TokenFactory::build(Token::Type::LOGICAL_NOT);
+            return this->currentToken =  TokenFactory::build(Token::Type::LOGICAL_NOT);
 
         // bitwise and logical operators
         case '&':
             if (this->peek() == "&&")
             {
                 this->advance(2);
-                return TokenFactory::build(Token::Type::LOGICAL_AND);
+                return this->currentToken =  TokenFactory::build(Token::Type::LOGICAL_AND);
             }
             this->advance();
-            return TokenFactory::build(Token::Type::BITWISE_AND);
+            return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_AND);
 
         case '|':
             if (this->peek() == "||")
             {
                 this->advance(2);
-                return TokenFactory::build(Token::Type::LOGICAL_OR);
+                return this->currentToken =  TokenFactory::build(Token::Type::LOGICAL_OR);
             }
             this->advance();
-            return TokenFactory::build(Token::Type::BITWISE_OR);
+            return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_OR);
 
         case '~':
             this->advance();
-            return TokenFactory::build(Token::Type::BITWISE_NOT);
+            return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_NOT);
 
         case '^':
             this->advance();
-            return TokenFactory::build(Token::Type::BITWISE_XOR);
+            return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_XOR);
 
         // colon, comma, semicolon
         case ':':
             this->advance();
-            return TokenFactory::build(Token::Type::COLON);
+            return this->currentToken =  TokenFactory::build(Token::Type::COLON);
 
         case ',':
             this->advance();
-            return TokenFactory::build(Token::Type::COMMA);
+            return this->currentToken =  TokenFactory::build(Token::Type::COMMA);
 
         case ';':
             this->advance();
-            return TokenFactory::build(Token::Type::SEMI_COLON);
+            return this->currentToken =  TokenFactory::build(Token::Type::SEMI_COLON);
 
         // mathemetical operators
         case '+':
             this->advance();
-            return TokenFactory::build(Token::Type::PLUS);
+            return this->currentToken =  TokenFactory::build(Token::Type::PLUS);
 
         case '-':
             this->advance();
-            return TokenFactory::build(Token::Type::MINUS);
+            return this->currentToken =  TokenFactory::build(Token::Type::MINUS);
 
         case '/':
             this->advance();
-            return TokenFactory::build(Token::Type::DIVIDE);
+            return this->currentToken =  TokenFactory::build(Token::Type::DIVIDE);
 
         case '*':
             if (this->peek() == "**")
             {
                 this->advance(2);
-                return TokenFactory::build(Token::Type::POWER);
+                return this->currentToken =  TokenFactory::build(Token::Type::POWER);
             }
             this->advance();
-            return TokenFactory::build(Token::Type::MULTIPLY);
+            return this->currentToken =  TokenFactory::build(Token::Type::MULTIPLY);
 
         case '%':
             this->advance();
-            return TokenFactory::build(Token::Type::MODULUS);
+            return this->currentToken =  TokenFactory::build(Token::Type::MODULUS);
 
         // brackets
         case '(':
             this->advance();
-            return TokenFactory::build(Token::Type::L_PAREN);
+            return this->currentToken =  TokenFactory::build(Token::Type::L_PAREN);
         case ')':
             this->advance();
-            return TokenFactory::build(Token::Type::R_PAREN);
+            return this->currentToken =  TokenFactory::build(Token::Type::R_PAREN);
         case '[':
             this->advance();
-            return TokenFactory::build(Token::Type::L_BRACKET);
+            return this->currentToken =  TokenFactory::build(Token::Type::L_BRACKET);
         case ']':
             this->advance();
-            return TokenFactory::build(Token::Type::R_BRACKET);
+            return this->currentToken =  TokenFactory::build(Token::Type::R_BRACKET);
         case '{':
             this->advance();
-            return TokenFactory::build(Token::Type::L_BRACES);
+            return this->currentToken =  TokenFactory::build(Token::Type::L_BRACES);
         case '}':
             this->advance();
-            return TokenFactory::build(Token::Type::R_BRACES);
+            return this->currentToken =  TokenFactory::build(Token::Type::R_BRACES);
 
         default:
             // keywords and identifire
             if (std::isdigit(this->input[this->currentPosition]))
-                return this->readNumber();
+                return this->currentToken =  this->readNumber();
             if (std::isalpha(this->input[this->currentPosition]) || this->input[this->currentPosition] == '_')
-                return this->readID();
+                return this->currentToken =  this->readID();
             if (this->input[this->currentPosition] == '\'' || this->input[this->currentPosition] == '"' || this->input[this->currentPosition] == '`')
-                return this->readString(this->input[this->currentPosition]);
+                return this->currentToken =  this->readString(this->input[this->currentPosition]);
         }
     }
 }
@@ -305,4 +305,8 @@ Token Lexer::readID() // reads keywords and identifires
     return TokenFactory::build(Token::Type::ID, input);
 
     // throw exception
+}
+
+Token Lexer::getCurrentToken(){
+    return this->currentToken;
 }

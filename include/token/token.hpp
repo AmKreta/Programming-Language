@@ -89,7 +89,8 @@ public:
                 
         // return
         RETURN,
-        END_OF_FILE
+        END_OF_FILE,
+        START_OF_FILE
     };
 
     static std::vector<std::string> TypeStr;
