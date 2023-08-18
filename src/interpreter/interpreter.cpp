@@ -2,6 +2,10 @@
 #include <exception/exceptionFactory.hpp>
 #include <evaluable/rValueConstFactory.hpp>
 #include <operations/mathemeticalOperation.hpp>
+#include <operations/operationTypes.hpp>
+#include <operations/logicalOperation.hpp>
+#include <operations/relationalOperation.hpp>
+#include <operations/bitwiseOperation.hpp>
 #include <modules/console.hpp>
 
 Interpreter::Interpreter(Parser parser) : parser(parser) {}
@@ -31,7 +35,12 @@ std::shared_ptr<RVal> Interpreter::visitUnaryOperation(UnaryOperation *unaryOper
 {
     auto child = unaryOperation->getChild() ? unaryOperation->getChild()->acceptVisitor(this) : nullptr;
     auto type = unaryOperation->getType();
-    return MathemeticalExpression::evaluate(type, child);
+    if (type == Token::Type::LOGICAL_NOT)
+        return LogicalExpression::evaluate(type, child);
+    if (type == Token::Type::BITWISE_NOT)
+        return BitwiseOperation::evaluate(type, child);
+    if (type == Token::Type::PLUS || type == Token::Type::MINUS)
+        return MathemeticalExpression::evaluate(type, child);
 }
 
 std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
@@ -39,7 +48,29 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
     auto left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : nullptr;
     auto right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : nullptr;
     auto op = binaryOperation->getOperation();
-    return MathemeticalExpression::evaluate(left, op, right);
+    if (operatorTypes::mathemeticalOperators.find(op) != operatorTypes::mathemeticalOperators.end())
+        return MathemeticalExpression::evaluate(left, op, right);
+
+    if (operatorTypes::logicalOperators.find(op) != operatorTypes::logicalOperators.end())
+        return LogicalExpression::evaluate(left, op, right);
+
+    if (operatorTypes::relationalEqualityCheckOperators.find(op) != operatorTypes::relationalEqualityCheckOperators.end())
+        return RelationalExpression::evaluate(left, op, right);
+    if (operatorTypes::relationalComparisionOperators.find(op) != operatorTypes::relationalComparisionOperators.end())
+        return RelationalExpression::evaluate(left, op, right);
+
+    if (operatorTypes::bitwiseOperators.find(op) != operatorTypes::bitwiseOperators.end())
+        return BitwiseOperation::evaluate(left, op, right);
+    if (operatorTypes::bitwiseShiftOperators.find(op) != operatorTypes::bitwiseShiftOperators.end())
+        return BitwiseOperation::evaluate(left, op, right);
+}
+
+std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperation *conditionalOperation)
+{
+    auto condition = conditionalOperation->getCondition()->acceptVisitor(this);
+    return condition
+               ? conditionalOperation->get_if()->acceptVisitor(this)
+               : conditionalOperation->get_else()->acceptVisitor(this);
 }
 
 void Interpreter::interpret()

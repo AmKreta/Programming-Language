@@ -24,6 +24,8 @@ public:
         TYPE,
         NILL, // null
         UNDEFINED,
+        TRUE,
+        FALSE,
 
         // comparision / relational operator
         LESS_THAN,
@@ -51,6 +53,8 @@ public:
         BITWISE_OR,
         BITWISE_NOT,
         BITWISE_XOR,
+        BITWISE_L_SHIFT,
+        BITWISE_R_SHIFT,
 
         // assignment
         ASSIGNMENT,
@@ -81,6 +85,7 @@ public:
         IF,
         ELIF,
         ELSE,
+        QUESTION,
 
         // string
         SINGLE_QUOTE,

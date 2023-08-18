@@ -12,7 +12,8 @@ public:
         MAP,
         SET,
         OBJECT,
-        FUNCTION
+        FUNCTION,
+        BOOLEAN
     };
     static std::vector<std::string> TypeStr;
 

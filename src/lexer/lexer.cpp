@@ -63,6 +63,10 @@ Token Lexer::getNextToken()
                 this->advance(2);
                 return this->currentToken =  TokenFactory::build(Token::Type::LESS_THAN_EQUAL_TO);
             }
+            if(this->peek() == "<<"){
+                this->advance(2);
+                return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_L_SHIFT);
+            }
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::LESS_THAN);
 
@@ -71,6 +75,10 @@ Token Lexer::getNextToken()
             {
                 this->advance(2);
                 return this->currentToken =  TokenFactory::build(Token::Type::GREATER_THAN_EQUAL_TO);
+            }
+            if(this->peek() == ">>"){
+                this->advance(2);
+                return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_R_SHIFT);
             }
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::GREATER_THAN);
@@ -120,7 +128,7 @@ Token Lexer::getNextToken()
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_XOR);
 
-        // colon, comma, semicolon
+        // colon, comma, semicolon, question
         case ':':
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::COLON);
@@ -132,6 +140,10 @@ Token Lexer::getNextToken()
         case ';':
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::SEMI_COLON);
+        
+        case '?':
+            this->advance();
+            return this->currentToken = TokenFactory::build(Token::Type::QUESTION);
 
         // mathemetical operators
         case '+':
@@ -159,6 +171,7 @@ Token Lexer::getNextToken()
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::MODULUS);
 
+
         // brackets
         case '(':
             this->advance();
@@ -178,6 +191,7 @@ Token Lexer::getNextToken()
         case '}':
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::R_BRACES);
+
 
         default:
             // keywords and identifire
@@ -301,6 +315,12 @@ Token Lexer::readID() // reads keywords and identifires
         return TokenFactory::build(Token::Type::LET);
     if (input == "const")
         return TokenFactory::build(Token::Type::CONST);
+    
+    // boolean const
+    if(input == "true")
+        return TokenFactory::build(Token::Type::TRUE);
+    if(input == "false")
+        return TokenFactory::build(Token::Type::FALSE);
 
     return TokenFactory::build(Token::Type::ID, input);
 

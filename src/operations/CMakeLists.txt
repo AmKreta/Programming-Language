@@ -1,2 +1,2 @@
-add_library(operation STATIC mathemeticalOperation.cpp)
+add_library(operation STATIC mathemeticalOperation.cpp bitwiseOperation.cpp logicalOperation.cpp relationalOperation.cpp)
 target_include_directories(operation PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../include)

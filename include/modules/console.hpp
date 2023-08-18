@@ -12,6 +12,8 @@ class Console{
         static void logArrayConst(std::shared_ptr<ArrayConst>);
 
         static void logMapConst(std::shared_ptr<MapConst>);
+
+        static void logBoolean(std::shared_ptr<BooleanConst>);
         
     public:
         static void log(std::shared_ptr<RVal>);

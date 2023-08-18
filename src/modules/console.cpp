@@ -1,5 +1,6 @@
 #include <modules/console.hpp>
 #include <iostream>
+#include<token/token.hpp>
 
 void Console::logNumberConst(std::shared_ptr<NumberConst> num)
 {
@@ -8,7 +9,7 @@ void Console::logNumberConst(std::shared_ptr<NumberConst> num)
 
 void Console::logStringConst(std::shared_ptr<StringConst> str)
 {
-    std::cout <<"\""<<str->getData()<<"\"";
+    std::cout << "\"" << str->getData() << "\"";
 }
 
 void Console::logArrayConst(std::shared_ptr<ArrayConst> arr)
@@ -42,10 +43,15 @@ void Console::logMapConst(std::shared_ptr<MapConst> map)
     std::cout << "}";
 }
 
+void Console::logBoolean(std::shared_ptr<BooleanConst> bl)
+{
+    auto res = bl->getData() ? "true" : "false";
+    std::cout << res;
+}
+
 void Console::log(std::shared_ptr<RVal> rval)
 {
     auto type = rval->getType();
-
     if (type == RVal::Type::NUMBER)
         return Console::logNumberConst(std::dynamic_pointer_cast<NumberConst>(rval));
     if (type == RVal::Type::STRING)
@@ -54,4 +60,6 @@ void Console::log(std::shared_ptr<RVal> rval)
         return Console::logArrayConst(std::dynamic_pointer_cast<ArrayConst>(rval));
     if (type == RVal::Type::MAP)
         return Console::logMapConst(std::dynamic_pointer_cast<MapConst>(rval));
+    if (type == RVal::Type::BOOLEAN)
+        return Console::logBoolean(std::dynamic_pointer_cast<BooleanConst>(rval));
 }
