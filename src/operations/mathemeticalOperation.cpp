@@ -60,6 +60,16 @@ std::shared_ptr<RVal> MathemeticalExpression::power(std::shared_ptr<RVal> left, 
     }
 }
 
+std::shared_ptr<RVal> MathemeticalExpression::modulus(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
+{
+    if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
+    {
+        auto leftNum = static_cast<int>(std::dynamic_pointer_cast<NumberConst>(left)->getData());
+        auto rightNum = static_cast<int>(std::dynamic_pointer_cast<NumberConst>(right)->getData());
+        return RValConstFactory::createNumberConstSharedPtr(leftNum % rightNum);
+    }
+}
+
 //------------------------- unaryOperation --------------------------------
 std::shared_ptr<RVal> MathemeticalExpression::Positive(std::shared_ptr<RVal> child)
 {
@@ -116,6 +126,8 @@ std::shared_ptr<RVal> MathemeticalExpression::evaluate(std::shared_ptr<RVal> lef
         return MathemeticalExpression::divide(left, right);
     if (op == Token::Type::POWER)
         return MathemeticalExpression::power(left, right);
+    if (op == Token::Type::MODULUS)
+        return MathemeticalExpression::modulus(left, right);
 }
 
 // // tertiary operator

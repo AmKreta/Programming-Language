@@ -51,6 +51,8 @@ public:
         BITWISE_OR,
         BITWISE_NOT,
         BITWISE_XOR,
+        BITWISE_L_SHIFT,
+        BITWISE_R_SHIFT,
 
         // assignment
         ASSIGNMENT,
@@ -81,6 +83,7 @@ public:
         IF,
         ELIF,
         ELSE,
+        QUESTION,
 
         // string
         SINGLE_QUOTE,

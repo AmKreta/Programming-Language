@@ -26,6 +26,10 @@ public:
     static StringConst *createStringConstPtr(std::string);
     static std::shared_ptr<StringConst> createStringConstSharedPtr(std::string);
 
+    // for string const
+    static BooleanConst *createBooleanConstPtr(bool);
+    static std::shared_ptr<BooleanConst> createBooleanConstSharedPtr(bool);
+
     // for array const
     static ArrayConst *createArrayConstPtr(RValPointerArray);
     static std::shared_ptr<ArrayConst> createArrayConstSharedPtr(RValPointerArray);

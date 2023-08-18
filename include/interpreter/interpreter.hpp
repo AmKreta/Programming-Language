@@ -15,5 +15,6 @@ public:
     std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) override;
     std::shared_ptr<RVal> visitArrayAst(ArrayAst *) override;
     std::shared_ptr<RVal> visitMapAst(MapAst *) override;
+    std::shared_ptr<RVal> visitConditionalOperation(ConditionalOperation *) override;
     void interpret();
 };

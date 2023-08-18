@@ -43,3 +43,14 @@ std::shared_ptr<MapConst> RValConstFactory::createMapConstSharedPtr(RValPointerM
 {
     return RValConstFactory::createSharedPtr<RValPointerMap>(data, RVal::Type::MAP);
 }
+
+// for string const
+BooleanConst *RValConstFactory::createBooleanConstPtr(bool data)
+{
+    return RValConstFactory::createPtr<bool>(data, RVal::Type::BOOLEAN);
+}
+
+std::shared_ptr<BooleanConst> RValConstFactory::createBooleanConstSharedPtr(bool data)
+{
+    return RValConstFactory::createSharedPtr<bool>(data, RVal::Type::BOOLEAN);
+}

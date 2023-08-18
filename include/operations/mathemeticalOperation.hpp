@@ -18,6 +18,7 @@ public:
     static std::shared_ptr<RVal> divide(std::shared_ptr<RVal>, std::shared_ptr<RVal>);
     static std::shared_ptr<RVal> multiply(std::shared_ptr<RVal>, std::shared_ptr<RVal>);
     static std::shared_ptr<RVal> power(std::shared_ptr<RVal>, std::shared_ptr<RVal>);
+    static std::shared_ptr<RVal> modulus(std::shared_ptr<RVal>, std::shared_ptr<RVal>);
 
     // unaryOperation
     static std::shared_ptr<RVal> Positive(std::shared_ptr<RVal>);

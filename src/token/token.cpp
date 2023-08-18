@@ -72,6 +72,8 @@ std::vector<std::string> Token::TypeStr = {
     "BITWISE_OR",
     "BITWISE_NOT",
     "BITWISE_XOR",
+    "BITWISE_L_SHIFT",
+    "BITWISE_R_SHIFT",
 
     // assignment
     "ASSIGNMENT",
@@ -102,6 +104,7 @@ std::vector<std::string> Token::TypeStr = {
     "IF",
     "ELIF",
     "ELSE",
+    "QUESTION"
 
     // string
     "SINGLE_QUOTE",

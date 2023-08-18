@@ -32,6 +32,7 @@ public:
 // type alias
 typedef RValConst<double> NumberConst;
 typedef RValConst<std::string> StringConst;
+typedef RValConst<bool> BooleanConst;
 
 typedef std::vector<std::shared_ptr<RVal>> RValPointerArray; // element of an array
 typedef RValConst<RValPointerArray> ArrayConst;
