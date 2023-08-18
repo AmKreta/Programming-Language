@@ -45,6 +45,8 @@ std::vector<std::string> Token::TypeStr = {
     "TYPE",
     "NILL", // null
     "UNDEFINED",
+    "TRUE",
+    "FALSE",
 
     // comparision / relational operator
     "LESS_THAN",

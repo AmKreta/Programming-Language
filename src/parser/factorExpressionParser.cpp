@@ -4,8 +4,6 @@
 #include <evaluable/arrayAst.hpp>
 #include <evaluable/mapAst.hpp>
 
-
-
 std::shared_ptr<Evaluable> Parser::P1_factor()
 {
     // number
@@ -36,6 +34,20 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
     {
         this->eat(Token::Type::MINUS);
         return std::make_shared<UnaryOperation>(Token::Type::MINUS, this->P1_factor());
+    }
+
+    // boolean true
+    if (this->currentToken.getTokenType() == Token::Type::TRUE)
+    {
+        this->eat(Token::Type::TRUE);
+        return RValConstFactory::createBooleanConstSharedPtr(true);
+    }
+
+    // boolean false
+    if (this->currentToken.getTokenType() == Token::Type::FALSE)
+    {
+        this->eat(Token::Type::FALSE);
+        return RValConstFactory::createBooleanConstSharedPtr(false);
     }
 
     // ()

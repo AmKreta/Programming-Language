@@ -23,10 +23,15 @@ int main()
 {
     run("'Hello' + ' ' + 'world'");
     run("(5 ** ( 2 + 1 ) ) / ( 200 - 25 * 3 )");
-    run("+\"123\"");
-    run("-'123'");
-    run("[1+2, 2**10, 3, \"Hello world\", [4], [5, 6, 'I am AMK']]");
-    run("{'a':1, 2:3, [1]:'hello'}");
+    // run("+\"123\"");
+    // run("-'123'");
+    // run("[1+2, 2**10, 3, \"Hello world\", [4], [5, 6, 'I am AMK']]");
+    // run("{'a':1, 2:3, [1]:'hello'}");
+    run("true || false");
+    run("false || false");
+    run("true && true");
+    run("5 == 5");
+    run("8 >= 5+3");
     std::cout<<std::endl;
     return 0;
 }

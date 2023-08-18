@@ -301,6 +301,12 @@ Token Lexer::readID() // reads keywords and identifires
         return TokenFactory::build(Token::Type::LET);
     if (input == "const")
         return TokenFactory::build(Token::Type::CONST);
+    
+    // boolean const
+    if(input == "true")
+        return TokenFactory::build(Token::Type::TRUE);
+    if(input == "false")
+        return TokenFactory::build(Token::Type::FALSE);
 
     return TokenFactory::build(Token::Type::ID, input);
 
