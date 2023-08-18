@@ -36,16 +36,16 @@ private:
 
 public:
     Parser(Lexer);
-    std::shared_ptr<Evaluable> P1_factor();                                // +i, -i, ++i, --i, i++, i--, fn(), !i, rVal etc , logical not, bitwise not
-    std::shared_ptr<Evaluable> P2_mathemetical_multiplicativeExpression(); //*,**,/,%
-    std::shared_ptr<Evaluable> P3_mathemetical_addativeExpression();       //, +,-
-    std::shared_ptr<Evaluable> P4_bitwise_shiftExpression();               //<<, >>
-    std::shared_ptr<Evaluable> p5_relational_gt_lt_expression();           // >,<,>=,<=
-    std::shared_ptr<Evaluable> p6_relational_equality_expression();        // ==, !=
-    std::shared_ptr<Evaluable> p7_bitwise_expression();                    // and, or, xor
-    std::shared_ptr<Evaluable> p8_logical_expression();                    // &&, ||
-    std::shared_ptr<Evaluable> p9_ternary();                               //?:
-    std::shared_ptr<Evaluable> p10_assignment();                           // =, +=, -=, *=, /=, **=, %=, <<=, >>=, &=, |=
-    std::shared_ptr<Evaluable> p11_expression();                           // whole expression
+    std::shared_ptr<Evaluable> P1_factor();                                         // +i, -i, ++i, --i, i++, i--, fn(), !i, rVal etc , logical not, bitwise not
+    std::shared_ptr<Evaluable> P2_mathemetical_multiplicativeExpression();          //*,**,/,%
+    std::shared_ptr<Evaluable> P3_mathemetical_addativeExpression();                //, +,-
+    std::shared_ptr<Evaluable> P4_bitwise_shiftExpression();                        //<<, >>
+    std::shared_ptr<Evaluable> p5_relational_gt_lt_expression();                    // >,<,>=,<=
+    std::shared_ptr<Evaluable> p6_relational_equality_expression();                 // ==, !=
+    std::shared_ptr<Evaluable> p7_bitwise_expression();                             // and, or, xor
+    std::shared_ptr<Evaluable> p8_logical_expression();                             // &&, ||
+    std::shared_ptr<Evaluable> p9_ternary(std::shared_ptr<Evaluable> ev = nullptr); //?:
+    std::shared_ptr<Evaluable> p10_assignment();                                    // =, +=, -=, *=, /=, **=, %=, <<=, >>=, &=, |=
+    std::shared_ptr<Evaluable> p11_expression();                                    // whole expression
     std::shared_ptr<Evaluable> parse();
 };

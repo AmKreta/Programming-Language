@@ -128,7 +128,7 @@ Token Lexer::getNextToken()
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_XOR);
 
-        // colon, comma, semicolon
+        // colon, comma, semicolon, question
         case ':':
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::COLON);
@@ -140,6 +140,10 @@ Token Lexer::getNextToken()
         case ';':
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::SEMI_COLON);
+        
+        case '?':
+            this->advance();
+            return this->currentToken = TokenFactory::build(Token::Type::QUESTION);
 
         // mathemetical operators
         case '+':
@@ -166,6 +170,7 @@ Token Lexer::getNextToken()
         case '%':
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::MODULUS);
+
 
         // brackets
         case '(':
