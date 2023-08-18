@@ -106,7 +106,7 @@ std::vector<std::string> Token::TypeStr = {
     "IF",
     "ELIF",
     "ELSE",
-    "QUESTION"
+    "QUESTION",
 
     // string
     "SINGLE_QUOTE",

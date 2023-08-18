@@ -50,6 +50,38 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         return RValConstFactory::createBooleanConstSharedPtr(false);
     }
 
+    // logical not
+    if (this->currentToken.getTokenType() == Token::Type::LOGICAL_NOT)
+    {
+        this->eat(Token::Type::LOGICAL_NOT);
+        auto res = this->p11_expression();
+        return std::make_shared<UnaryOperation>(Token::Type::LOGICAL_NOT, res);
+    }
+
+    // bitwise not
+    if (this->currentToken.getTokenType() == Token::Type::BITWISE_NOT)
+    {
+        this->eat(Token::Type::BITWISE_NOT);
+        auto res = this->p11_expression();
+        return std::make_shared<UnaryOperation>(Token::Type::BITWISE_NOT, res);
+    }
+
+    // bitwise l shift
+    if (this->currentToken.getTokenType() == Token::Type::BITWISE_L_SHIFT)
+    {
+        this->eat(Token::Type::BITWISE_L_SHIFT);
+        auto res = this->p11_expression();
+        return std::make_shared<UnaryOperation>(Token::Type::BITWISE_L_SHIFT, res);
+    }
+
+    // bitwise r shift
+    if (this->currentToken.getTokenType() == Token::Type::BITWISE_R_SHIFT)
+    {
+        this->eat(Token::Type::BITWISE_R_SHIFT);
+        auto res = this->p11_expression();
+        return std::make_shared<UnaryOperation>(Token::Type::BITWISE_R_SHIFT, res);
+    }
+
     // ()
     if (this->currentToken.getTokenType() == Token::Type::L_PAREN)
     {
@@ -112,5 +144,5 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
     }
 
     // remaining
-    // !, ~ , ++, --, true, false, null
+    //  , ++, --, null
 }

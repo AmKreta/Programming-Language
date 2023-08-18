@@ -63,6 +63,10 @@ Token Lexer::getNextToken()
                 this->advance(2);
                 return this->currentToken =  TokenFactory::build(Token::Type::LESS_THAN_EQUAL_TO);
             }
+            if(this->peek() == "<<"){
+                this->advance(2);
+                return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_L_SHIFT);
+            }
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::LESS_THAN);
 
@@ -71,6 +75,10 @@ Token Lexer::getNextToken()
             {
                 this->advance(2);
                 return this->currentToken =  TokenFactory::build(Token::Type::GREATER_THAN_EQUAL_TO);
+            }
+            if(this->peek() == ">>"){
+                this->advance(2);
+                return this->currentToken =  TokenFactory::build(Token::Type::BITWISE_R_SHIFT);
             }
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::GREATER_THAN);
@@ -178,6 +186,7 @@ Token Lexer::getNextToken()
         case '}':
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::R_BRACES);
+
 
         default:
             // keywords and identifire

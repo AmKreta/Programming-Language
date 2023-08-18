@@ -62,7 +62,7 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
     if (operatorTypes::bitwiseOperators.find(op) != operatorTypes::bitwiseOperators.end())
         return BitwiseOperation::evaluate(left, op, right);
     if (operatorTypes::bitwiseShiftOperators.find(op) != operatorTypes::bitwiseShiftOperators.end())
-        return BitwiseOperation::evaluate(op, right);
+        return BitwiseOperation::evaluate(left, op, right);
 }
 
 std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperation *conditionalOperation)
