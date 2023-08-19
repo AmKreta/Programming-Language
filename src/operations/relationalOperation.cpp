@@ -29,6 +29,9 @@ std::shared_ptr<RVal> RelationalExpression::equalTo(std::shared_ptr<RVal> left, 
 
 std::shared_ptr<RVal> RelationalExpression::notEqualTo(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
+    if (left->getType() != right->getType())
+        return RValConstFactory::createBooleanConstSharedPtr(true);
+
     if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
     {
         auto leftNum = std::dynamic_pointer_cast<NumberConst>(left)->getData();

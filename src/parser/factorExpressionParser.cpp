@@ -3,6 +3,7 @@
 #include <evaluable/unaryOperation.hpp>
 #include <evaluable/arrayAst.hpp>
 #include <evaluable/mapAst.hpp>
+#include <evaluable/rValConst.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor()
 {
@@ -143,6 +144,18 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         return std::make_shared<MapAst>(mapAst);
     }
 
+    // null
+    if(this->currentToken.getTokenType() == Token::Type::Null){
+        this->eat( Token::Type::Null);
+        return RValConstFactory::createNullConstSharedPtr();
+    }
+
+    // undefined
+    if(this->currentToken.getTokenType() == Token::Type::UNDEFINED){
+        this->eat(Token::Type::UNDEFINED);
+        return RValConstFactory::createUndefinedConstSharedPtr();
+    }
+
     // remaining
-    //  , ++, --, null
+    //  ',' , ++, --,
 }

@@ -11,7 +11,7 @@ std::unordered_map<Token::Type, std::string> TokenFactory::tokenTypeValMap = {
     {Token::Type::INTERFACE, "interface"},
     {Token::Type::CLASS, "class"},
     {Token::Type::TYPE, "type"},
-    {Token::Type::NILL, "null"},
+    {Token::Type::Null, "null"},
     {Token::Type::UNDEFINED, "undefined"},
     {Token::Type::TRUE, "true"},
     {Token::Type::FALSE, "false"},

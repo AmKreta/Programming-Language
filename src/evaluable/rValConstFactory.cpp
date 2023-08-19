@@ -1,5 +1,10 @@
 #include <evaluable/rValueConstFactory.hpp>
 
+// defining constants
+
+std::shared_ptr<NullConst> RValConstFactory::NullSharedPtr = std::make_shared<NullConst>(nullptr, RVal::Type::Null);
+std::shared_ptr<UndefinedConst> RValConstFactory::UndefinedSharedPtr = std::make_shared<UndefinedConst>(nullptr, RVal::Type::UNDEFINED);
+
 // for number
 NumberConst *RValConstFactory::createNumberConstPtr(double data)
 {
@@ -53,4 +58,16 @@ BooleanConst *RValConstFactory::createBooleanConstPtr(bool data)
 std::shared_ptr<BooleanConst> RValConstFactory::createBooleanConstSharedPtr(bool data)
 {
     return RValConstFactory::createSharedPtr<bool>(data, RVal::Type::BOOLEAN);
+}
+
+// for null
+std::shared_ptr<NullConst> RValConstFactory::createNullConstSharedPtr()
+{
+    return RValConstFactory::NullSharedPtr;
+}
+
+// for undefined
+std::shared_ptr<UndefinedConst> RValConstFactory::createUndefinedConstSharedPtr()
+{
+    return RValConstFactory::UndefinedSharedPtr;
 }

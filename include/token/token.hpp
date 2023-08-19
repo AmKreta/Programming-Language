@@ -22,7 +22,7 @@ public:
         INTERFACE,
         CLASS,
         TYPE,
-        NILL, // null
+        Null, // null
         UNDEFINED,
         TRUE,
         FALSE,

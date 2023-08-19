@@ -296,7 +296,7 @@ Token Lexer::readID() // reads keywords and identifires
     if (input == "string")
         return TokenFactory::build(Token::Type::STRING);
     if (input == "null")
-        return TokenFactory::build(Token::Type::NILL);
+        return TokenFactory::build(Token::Type::Null);
     if (input == "undefined")
         return TokenFactory::build(Token::Type::UNDEFINED);
 

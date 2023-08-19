@@ -43,7 +43,7 @@ std::vector<std::string> Token::TypeStr = {
     "INTERFACE",
     "CLASS",
     "TYPE",
-    "NILL", // null
+    "Null", // null
     "UNDEFINED",
     "TRUE",
     "FALSE",

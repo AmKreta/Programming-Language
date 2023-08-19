@@ -1,6 +1,6 @@
 #include <modules/console.hpp>
 #include <iostream>
-#include<token/token.hpp>
+#include <token/token.hpp>
 
 void Console::logNumberConst(std::shared_ptr<NumberConst> num)
 {
@@ -49,6 +49,16 @@ void Console::logBoolean(std::shared_ptr<BooleanConst> bl)
     std::cout << res;
 }
 
+void Console::logNull()
+{
+    std::cout << "null";
+}
+
+void Console::logUndefined()
+{
+    std::cout << "undefined";
+}
+
 void Console::log(std::shared_ptr<RVal> rval)
 {
     auto type = rval->getType();
@@ -62,4 +72,8 @@ void Console::log(std::shared_ptr<RVal> rval)
         return Console::logMapConst(std::dynamic_pointer_cast<MapConst>(rval));
     if (type == RVal::Type::BOOLEAN)
         return Console::logBoolean(std::dynamic_pointer_cast<BooleanConst>(rval));
+    if (type == RVal::Type::Null)
+        return Console::logNull();
+    if (type == RVal::Type::UNDEFINED)
+        return Console::logUndefined();
 }

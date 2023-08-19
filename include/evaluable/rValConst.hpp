@@ -12,7 +12,7 @@ protected:
 
 public:
     RValConst(T data, RVal::Type type) : data(data), RVal(type) {}
-
+    
     T getData()
     {
         return this->data;
@@ -39,3 +39,6 @@ typedef RValConst<RValPointerArray> ArrayConst;
 
 typedef std::unordered_map<std::shared_ptr<RVal>, std::shared_ptr<RVal>> RValPointerMap;
 typedef RValConst<RValPointerMap> MapConst;
+
+typedef RValConst<std::shared_ptr<void>> NullConst;
+typedef RValConst<std::shared_ptr<void>> UndefinedConst;

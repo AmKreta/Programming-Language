@@ -14,6 +14,10 @@ class Console{
         static void logMapConst(std::shared_ptr<MapConst>);
 
         static void logBoolean(std::shared_ptr<BooleanConst>);
+
+        static void logNull();
+        
+        static void logUndefined();
         
     public:
         static void log(std::shared_ptr<RVal>);

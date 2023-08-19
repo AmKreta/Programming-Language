@@ -13,7 +13,9 @@ public:
         SET,
         OBJECT,
         FUNCTION,
-        BOOLEAN
+        BOOLEAN,
+        Null, // null,
+        UNDEFINED
     };
     static std::vector<std::string> TypeStr;
 

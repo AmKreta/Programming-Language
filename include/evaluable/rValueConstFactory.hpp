@@ -17,6 +17,9 @@ private:
         return std::make_shared<RValConst<T>>(data, type);
     }
 
+    static std::shared_ptr<NullConst> NullSharedPtr;
+    static std::shared_ptr<UndefinedConst> UndefinedSharedPtr;
+
 public:
     // for number const
     static NumberConst *createNumberConstPtr(double);
@@ -37,4 +40,10 @@ public:
     // for map const
     static MapConst *createMapConstPtr(RValPointerMap);
     static std::shared_ptr<MapConst> createMapConstSharedPtr(RValPointerMap);
+
+    // for null
+    static std::shared_ptr<NullConst> createNullConstSharedPtr();
+
+    // for undefined
+    static std::shared_ptr<UndefinedConst> createUndefinedConstSharedPtr();
 };
