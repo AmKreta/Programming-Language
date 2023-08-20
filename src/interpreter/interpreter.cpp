@@ -7,6 +7,9 @@
 #include <operations/relationalOperation.hpp>
 #include <operations/bitwiseOperation.hpp>
 #include <modules/console.hpp>
+#include <rval/rVal.hpp>
+
+auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
 Interpreter::Interpreter(Parser parser) : parser(parser) {}
 
@@ -79,6 +82,8 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
     for (auto &[name, rVal] : declerations)
     {
         // put this in symbol table
+        auto val = rVal->acceptVisitor(this);
+        globalScope.insert(std::pair(name, val));
     }
 }
 
@@ -93,6 +98,12 @@ void Interpreter::visitProgram(Program *program)
 void Interpreter::interpret()
 {
     auto eval = this->parser.parse();
-    auto res = eval->acceptVisitor(this);
-    Console::log(res);
+    eval->acceptVisitor(this);
+    // Console::log(res);
+    std::cout<<std::endl<<"content of scope"<<std::endl;
+    for(auto& [key, val]: globalScope){
+        std::cout<<key<<" ----> ";
+        Console::log(val);
+        std::cout<<std::endl;
+    }
 }

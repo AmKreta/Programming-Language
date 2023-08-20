@@ -15,7 +15,7 @@ void Parser::eat(Token::Type type)
     //std::cout << "after eat>>   " << this->currentToken << ", sent type -> " << Token::getTokenTypeString(type) << std::endl << std::endl;
 }
 
-std::shared_ptr<Evaluable> Parser::parse()
+std::shared_ptr<Program> Parser::parse()
 {
-    return this->p11_expression();
+    return this->program();
 }

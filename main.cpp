@@ -41,7 +41,7 @@ int main()
     // run("2 | 3");
     // run("2 << 3 + 5");
     // run("5 == 2 + 3 ? true ? 'this is true' : 'this is false' : false");
-    run("true ? null : undefined");
+    run("let a = 2+3, b = true && true");
     std::cout << std::endl;
     return 0;
 }
