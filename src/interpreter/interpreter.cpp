@@ -73,6 +73,13 @@ std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperatio
                : conditionalOperation->get_else()->acceptVisitor(this);
 }
 
+void Interpreter::visitVarDecleration(VarDecleration* varDecleration){
+    auto declerations = varDecleration->getDeclerations();
+    for(auto& [name, rVal] : declerations){
+        // put this in symbol table
+    }
+}
+
 void Interpreter::interpret()
 {
     auto eval = this->parser.parse();
