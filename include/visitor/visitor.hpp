@@ -9,6 +9,7 @@
 #include <evaluable/conditionalOperator.hpp>
 #include <runable/varDecleration.hpp>
 #include <runable/program.hpp>
+#include <evaluable/variable.hpp>
 
 class Visitor
 {
@@ -18,6 +19,7 @@ public:
     virtual std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) = 0;
     virtual std::shared_ptr<RVal> visitArrayAst(ArrayAst *) = 0;
     virtual std::shared_ptr<RVal> visitMapAst(MapAst *) = 0;
+    virtual std::shared_ptr<RVal> visitVariable(Variable *) = 0;
     virtual std::shared_ptr<RVal> visitConditionalOperation(ConditionalOperation *) = 0;
     virtual void visitVarDecleration(VarDecleration *) = 0;
     virtual void visitProgram(Program *) = 0;

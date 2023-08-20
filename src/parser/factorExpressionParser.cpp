@@ -4,6 +4,7 @@
 #include <evaluable/arrayAst.hpp>
 #include <evaluable/mapAst.hpp>
 #include <evaluable/rValConst.hpp>
+#include <evaluable/variable.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor()
 {
@@ -145,15 +146,24 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
     }
 
     // null
-    if(this->currentToken.getTokenType() == Token::Type::Null){
-        this->eat( Token::Type::Null);
+    if (this->currentToken.getTokenType() == Token::Type::Null)
+    {
+        this->eat(Token::Type::Null);
         return RValConstFactory::createNullConstSharedPtr();
     }
 
     // undefined
-    if(this->currentToken.getTokenType() == Token::Type::UNDEFINED){
+    if (this->currentToken.getTokenType() == Token::Type::UNDEFINED)
+    {
         this->eat(Token::Type::UNDEFINED);
         return RValConstFactory::createUndefinedConstSharedPtr();
+    }
+
+    if (this->currentToken.getTokenType() == Token::Type::ID)
+    {
+        auto name = this->currentToken.getTokenValue();
+        this->eat(Token::Type::ID);
+        return std::make_shared<Variable>(name);
     }
 
     // remaining

@@ -3,7 +3,7 @@
 
 std::shared_ptr<VarDecleration> Parser::varDecleration()
 {
-    this->eat(this->currentToken.getTokenType());
+    this->eat(this->currentToken.getTokenType());// let | const
     std::vector<std::pair<std::string, std::shared_ptr<Evaluable>>> declerations;
     auto addVarDecl = [this, &declerations]()
     {
@@ -30,6 +30,7 @@ std::shared_ptr<Statement> Parser::statement()
 {
     if (this->currentToken.getTokenType() == Token::Type::LET || this->currentToken.getTokenType() == Token::Type::CONST)
         return this->varDecleration();
+
 }
 
 std::shared_ptr<Program> Parser::program()
@@ -39,7 +40,9 @@ std::shared_ptr<Program> Parser::program()
     while (this->currentToken.getTokenType() == Token::Type::SEMI_COLON)
     {
         this->eat(Token::Type::SEMI_COLON);
-        statementList.push_back(this->statement());
+        if(this->currentToken.getTokenType()!=Token::Type::END_OF_FILE)
+            statementList.push_back(this->statement());
     }
+
     return std::make_shared<Program>(statementList);
 }

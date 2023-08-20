@@ -87,6 +87,14 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
     }
 }
 
+std::shared_ptr<RVal> Interpreter::visitVariable(Variable* variable){
+    auto name = variable->getVarName();
+    auto var = globalScope.find(name);
+    if(var!=globalScope.end())
+        return var->second;
+    throw ExceptionFactory::create("Variable", name,"is not defined");
+}
+
 void Interpreter::visitProgram(Program *program)
 {
     // just traverse all the statements
@@ -100,7 +108,7 @@ void Interpreter::interpret()
     auto eval = this->parser.parse();
     eval->acceptVisitor(this);
     // Console::log(res);
-    std::cout<<std::endl<<"content of scope"<<std::endl;
+    std::cout<<std::endl<<"\ncontent of symbol table\n"<<std::endl;
     for(auto& [key, val]: globalScope){
         std::cout<<key<<" ----> ";
         Console::log(val);
