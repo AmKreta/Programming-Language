@@ -2,11 +2,16 @@
 
 #include <lexer/lexer.hpp>
 #include <evaluable/evaluable.hpp>
+#include <runable/varDecleration.hpp>
+#include <runable/statement.hpp>
+#include <runable/program.hpp>
+#include <runable/varDecleration.hpp>
+
 
 // grammer
 // program : compoundStatement
 // compoundStatement : (statement)*
-// statement : ((varDecleration | assignment| function call | comparision) SEMI_COLON) | (functionDecleration | if-else | class)
+// statement : ((varDecleration | function call ) SEMI_COLON) | (functionDecleration | if-else | class)
 
 // varDecleration : (let | const ) ID (= expr)? (, varDecleration)*
 // assignment : Id = expression
@@ -47,5 +52,8 @@ public:
     std::shared_ptr<Evaluable> p9_ternary(std::shared_ptr<Evaluable> ev = nullptr); //?:
     std::shared_ptr<Evaluable> p10_assignment();                                    // =, +=, -=, *=, /=, **=, %=, <<=, >>=, &=, |=
     std::shared_ptr<Evaluable> p11_expression();                                    // whole expression
-    std::shared_ptr<Evaluable> parse();
+    std::shared_ptr<VarDecleration> varDecleration();
+    std::shared_ptr<Statement> statement();
+    std::shared_ptr<Program> program();
+    std::shared_ptr<Program> parse();
 };

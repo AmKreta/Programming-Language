@@ -7,6 +7,9 @@
 #include <operations/relationalOperation.hpp>
 #include <operations/bitwiseOperation.hpp>
 #include <modules/console.hpp>
+#include <rval/rVal.hpp>
+
+auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
 Interpreter::Interpreter(Parser parser) : parser(parser) {}
 
@@ -73,9 +76,42 @@ std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperatio
                : conditionalOperation->get_else()->acceptVisitor(this);
 }
 
+void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
+{
+    auto declerations = varDecleration->getDeclerations();
+    for (auto &[name, rVal] : declerations)
+    {
+        // put this in symbol table
+        auto val = rVal->acceptVisitor(this);
+        globalScope.insert(std::pair(name, val));
+    }
+}
+
+std::shared_ptr<RVal> Interpreter::visitVariable(Variable* variable){
+    auto name = variable->getVarName();
+    auto var = globalScope.find(name);
+    if(var!=globalScope.end())
+        return var->second;
+    throw ExceptionFactory::create("Variable", name,"is not defined");
+}
+
+void Interpreter::visitProgram(Program *program)
+{
+    // just traverse all the statements
+    auto statementList = program->getStatementList();
+    for (auto statement : statementList)
+        statement->acceptVisitor(this);
+}
+
 void Interpreter::interpret()
 {
     auto eval = this->parser.parse();
-    auto res = eval->acceptVisitor(this);
-    Console::log(res);
+    eval->acceptVisitor(this);
+    // Console::log(res);
+    std::cout<<std::endl<<"\ncontent of symbol table\n"<<std::endl;
+    for(auto& [key, val]: globalScope){
+        std::cout<<key<<" ----> ";
+        Console::log(val);
+        std::cout<<std::endl;
+    }
 }
