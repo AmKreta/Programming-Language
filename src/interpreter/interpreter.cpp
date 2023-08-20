@@ -73,11 +73,21 @@ std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperatio
                : conditionalOperation->get_else()->acceptVisitor(this);
 }
 
-void Interpreter::visitVarDecleration(VarDecleration* varDecleration){
+void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
+{
     auto declerations = varDecleration->getDeclerations();
-    for(auto& [name, rVal] : declerations){
+    for (auto &[name, rVal] : declerations)
+    {
         // put this in symbol table
     }
+}
+
+void Interpreter::visitProgram(Program *program)
+{
+    // just traverse all the statements
+    auto statementList = program->getStatementList();
+    for (auto statement : statementList)
+        statement->acceptVisitor(this);
 }
 
 void Interpreter::interpret()

@@ -6,7 +6,7 @@
 // grammer
 // program : compoundStatement
 // compoundStatement : (statement)*
-// statement : ((varDecleration | assignment| function call | comparision) SEMI_COLON) | (functionDecleration | if-else | class)
+// statement : ((varDecleration | function call ) SEMI_COLON) | (functionDecleration | if-else | class)
 
 // varDecleration : (let | const ) ID (= expr)? (, varDecleration)*
 // assignment : Id = expression

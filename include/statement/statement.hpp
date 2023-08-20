@@ -1,10 +1,13 @@
 #pragma once
 
-class Statement
+#include<runable/runable.hpp>
+
+class Statement : public Runable
 {
 public:
     enum class Type : int
     {
+        VAR_DECLERATION,
         FUNCTION_DECLERATION,
         CLASS_DECLERATION,
         IF_ELSE_STATEMENT,
