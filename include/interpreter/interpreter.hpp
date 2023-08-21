@@ -18,6 +18,7 @@ public:
     std::shared_ptr<RVal> visitConditionalOperation(ConditionalOperation *) override;
     std::shared_ptr<RVal> visitVariable(Variable *) override;
     void visitVarDecleration(VarDecleration *) override;
+    void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;
     void interpret();
 };

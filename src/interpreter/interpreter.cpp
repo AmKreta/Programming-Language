@@ -8,6 +8,7 @@
 #include <operations/bitwiseOperation.hpp>
 #include <modules/console.hpp>
 #include <rval/rVal.hpp>
+#include<utility/conversionFunctions.hpp>
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
@@ -87,12 +88,24 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
     }
 }
 
-std::shared_ptr<RVal> Interpreter::visitVariable(Variable* variable){
+std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
+{
     auto name = variable->getVarName();
     auto var = globalScope.find(name);
-    if(var!=globalScope.end())
+    if (var != globalScope.end())
         return var->second;
-    throw ExceptionFactory::create("Variable", name,"is not defined");
+    throw ExceptionFactory::create("Variable", name, "is not defined");
+}
+
+void Interpreter::visitIfElse(IfElse *ifElse)
+{
+    auto condition = ifElse->getCondition()->acceptVisitor(this);
+    if (ConversionFunctions::RValToBool(condition))
+        for (auto statement : ifElse->getIfBlock())
+            statement->acceptVisitor(this);
+    else
+        for (auto statement : ifElse->getElseBlock())
+            statement->acceptVisitor(this);
 }
 
 void Interpreter::visitProgram(Program *program)
@@ -108,10 +121,13 @@ void Interpreter::interpret()
     auto eval = this->parser.parse();
     eval->acceptVisitor(this);
     // Console::log(res);
-    std::cout<<std::endl<<"\ncontent of symbol table\n"<<std::endl;
-    for(auto& [key, val]: globalScope){
-        std::cout<<key<<" ----> ";
+    std::cout << std::endl
+              << "\ncontent of symbol table\n"
+              << std::endl;
+    for (auto &[key, val] : globalScope)
+    {
+        std::cout << key << " ----> ";
         Console::log(val);
-        std::cout<<std::endl;
+        std::cout << std::endl;
     }
 }

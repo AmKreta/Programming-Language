@@ -39,7 +39,7 @@ std::unordered_map<Token::Type, std::string> TokenFactory::tokenTypeValMap = {
     {Token::Type::ASSIGNMENT, "="},
     {Token::Type::COMMA, ","},
     {Token::Type::COLON, ":"},
-    {Token::Type::SEMI_COLON, ","},
+    {Token::Type::SEMI_COLON, ";"},
     {Token::Type::L_PAREN, "("},
     {Token::Type::R_PAREN, ")"},
     {Token::Type::L_BRACKET, "["},
