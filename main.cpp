@@ -41,7 +41,8 @@ int main()
     // run("2 | 3");
     // run("2 << 3 + 5");
     // run("5 == 2 + 3 ? true ? 'this is true' : 'this is false' : false");
-    run("let a = 2 ** 3, b = a + 4;\nlet c = a == 8 ? a ** 2 : b;");
+    run("if(true){ let a = 5; } else { let b = 10; }");
+    run("if(false){ let a = 5; } else { let b = 10; }");
     std::cout << std::endl;
     return 0;
 }
