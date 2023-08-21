@@ -66,6 +66,14 @@ std::shared_ptr<IfElse> Parser::ifElse()
     return std::make_shared<IfElse>(condition, ifBlockStatements, elseBlockStatements);
 }
 
+std::shared_ptr<Assignment> Parser::assignmentStatement(){
+    auto varName = this->currentToken.getTokenValue();
+    this->eat(Token::Type::ID);
+    this->eat(Token::Type::ASSIGNMENT);
+    auto expr = this->p11_expression();
+    return std::make_shared<Assignment>(std::make_shared<Variable>(varName), expr);
+}
+
 // statement : if-else | var decl | loop
 std::shared_ptr<Statement> Parser::statement()
 {
@@ -73,6 +81,8 @@ std::shared_ptr<Statement> Parser::statement()
         return this->varDecleration();
     if (this->currentToken.getTokenType() == Token::Type::IF)
         return this->ifElse();
+    if(this->currentToken.getTokenType() == Token::Type::ID)
+        return this->assignmentStatement();
 }
 
 
@@ -84,7 +94,8 @@ std::vector<std::shared_ptr<Statement>> Parser::compoundStatement()
     while (this->currentToken.getTokenType() == Token::Type::SEMI_COLON)
     {
         this->eat(Token::Type::SEMI_COLON);
-        if (!(this->currentToken.getTokenType() == Token::Type::END_OF_FILE || this->currentToken.getTokenType()==Token::Type::R_BRACES))
+        // places where statement can end
+        if (!(this->currentToken.getTokenType() == Token::Type::END_OF_FILE || this->currentToken.getTokenType()==Token::Type::R_BRACES || this->currentToken.getTokenType()==Token::Type::ELSE))
             statementList.push_back(this->statement());
     }
 

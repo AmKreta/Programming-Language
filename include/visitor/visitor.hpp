@@ -10,7 +10,8 @@
 #include <runable/varDecleration.hpp>
 #include <runable/program.hpp>
 #include <evaluable/variable.hpp>
-#include<runable/ifElse.hpp>
+#include <runable/ifElse.hpp>
+#include <runable/assignment.hpp>
 
 class Visitor
 {
@@ -23,7 +24,8 @@ public:
     virtual std::shared_ptr<RVal> visitVariable(Variable *) = 0;
     virtual std::shared_ptr<RVal> visitConditionalOperation(ConditionalOperation *) = 0;
     virtual void visitVarDecleration(VarDecleration *) = 0;
-    virtual void visitIfElse(IfElse*) = 0;
+    virtual void visitIfElse(IfElse *) = 0;
     virtual void visitProgram(Program *) = 0;
+    virtual void visitAssignment(Assignment *) = 0;
     virtual ~Visitor() = default;
 };

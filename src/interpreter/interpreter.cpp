@@ -8,7 +8,7 @@
 #include <operations/bitwiseOperation.hpp>
 #include <modules/console.hpp>
 #include <rval/rVal.hpp>
-#include<utility/conversionFunctions.hpp>
+#include <utility/conversionFunctions.hpp>
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
@@ -67,6 +67,24 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
         return BitwiseOperation::evaluate(left, op, right);
     if (operatorTypes::bitwiseShiftOperators.find(op) != operatorTypes::bitwiseShiftOperators.end())
         return BitwiseOperation::evaluate(left, op, right);
+
+    if (op == Token::Type::ASSIGNMENT)
+    {
+        auto leftVar = binaryOperation->getLeftChild();
+        auto rightExpr = binaryOperation->getRightChild();
+        auto var = std::dynamic_pointer_cast<Variable>(leftVar);
+        if (var)
+            if (globalScope.find(var->getVarName()) != globalScope.end())
+            {
+                auto rVal = rightExpr->acceptVisitor(this);
+                globalScope[var->getVarName()] = rVal;
+                return rVal;
+            }
+            else
+                throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
+        else
+            throw ExceptionFactory::create("lhs should be a variable");
+    }
 }
 
 std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperation *conditionalOperation)
@@ -114,6 +132,16 @@ void Interpreter::visitProgram(Program *program)
     auto statementList = program->getStatementList();
     for (auto statement : statementList)
         statement->acceptVisitor(this);
+}
+
+void Interpreter::visitAssignment(Assignment *assignment)
+{
+    auto var = assignment->getVar();
+    auto expr = assignment->getExpr();
+    if (globalScope.find(var->getVarName()) != globalScope.end())
+        globalScope[var->getVarName()] = expr->acceptVisitor(this);
+    else
+        throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
 }
 
 void Interpreter::interpret()

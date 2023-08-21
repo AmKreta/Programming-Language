@@ -7,6 +7,7 @@ class Statement : public Runable
 public:
     enum class Type : int
     {
+        ASSIGNMENT,
         VAR_DECLERATION,
         FUNCTION_DECLERATION,
         CLASS_DECLERATION,
