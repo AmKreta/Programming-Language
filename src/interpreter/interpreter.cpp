@@ -73,40 +73,6 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
         return BitwiseOperation::evaluate(left, op, right);
     if (operatorTypes::bitwiseShiftOperators.find(op) != operatorTypes::bitwiseShiftOperators.end())
         return BitwiseOperation::evaluate(left, op, right);
-    {
-        auto leftVar = binaryOperation->getLeftChild();
-
-        auto var = std::dynamic_pointer_cast<Variable>(leftVar);
-        if (var)
-            if (globalScope.find(var->getVarName()) != globalScope.end())
-            {
-                auto rVal = right;
-                globalScope[var->getVarName()] = rVal;
-                return rVal;
-            }
-            else
-                throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
-
-        auto indexing = std::dynamic_pointer_cast<Indexing>(leftVar);
-        if (indexing)
-        {
-            auto val = indexing->getVal()->acceptVisitor(this);
-            auto index = indexing->getIndex()->acceptVisitor(this);
-            if (val->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
-            {
-                auto arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
-                auto idx = std::dynamic_pointer_cast<NumberConst>(index)->getData();
-                arr[idx] = right;
-            }
-            if (val->getType() == RVal::Type::MAP)
-            {
-                auto map = std::dynamic_pointer_cast<MapConst>(val)->getData();
-                map[index] = right;
-            }
-        }
-
-        throw ExceptionFactory::create("lhs should be a variable, or indexed array or object");
-    }
 }
 
 std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperation *conditionalOperation)
@@ -186,16 +152,6 @@ void Interpreter::visitProgram(Program *program)
     auto compoundStatement = program->getCompoundStatement();
     compoundStatement->acceptVisitor(this);
 }
-
-// void Interpreter::visitAssignment(Assignment *assignment)
-// {
-//     auto var = assignment->getVar();
-//     auto expr = assignment->getExpr();
-//     if (globalScope.find(var->getVarName()) != globalScope.end())
-//         globalScope[var->getVarName()] = expr->acceptVisitor(this);
-//     else
-//         throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
-// }
 
 void Interpreter::interpret()
 {
