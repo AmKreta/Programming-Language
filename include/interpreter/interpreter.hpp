@@ -21,6 +21,7 @@ public:
     void visitVarDecleration(VarDecleration *) override;
     void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;
-    void visitAssignment(Assignment *) override;
+    void visitCompoundStatement(CompoundStatement*) override;
+    void visitExpressionStatement(ExpressionStatement *) override;
     void interpret();
 };

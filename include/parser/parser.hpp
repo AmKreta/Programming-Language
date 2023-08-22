@@ -5,10 +5,9 @@
 #include <runable/varDecleration.hpp>
 #include <runable/statement.hpp>
 #include <runable/program.hpp>
-#include <runable/varDecleration.hpp>
 #include <runable/ifElse.hpp>
-#include<runable/assignment.hpp>
-
+#include <runable/compoundStatement.hpp>
+#include <runable/expressionStatement.hpp>
 
 // grammer
 // program : compoundStatement
@@ -56,9 +55,8 @@ public:
     std::shared_ptr<Evaluable> p11_expression();                                    // whole expression
     std::shared_ptr<VarDecleration> varDecleration();
     std::shared_ptr<IfElse> ifElse();
-    std::shared_ptr<Assignment> assignmentStatement();
     std::shared_ptr<Statement> statement();
-    std::vector<std::shared_ptr<Statement>> compoundStatement();
+    std::shared_ptr<CompoundStatement> compoundStatement();
     std::shared_ptr<Program> program();
     std::shared_ptr<Program> parse();
 };

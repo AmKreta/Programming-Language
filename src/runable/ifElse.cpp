@@ -3,19 +3,19 @@
 #include <runable/ifElse.hpp>
 #include <visitor/visitor.hpp>
 
-IfElse::IfElse(std::shared_ptr<Evaluable> condition, std::vector<std::shared_ptr<Statement>> ifBlock, std::vector<std::shared_ptr<Statement>> elseBlock) : condition(condition), ifBlock(ifBlock), elseBlock(elseBlock), Statement(Statement::Type::IF_ELSE_STATEMENT) {}
+IfElse::IfElse(std::shared_ptr<Evaluable> condition, std::shared_ptr<CompoundStatement> ifBlock, std::shared_ptr<CompoundStatement> elseBlock) : condition(condition), ifBlock(ifBlock), elseBlock(elseBlock) {}
 
 std::shared_ptr<Evaluable> IfElse::getCondition()
 {
     return this->condition;
 }
 
-std::vector<std::shared_ptr<Statement>> IfElse::getIfBlock()
+std::shared_ptr<CompoundStatement> IfElse::getIfBlock()
 {
     return this->ifBlock;
 }
 
-std::vector<std::shared_ptr<Statement>> IfElse::getElseBlock()
+std::shared_ptr<CompoundStatement> IfElse::getElseBlock()
 {
     return this->elseBlock;
 }

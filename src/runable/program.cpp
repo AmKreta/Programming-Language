@@ -1,11 +1,11 @@
 #include <runable/program.hpp>
 #include <visitor/visitor.hpp>
 
-Program::Program(std::vector<std::shared_ptr<Statement>> statement_list) : statement_list(statement_list) {}
+Program::Program(std::shared_ptr<CompoundStatement> compoundStatement) : compoundStatement(compoundStatement) {}
 
-std::vector<std::shared_ptr<Statement>> Program::getStatementList()
+std::shared_ptr<CompoundStatement> Program::getCompoundStatement()
 {
-    return this->statement_list;
+    return this->compoundStatement;
 }
 
 void Program::acceptVisitor(Visitor *visitor)
