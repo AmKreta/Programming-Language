@@ -13,7 +13,7 @@ protected:
 public:
     RValConst(T data, RVal::Type type) : data(data), RVal(type) {}
 
-    T getData()
+    T& getData()
     {
         return this->data;
     }

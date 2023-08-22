@@ -6,6 +6,7 @@
 #include <operations/logicalOperation.hpp>
 #include <operations/relationalOperation.hpp>
 #include <operations/bitwiseOperation.hpp>
+#include <operations/assignmentOperation.hpp>
 #include <modules/console.hpp>
 #include <rval/rVal.hpp>
 #include <utility/conversionFunctions.hpp>
@@ -52,44 +53,7 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
     auto op = binaryOperation->getOperation();
 
     if (op == Token::Type::ASSIGNMENT)
-    {
-        auto leftChild = binaryOperation->getLeftChild();
-        auto res = binaryOperation->getRightChild()->acceptVisitor(this);
-
-        auto var = std::dynamic_pointer_cast<Variable>(leftChild);
-        if (var){
-            if (globalScope.find(var->getVarName()) != globalScope.end())
-            {
-                auto rVal = res;
-                globalScope[var->getVarName()] = rVal;
-                return rVal;
-            }
-            else
-                throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
-        }
-        auto indexing = std::dynamic_pointer_cast<Indexing>(leftChild);
-        if (indexing)
-        {
-            auto val = indexing->getVal()->acceptVisitor(this);
-            auto index = indexing->getIndex()->acceptVisitor(this);
-            if (val->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
-            {
-                auto arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
-                auto idx = std::dynamic_pointer_cast<NumberConst>(index)->getData();
-                return arr[idx] = res;
-
-            }
-            if (val->getType() == RVal::Type::MAP)
-            {
-                auto map = std::dynamic_pointer_cast<MapConst>(val)->getData();
-                return map[index] = res;
-            }
-        }
-
-        Console::log(leftChild->acceptVisitor(this));
-
-        throw ExceptionFactory::create("lhs should be a variable, or indexed array or object");
-    }
+        return AssignmentOperation::evaluate(this, binaryOperation->getLeftChild(), binaryOperation->getRightChild(), globalScope);
 
     auto left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : nullptr;
     auto right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : nullptr;
