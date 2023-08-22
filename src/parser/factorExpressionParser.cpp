@@ -5,6 +5,7 @@
 #include <evaluable/mapAst.hpp>
 #include <evaluable/rValConst.hpp>
 #include <evaluable/variable.hpp>
+#include <evaluable/indexing.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor()
 {
@@ -96,7 +97,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
     // array and indexing
     if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
     {
-        // [ (p10_expression() (, p10_expression())*)]
+        // [ (p11_expression() (, p11_expression())*)]
         this->eat(Token::Type::L_BRACKET);
         std::vector<std::shared_ptr<Evaluable>> arrAst;
         if (this->currentToken.getTokenType() == Token::Type::R_BRACKET)
@@ -112,6 +113,14 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
             arrAst.push_back(p11_expression());
         }
         this->eat(Token::Type::R_BRACKET);
+        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
+        {
+            // might be indexing
+            this->eat(Token::Type::L_BRACKET);
+            auto index = this->p11_expression();
+            this->eat(Token::Type::R_BRACKET);
+            return std::make_shared<Indexing>(std::make_shared<ArrayAst>(arrAst), index);
+        }
         return std::make_shared<ArrayAst>(arrAst);
     }
 
@@ -142,6 +151,14 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
             addKeyValPair();
         }
         this->eat(Token::Type::R_BRACES);
+        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
+        {
+            // might be indexing
+            this->eat(Token::Type::L_BRACKET);
+            auto index = this->p11_expression();
+            this->eat(Token::Type::R_BRACKET);
+            return std::make_shared<Indexing>(std::make_shared<MapAst>(mapAst), index);
+        }
         return std::make_shared<MapAst>(mapAst);
     }
 
@@ -159,10 +176,19 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
 
+    // variable
     if (this->currentToken.getTokenType() == Token::Type::ID)
     {
         auto name = this->currentToken.getTokenValue();
         this->eat(Token::Type::ID);
+        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
+        {
+            // might be indexing
+            this->eat(Token::Type::L_BRACKET);
+            auto index = this->p11_expression();
+            this->eat(Token::Type::R_BRACKET);
+            return std::make_shared<Indexing>(std::make_shared<Variable>(name), index);
+        }
         return std::make_shared<Variable>(name);
     }
 

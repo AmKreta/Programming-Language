@@ -95,6 +95,27 @@ std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperatio
                : conditionalOperation->get_else()->acceptVisitor(this);
 }
 
+std::shared_ptr<RVal> Interpreter::visitIndexing(Indexing *indexing)
+{
+    auto val = indexing->getVal()->acceptVisitor(this);
+    auto index = indexing->getIndex()->acceptVisitor(this);
+    if (val->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
+    {
+        auto arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
+        auto num = std::dynamic_pointer_cast<NumberConst>(index)->getData();
+        return arr[static_cast<int>(num)]; // because no. can be double too
+    }
+    if (val->getType() == RVal::Type::MAP)
+    {
+        auto map = std::dynamic_pointer_cast<MapConst>(val)->getData();
+        auto res = map.find(index);
+        if (res != map.end())
+            return res->second;
+        return RValConstFactory::createUndefinedConstSharedPtr();
+    }
+    throw ExceptionFactory::create("can't use indexing operator on", RVal::getTypeString(val->getType()));
+}
+
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
 {
     auto declerations = varDecleration->getDeclerations();

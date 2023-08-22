@@ -12,6 +12,7 @@
 #include <evaluable/variable.hpp>
 #include <runable/ifElse.hpp>
 #include <runable/assignment.hpp>
+#include<evaluable/indexing.hpp>
 
 class Visitor
 {
@@ -23,6 +24,7 @@ public:
     virtual std::shared_ptr<RVal> visitMapAst(MapAst *) = 0;
     virtual std::shared_ptr<RVal> visitVariable(Variable *) = 0;
     virtual std::shared_ptr<RVal> visitConditionalOperation(ConditionalOperation *) = 0;
+    virtual std::shared_ptr<RVal> visitIndexing(Indexing*) = 0;
     virtual void visitVarDecleration(VarDecleration *) = 0;
     virtual void visitIfElse(IfElse *) = 0;
     virtual void visitProgram(Program *) = 0;
