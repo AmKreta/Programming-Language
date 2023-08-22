@@ -41,7 +41,7 @@ int main()
     // run("let a = 5 == 2 + 3 ? true ? 'this is true' : 'this is false' : false;");
     // run("if(true){ let a = 5; } else { let b = 10; }");
     // run("if(false){ let a = 5; } else { let b = 10; }");
-    run("let a, b= 2**10;\nif(b==1024)\n  a = ['the condition was true'];\nelse\n  a = { 'res' : 'the condition was false'};");
+    run("let a = [1, 2.4, 'hello'], b = { a : 'this is object a'}, c = b[a];");
     std::cout << std::endl;
     return 0;
 }
