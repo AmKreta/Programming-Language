@@ -1,6 +1,7 @@
 #include <operations/mathemeticalOperation.hpp>
 #include <evaluable/rValueConstFactory.hpp>
 #include <utility/conversionFunctions.hpp>
+#include <exception/exceptionFactory.hpp>
 
 // --------------------- binary operations ----------------------------
 std::shared_ptr<RVal> MathemeticalExpression::add(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
@@ -18,6 +19,8 @@ std::shared_ptr<RVal> MathemeticalExpression::add(std::shared_ptr<RVal> left, st
         auto rightStr = std::dynamic_pointer_cast<StringConst>(right)->getData();
         return RValConstFactory::createStringConstSharedPtr(leftStr + rightStr);
     }
+
+    throw ExceptionFactory::create("cannot perform addition (+) on", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> MathemeticalExpression::subtract(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
@@ -28,6 +31,7 @@ std::shared_ptr<RVal> MathemeticalExpression::subtract(std::shared_ptr<RVal> lef
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createNumberConstSharedPtr(leftNum - rightNum);
     }
+    throw ExceptionFactory::create("cannot perform subtraction (-) on", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> MathemeticalExpression::divide(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
@@ -38,6 +42,7 @@ std::shared_ptr<RVal> MathemeticalExpression::divide(std::shared_ptr<RVal> left,
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createNumberConstSharedPtr(leftNum / rightNum);
     }
+    throw ExceptionFactory::create("cannot perform division (/) on", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> MathemeticalExpression::multiply(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
@@ -48,6 +53,7 @@ std::shared_ptr<RVal> MathemeticalExpression::multiply(std::shared_ptr<RVal> lef
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createNumberConstSharedPtr(leftNum * rightNum);
     }
+    throw ExceptionFactory::create("cannot perform multiplication (*) on", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> MathemeticalExpression::power(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
@@ -58,16 +64,18 @@ std::shared_ptr<RVal> MathemeticalExpression::power(std::shared_ptr<RVal> left, 
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createNumberConstSharedPtr(std::pow(leftNum, rightNum));
     }
+    throw ExceptionFactory::create("cannot perform exponent operation (**) on", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> MathemeticalExpression::modulus(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
     if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
-    {   
+    {
         auto leftNum = static_cast<int>(std::dynamic_pointer_cast<NumberConst>(left)->getData());
         auto rightNum = static_cast<int>(std::dynamic_pointer_cast<NumberConst>(right)->getData());
         return RValConstFactory::createNumberConstSharedPtr(leftNum % rightNum);
     }
+    throw ExceptionFactory::create("cannot perform modulus operation (%) on", left->getTypeString(), "and", right->getTypeString());
 }
 
 //------------------------- unaryOperation --------------------------------
@@ -81,6 +89,7 @@ std::shared_ptr<RVal> MathemeticalExpression::Positive(std::shared_ptr<RVal> chi
         auto numConst = ConversionFunctions::StringToNumber(child);
         return numConst;
     }
+    throw ExceptionFactory::create("cannot perform unary positive on", child->getTypeString());
 }
 
 std::shared_ptr<RVal> MathemeticalExpression::Negative(std::shared_ptr<RVal> child)
@@ -99,6 +108,7 @@ std::shared_ptr<RVal> MathemeticalExpression::Negative(std::shared_ptr<RVal> chi
         numConst->setData(-1 * numConst->getData());
         return numConst;
     }
+    throw ExceptionFactory::create("cannot perform unary negative on", child->getTypeString());
 }
 
 // evaluate functions for unary , binary and ternary operations
@@ -128,6 +138,7 @@ std::shared_ptr<RVal> MathemeticalExpression::evaluate(std::shared_ptr<RVal> lef
         return MathemeticalExpression::power(left, right);
     if (op == Token::Type::MODULUS)
         return MathemeticalExpression::modulus(left, right);
+    throw ExceptionFactory::create("methametical operation not available for ", Token::getTokenTypeString(op));
 }
 
 // // tertiary operator

@@ -1,5 +1,6 @@
 #include <operations/relationalOperation.hpp>
 #include <evaluable/rValueConstFactory.hpp>
+#include <exception/exceptionFactory.hpp>
 
 std::shared_ptr<RVal> RelationalExpression::evaluate(std::shared_ptr<RVal> left, Token::Type op, std::shared_ptr<RVal> right)
 {
@@ -52,50 +53,118 @@ std::shared_ptr<RVal> RelationalExpression::notEqualTo(std::shared_ptr<RVal> lef
     if (left->getType() != right->getType())
         return RValConstFactory::createBooleanConstSharedPtr(true);
 
-    if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
+    if (left->getType() == RVal::Type::NUMBER)
     {
         auto leftNum = std::dynamic_pointer_cast<NumberConst>(left)->getData();
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createBooleanConstSharedPtr(leftNum != rightNum);
     }
+
+    if (left->getType() == RVal::Type::STRING)
+    {
+        auto &leftStr = std::dynamic_pointer_cast<StringConst>(left)->getData();
+        auto &rightStr = std::dynamic_pointer_cast<StringConst>(right)->getData();
+        return RValConstFactory::createBooleanConstSharedPtr(leftStr != rightStr);
+    }
+
+    if (left->getType() == RVal::Type::BOOLEAN)
+    {
+        auto leftBool = std::dynamic_pointer_cast<BooleanConst>(left)->getData();
+        auto rightBool = std::dynamic_pointer_cast<BooleanConst>(right)->getData();
+        return RValConstFactory::createBooleanConstSharedPtr(leftBool != rightBool);
+    }
+
+    return RValConstFactory::createBooleanConstSharedPtr(left != right);
 }
 
 std::shared_ptr<RVal> RelationalExpression::lessThan(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
-    if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
+    auto typeLeft = left->getType(), typeRight = right->getType();
+    if (typeLeft != typeRight)
+        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+
+    if (typeLeft == RVal::Type::NUMBER)
     {
         auto leftNum = std::dynamic_pointer_cast<NumberConst>(left)->getData();
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createBooleanConstSharedPtr(leftNum < rightNum);
     }
+
+    if (typeLeft == RVal::Type::STRING)
+    {
+        auto &leftStr = std::dynamic_pointer_cast<StringConst>(left)->getData();
+        auto &rightStr = std::dynamic_pointer_cast<StringConst>(right)->getData();
+        return RValConstFactory::createBooleanConstSharedPtr(leftStr < rightStr);
+    }
+
+    throw ExceptionFactory::create("can compare (<) ", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> RelationalExpression::lessThanEqualTo(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
-    if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
+    auto typeLeft = left->getType(), typeRight = right->getType();
+    if (typeLeft != typeRight)
+        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+
+    if (typeLeft == RVal::Type::NUMBER)
     {
         auto leftNum = std::dynamic_pointer_cast<NumberConst>(left)->getData();
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createBooleanConstSharedPtr(leftNum <= rightNum);
     }
+
+    if (typeLeft == RVal::Type::STRING)
+    {
+        auto &leftStr = std::dynamic_pointer_cast<StringConst>(left)->getData();
+        auto &rightStr = std::dynamic_pointer_cast<StringConst>(right)->getData();
+        return RValConstFactory::createBooleanConstSharedPtr(leftStr <= rightStr);
+    }
+
+    throw ExceptionFactory::create("can compare (<=", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> RelationalExpression::greaterThan(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
-    if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
+    auto typeLeft = left->getType(), typeRight = right->getType();
+    if (typeLeft != typeRight)
+        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+
+    if (typeLeft == RVal::Type::NUMBER)
     {
         auto leftNum = std::dynamic_pointer_cast<NumberConst>(left)->getData();
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createBooleanConstSharedPtr(leftNum > rightNum);
     }
+
+    if (typeLeft == RVal::Type::STRING)
+    {
+        auto &leftStr = std::dynamic_pointer_cast<StringConst>(left)->getData();
+        auto &rightStr = std::dynamic_pointer_cast<StringConst>(right)->getData();
+        return RValConstFactory::createBooleanConstSharedPtr(leftStr > rightStr);
+    }
+
+    throw ExceptionFactory::create("can compare (>)", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> RelationalExpression::greaterThanEqualTo(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
-    if (left->getType() == RVal::Type::NUMBER && right->getType() == RVal::Type::NUMBER)
+    auto typeLeft = left->getType(), typeRight = right->getType();
+    if (typeLeft != typeRight)
+        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+
+    if (typeLeft == RVal::Type::NUMBER)
     {
         auto leftNum = std::dynamic_pointer_cast<NumberConst>(left)->getData();
         auto rightNum = std::dynamic_pointer_cast<NumberConst>(right)->getData();
         return RValConstFactory::createBooleanConstSharedPtr(leftNum >= rightNum);
     }
+
+    if (typeLeft == RVal::Type::STRING)
+    {
+        auto &leftStr = std::dynamic_pointer_cast<StringConst>(left)->getData();
+        auto &rightStr = std::dynamic_pointer_cast<StringConst>(right)->getData();
+        return RValConstFactory::createBooleanConstSharedPtr(leftStr >= rightStr);
+    }
+
+    throw ExceptionFactory::create("can compare (>=)", left->getTypeString(), "and", right->getTypeString());
 }
