@@ -8,6 +8,7 @@
 #include <runable/ifElse.hpp>
 #include <runable/compoundStatement.hpp>
 #include <runable/expressionStatement.hpp>
+#include<runable/forLoop.hpp>
 
 // grammer
 // program : compoundStatement
@@ -55,6 +56,7 @@ public:
     std::shared_ptr<Evaluable> p11_expression();                                    // whole expression
     std::shared_ptr<VarDecleration> varDecleration();
     std::shared_ptr<IfElse> ifElse();
+    std::shared_ptr<ForLoop> forLoop();
     std::shared_ptr<Statement> statement();
     std::shared_ptr<CompoundStatement> compoundStatement();
     std::shared_ptr<Program> program();

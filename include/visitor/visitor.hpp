@@ -15,6 +15,7 @@
 #include <runable/expressionStatement.hpp>
 #include <runable/ifElse.hpp>
 #include <runable/varDecleration.hpp>
+#include <runable/forLoop.hpp>
 
 class Visitor
 {
@@ -32,5 +33,6 @@ public:
     virtual void visitProgram(Program *) = 0;
     virtual void visitCompoundStatement(CompoundStatement *) = 0;
     virtual void visitExpressionStatement(ExpressionStatement *) = 0;
+    virtual void visitForLoop(ForLoop *) = 0;
     virtual ~Visitor() = default;
 };

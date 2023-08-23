@@ -23,5 +23,6 @@ public:
     void visitProgram(Program *) override;
     void visitCompoundStatement(CompoundStatement*) override;
     void visitExpressionStatement(ExpressionStatement *) override;
+    void visitForLoop(ForLoop*) override;
     void interpret();
 };

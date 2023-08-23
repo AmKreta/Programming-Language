@@ -81,6 +81,8 @@ std::shared_ptr<Statement> Parser::statement()
         return this->varDecleration();
     if (this->currentToken.getTokenType() == Token::Type::IF)
         return this->ifElse();
+    if(this->currentToken.getTokenType() == Token::Type::FOR)
+        return this->forLoop();
     return std::make_shared<ExpressionStatement>(this->p11_expression());
 }
 
