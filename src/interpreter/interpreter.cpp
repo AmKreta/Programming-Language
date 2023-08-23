@@ -78,7 +78,7 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
 std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperation *conditionalOperation)
 {
     auto condition = conditionalOperation->getCondition()->acceptVisitor(this);
-    return condition
+    return ConversionFunctions::RValToBool(condition)
                ? conditionalOperation->get_if()->acceptVisitor(this)
                : conditionalOperation->get_else()->acceptVisitor(this);
 }
