@@ -78,7 +78,7 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
 std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperation *conditionalOperation)
 {
     auto condition = conditionalOperation->getCondition()->acceptVisitor(this);
-    return condition
+    return ConversionFunctions::RValToBool(condition)
                ? conditionalOperation->get_if()->acceptVisitor(this)
                : conditionalOperation->get_else()->acceptVisitor(this);
 }
@@ -128,9 +128,37 @@ void Interpreter::visitIfElse(IfElse *ifElse)
 {
     auto condition = ifElse->getCondition()->acceptVisitor(this);
     if (ConversionFunctions::RValToBool(condition))
+    {
+        // create a new child symbol table
         ifElse->getIfBlock()->acceptVisitor(this);
+        // exit child symbol table
+    }
     else
+    {
+        // create a new child symbol table
         ifElse->getElseBlock()->acceptVisitor(this);
+        // exit child symbol table
+    }
+}
+
+void Interpreter::visitForLoop(ForLoop *forLoop)
+{
+    // create a new child in symbol table
+    forLoop->getInitializations()->acceptVisitor(this);
+    while (ConversionFunctions::RValToBool(forLoop->getCondition()->acceptVisitor(this)))
+    {
+        forLoop->getStatementList()->acceptVisitor(this);
+        forLoop->getUpdates()->acceptVisitor(this);
+    }
+    // exit symbol table
+}
+
+void Interpreter::visitWhileLoop(WhileLoop *whileLoop)
+{
+    // create a new child in symbol table
+    while (ConversionFunctions::RValToBool(whileLoop->getCondition()->acceptVisitor(this)))
+        whileLoop->getCompoundStatement()->acceptVisitor(this);
+    // exit symbol table
 }
 
 void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatement)

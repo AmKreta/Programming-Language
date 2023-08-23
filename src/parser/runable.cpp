@@ -45,7 +45,7 @@ std::shared_ptr<IfElse> Parser::ifElse()
         this->eat(Token::Type::R_BRACES);
     }
     else
-        ifBlockStatements = this->compoundStatement();
+        ifBlockStatements = this->compoundStatement(true);
 
     std::shared_ptr<CompoundStatement> elseBlockStatements;
     if (this->currentToken.getTokenType() == Token::Type::ELSE)
@@ -60,19 +60,12 @@ std::shared_ptr<IfElse> Parser::ifElse()
             this->eat(Token::Type::R_BRACES);
         }
         else
-            elseBlockStatements = this->compoundStatement();
+            elseBlockStatements = this->compoundStatement(true);
     }
 
     return std::make_shared<IfElse>(condition, ifBlockStatements, elseBlockStatements);
 }
 
-// std::shared_ptr<Assignment> Parser::assignmentStatement(){
-//     auto varName = this->currentToken.getTokenValue();
-//     this->eat(Token::Type::ID);
-//     this->eat(Token::Type::ASSIGNMENT);
-//     auto expr = this->p11_expression();
-//     return std::make_shared<Assignment>(std::make_shared<Variable>(varName), expr);
-// }
 
 // statement : if-else | var decl | loop
 std::shared_ptr<Statement> Parser::statement()
@@ -81,21 +74,28 @@ std::shared_ptr<Statement> Parser::statement()
         return this->varDecleration();
     if (this->currentToken.getTokenType() == Token::Type::IF)
         return this->ifElse();
+    if (this->currentToken.getTokenType() == Token::Type::FOR)
+        return this->forLoop();
+    if(this->currentToken.getTokenType() == Token::Type::WHILE)
+        return this->whileLoop();
     return std::make_shared<ExpressionStatement>(this->p11_expression());
 }
 
 // compoundStatement : statement (semicolon statement)* semicolon?
-std::shared_ptr<CompoundStatement> Parser::compoundStatement()
+std::shared_ptr<CompoundStatement> Parser::compoundStatement(bool readOnlyOneStatement)
 {
     std::vector<std::shared_ptr<Statement>> statementList;
     statementList.push_back(this->statement());
-    while (this->currentToken.getTokenType() == Token::Type::SEMI_COLON)
-    {
+    if (readOnlyOneStatement)
         this->eat(Token::Type::SEMI_COLON);
-        // places where statement can end
-        if (!(this->currentToken.getTokenType() == Token::Type::END_OF_FILE || this->currentToken.getTokenType() == Token::Type::R_BRACES || this->currentToken.getTokenType() == Token::Type::ELSE))
-            statementList.push_back(this->statement());
-    }
+    else
+        while (this->currentToken.getTokenType() == Token::Type::SEMI_COLON)
+        {
+            this->eat(Token::Type::SEMI_COLON);
+            // places where statement can end
+            if (!(this->currentToken.getTokenType() == Token::Type::END_OF_FILE || this->currentToken.getTokenType() == Token::Type::R_BRACES || this->currentToken.getTokenType() == Token::Type::ELSE))
+                statementList.push_back(this->statement());
+        }
     return std::make_shared<CompoundStatement>(statementList);
 }
 
