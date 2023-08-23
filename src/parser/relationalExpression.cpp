@@ -5,7 +5,7 @@
 std::shared_ptr<Evaluable> Parser::p5_relational_gt_lt_expression()
 {
     auto res = this->P4_bitwise_shiftExpression();
-    while (operatorTypes::relationalComparisionOperators.find(this->currentToken.getTokenType()) != operatorTypes::relationalComparisionOperators.end())
+    if (operatorTypes::relationalComparisionOperators.find(this->currentToken.getTokenType()) != operatorTypes::relationalComparisionOperators.end())
     {
         auto tokenType = this->currentToken.getTokenType();
         this->eat(tokenType);
@@ -17,7 +17,7 @@ std::shared_ptr<Evaluable> Parser::p5_relational_gt_lt_expression()
 std::shared_ptr<Evaluable> Parser::p6_relational_equality_expression()
 {
     auto res = this->p5_relational_gt_lt_expression();
-    while (operatorTypes::relationalEqualityCheckOperators.find(this->currentToken.getTokenType()) != operatorTypes::relationalEqualityCheckOperators.end())
+    if (operatorTypes::relationalEqualityCheckOperators.find(this->currentToken.getTokenType()) != operatorTypes::relationalEqualityCheckOperators.end())
     {
         auto tokenType = this->currentToken.getTokenType();
         this->eat(tokenType);

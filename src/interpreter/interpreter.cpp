@@ -6,8 +6,9 @@
 #include <operations/logicalOperation.hpp>
 #include <operations/relationalOperation.hpp>
 #include <operations/bitwiseOperation.hpp>
+#include <operations/assignmentOperation.hpp>
 #include <modules/console.hpp>
-#include <rval/rVal.hpp>
+#include <rVal/rVal.hpp>
 #include <utility/conversionFunctions.hpp>
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
@@ -49,9 +50,14 @@ std::shared_ptr<RVal> Interpreter::visitUnaryOperation(UnaryOperation *unaryOper
 
 std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
 {
+    auto op = binaryOperation->getOperation();
+
+    if (op == Token::Type::ASSIGNMENT)
+        return AssignmentOperation::evaluate(this, binaryOperation->getLeftChild(), binaryOperation->getRightChild(), globalScope);
+
     auto left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : nullptr;
     auto right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : nullptr;
-    auto op = binaryOperation->getOperation();
+
     if (operatorTypes::mathemeticalOperators.find(op) != operatorTypes::mathemeticalOperators.end())
         return MathemeticalExpression::evaluate(left, op, right);
 
@@ -67,24 +73,6 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
         return BitwiseOperation::evaluate(left, op, right);
     if (operatorTypes::bitwiseShiftOperators.find(op) != operatorTypes::bitwiseShiftOperators.end())
         return BitwiseOperation::evaluate(left, op, right);
-
-    if (op == Token::Type::ASSIGNMENT)
-    {
-        auto leftVar = binaryOperation->getLeftChild();
-        auto rightExpr = binaryOperation->getRightChild();
-        auto var = std::dynamic_pointer_cast<Variable>(leftVar);
-        if (var)
-            if (globalScope.find(var->getVarName()) != globalScope.end())
-            {
-                auto rVal = rightExpr->acceptVisitor(this);
-                globalScope[var->getVarName()] = rVal;
-                return rVal;
-            }
-            else
-                throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
-        else
-            throw ExceptionFactory::create("lhs should be a variable");
-    }
 }
 
 std::shared_ptr<RVal> Interpreter::visitConditionalOperation(ConditionalOperation *conditionalOperation)
@@ -101,19 +89,28 @@ std::shared_ptr<RVal> Interpreter::visitIndexing(Indexing *indexing)
     auto index = indexing->getIndex()->acceptVisitor(this);
     if (val->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
     {
-        auto arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
+        auto &arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
         auto num = std::dynamic_pointer_cast<NumberConst>(index)->getData();
         return arr[static_cast<int>(num)]; // because no. can be double too
     }
     if (val->getType() == RVal::Type::MAP)
     {
-        auto map = std::dynamic_pointer_cast<MapConst>(val)->getData();
+        auto &map = std::dynamic_pointer_cast<MapConst>(val)->getData();
         auto res = map.find(index);
         if (res != map.end())
             return res->second;
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
     throw ExceptionFactory::create("can't use indexing operator on", RVal::getTypeString(val->getType()));
+}
+
+std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
+{
+    auto name = variable->getVarName();
+    auto var = globalScope.find(name);
+    if (var != globalScope.end())
+        return var->second;
+    throw ExceptionFactory::create("Variable", name, "is not defined");
 }
 
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
@@ -127,42 +124,33 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
     }
 }
 
-std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
-{
-    auto name = variable->getVarName();
-    auto var = globalScope.find(name);
-    if (var != globalScope.end())
-        return var->second;
-    throw ExceptionFactory::create("Variable", name, "is not defined");
-}
-
 void Interpreter::visitIfElse(IfElse *ifElse)
 {
     auto condition = ifElse->getCondition()->acceptVisitor(this);
     if (ConversionFunctions::RValToBool(condition))
-        for (auto statement : ifElse->getIfBlock())
-            statement->acceptVisitor(this);
+        ifElse->getIfBlock()->acceptVisitor(this);
     else
-        for (auto statement : ifElse->getElseBlock())
-            statement->acceptVisitor(this);
+        ifElse->getElseBlock()->acceptVisitor(this);
+}
+
+void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatement)
+{
+    auto expr = expressionStatement->getExpression();
+    expr->acceptVisitor(this);
+}
+
+void Interpreter::visitCompoundStatement(CompoundStatement *compoundStatement)
+{
+    auto statementList = compoundStatement->getStatementList();
+    for (auto statement : statementList)
+        statement->acceptVisitor(this);
 }
 
 void Interpreter::visitProgram(Program *program)
 {
     // just traverse all the statements
-    auto statementList = program->getStatementList();
-    for (auto statement : statementList)
-        statement->acceptVisitor(this);
-}
-
-void Interpreter::visitAssignment(Assignment *assignment)
-{
-    auto var = assignment->getVar();
-    auto expr = assignment->getExpr();
-    if (globalScope.find(var->getVarName()) != globalScope.end())
-        globalScope[var->getVarName()] = expr->acceptVisitor(this);
-    else
-        throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
+    auto compoundStatement = program->getCompoundStatement();
+    compoundStatement->acceptVisitor(this);
 }
 
 void Interpreter::interpret()

@@ -26,22 +26,23 @@ void printTokens(std::string input)
 int main()
 {
     // run one at a time
-    // run(let a = "'Hello' + ' ' + 'world';");
-    // run("let a = (5 ** ( 2 + 1 ) ) / ( 200 - 25 * 3 );");
-    // run("let a = +\"123\";");
+    // run("'Hello' + ' ' + 'world';");
+    // run("(5 ** ( 2 + 1 ) ) / ( 200 - 25 * 3 );");
+    // run("+\"123\";");
     // run("let a= -'123';");
-    // run("let a = [1+2, 2**10, 3, \"Hello world\", [4], [5, 6, 'I am AMK']];");
-    // run("let a = {'a':1, 2:3, [1]:'hello'};");
-    // run("let a = true || false;");
-    // run("let a = false || false;");
-    // run("let a = !(8 >= 5 + 3);");
-    // run("let a = !(8 > 5 + 3);");
-    // run("let a = 2 | 3;");
-    // run("let a = 2 << 3 + 5;");
-    // run("let a = 5 == 2 + 3 ? true ? 'this is true' : 'this is false' : false;");
+    // run("[1+2, 2**10, 3, \"Hello world\", [4], [5, 6, 'I am AMK']];");
+    // run("{'a':1, 2:3, [1]:'hello'};");
+    // run("true || false;");
+    // run("false || false;");
+    // run("!(8 >= 5 + 3);");
+    // run("!(8 > 5 + 3);");
+    // run("2 | 3;");
+    // run("2 << 3 + 5;");
+    // run("5 == 2 + 3 ? true ? 'this is true' : 'this is false' : false;");
     // run("if(true){ let a = 5; } else { let b = 10; }");
-    // run("if(false){ let a = 5; } else { let b = 10; }");
-    run("let a = [1, 2.4, 'hello'], b = { a : 'this is object a'}, c = b[a];");
+    //run("if(false){ let a = 5; } else { let b = 10; }");
+    run("let a = 10;\nlet message = a % 2 != 1\n  ? ['the no. is even']\n  : {'res' : 'the no. is odd'};\nlet c;\nif (message[0] == 'the no. is even')\n  c = message[0];\nelse\n  c = message['res']; " );
+    //run("let a = ['Amk']; let b = a[0] == 'Amk';");
     std::cout << std::endl;
     return 0;
 }

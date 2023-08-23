@@ -6,6 +6,7 @@
 #include <evaluable/rValConst.hpp>
 #include <evaluable/variable.hpp>
 #include <evaluable/indexing.hpp>
+#include<exception/exceptionFactory.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor()
 {
@@ -192,6 +193,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         return std::make_shared<Variable>(name);
     }
 
+    throw ExceptionFactory::create("misplaced or unsupported token", this->currentToken.getTokenTypeString(), this->currentToken.getTokenValue());
     // remaining
     //  ',' , ++, --,
 }

@@ -1,14 +1,14 @@
 #pragma once
 
-#include<runable/statement.hpp>
+#include<runable/compoundStatement.hpp>
 #include<runable/runable.hpp>
 #include<vector>
 
 class Program : public Runable{
     private:
-        std::vector<std::shared_ptr<Statement>> statement_list;
+        std::shared_ptr<CompoundStatement> compoundStatement;
     public:
-        Program(std::vector<std::shared_ptr<Statement>>);
-        std::vector<std::shared_ptr<Statement>> getStatementList();
+        Program(std::shared_ptr<CompoundStatement>);
+        std::shared_ptr<CompoundStatement> getCompoundStatement();
         void acceptVisitor(Visitor*) override;
 };

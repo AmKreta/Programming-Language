@@ -11,6 +11,7 @@ public:
         Token::Type::MINUS,
         Token::Type::MULTIPLY,
         Token::Type::DIVIDE,
+        Token::Type::MODULUS,
         Token::Type::POWER, // also add pre-post increment-decrement
     };
 
