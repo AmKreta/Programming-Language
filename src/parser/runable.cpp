@@ -96,7 +96,6 @@ std::shared_ptr<CompoundStatement> Parser::compoundStatement()
         if (!(this->currentToken.getTokenType() == Token::Type::END_OF_FILE || this->currentToken.getTokenType() == Token::Type::R_BRACES || this->currentToken.getTokenType() == Token::Type::ELSE))
             statementList.push_back(this->statement());
     }
-
     return std::make_shared<CompoundStatement>(statementList);
 }
 

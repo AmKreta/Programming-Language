@@ -4,7 +4,7 @@
 std::shared_ptr<Evaluable> Parser::P2_mathemetical_multiplicativeExpression()
 {
     std::shared_ptr<Evaluable> res = this->P1_factor();
-    while (this->currentToken.getTokenType() == Token::Type::MULTIPLY || this->currentToken.getTokenType() == Token::Type::DIVIDE || this->currentToken.getTokenType() == Token::Type::POWER)
+    while (this->currentToken.getTokenType() == Token::Type::MULTIPLY || this->currentToken.getTokenType() == Token::Type::DIVIDE || this->currentToken.getTokenType() == Token::Type::POWER || this->currentToken.getTokenType() == Token::Type::MODULUS)
     {
         auto type = this->currentToken.getTokenType();
         this->eat(type);

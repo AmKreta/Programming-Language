@@ -8,7 +8,7 @@
 #include <operations/bitwiseOperation.hpp>
 #include <operations/assignmentOperation.hpp>
 #include <modules/console.hpp>
-#include <rval/rVal.hpp>
+#include <rVal/rVal.hpp>
 #include <utility/conversionFunctions.hpp>
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
@@ -89,13 +89,13 @@ std::shared_ptr<RVal> Interpreter::visitIndexing(Indexing *indexing)
     auto index = indexing->getIndex()->acceptVisitor(this);
     if (val->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
     {
-        auto arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
+        auto &arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
         auto num = std::dynamic_pointer_cast<NumberConst>(index)->getData();
         return arr[static_cast<int>(num)]; // because no. can be double too
     }
     if (val->getType() == RVal::Type::MAP)
     {
-        auto map = std::dynamic_pointer_cast<MapConst>(val)->getData();
+        auto &map = std::dynamic_pointer_cast<MapConst>(val)->getData();
         auto res = map.find(index);
         if (res != map.end())
             return res->second;
