@@ -153,6 +153,14 @@ void Interpreter::visitForLoop(ForLoop *forLoop)
     // exit symbol table
 }
 
+void Interpreter::visitWhileLoop(WhileLoop *whileLoop)
+{
+    // create a new child in symbol table
+    while (ConversionFunctions::RValToBool(whileLoop->getCondition()->acceptVisitor(this)))
+        whileLoop->getCompoundStatement()->acceptVisitor(this);
+    // exit symbol table
+}
+
 void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatement)
 {
     auto expr = expressionStatement->getExpression();

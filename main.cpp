@@ -43,7 +43,8 @@ int main()
     //run("if(false){ let a = 5; } else { let b = 10; }");
     //run("let a = 11;\n\nlet message = a % 2 == 0\n  ? ['the no. is even']\n  : {'res' : 'the no. is odd'};\n\nlet c;\nif (message[0] == 'the no. is even')\n  c = message[0];\nelse\n  c = message['res']; " );
     //run("let a = ['Amk']; let b = a[0] == 'Amk';");
-    run("let i=0; \nfor(let j = 1; j <= 4; j = j+1 ){\n  i = i*10 + j;\n}");
+    //run("let i=0;\nlet j=1;\nfor(; j <= 4; j = j+1 ){\n  i = i*10 + j;\n}");
+    run("let i=0;\nwhile(i<4){\n  i = i+1;\n}");
     std::cout << std::endl;
     return 0;
 }

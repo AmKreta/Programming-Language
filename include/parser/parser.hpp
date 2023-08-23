@@ -8,7 +8,8 @@
 #include <runable/ifElse.hpp>
 #include <runable/compoundStatement.hpp>
 #include <runable/expressionStatement.hpp>
-#include<runable/forLoop.hpp>
+#include <runable/forLoop.hpp>
+#include <runable/whileLoop.hpp>
 
 // grammer
 // program : compoundStatement
@@ -57,8 +58,9 @@ public:
     std::shared_ptr<VarDecleration> varDecleration();
     std::shared_ptr<IfElse> ifElse();
     std::shared_ptr<ForLoop> forLoop();
+    std::shared_ptr<WhileLoop> whileLoop();
     std::shared_ptr<Statement> statement();
-    std::shared_ptr<CompoundStatement> compoundStatement();
+    std::shared_ptr<CompoundStatement> compoundStatement(bool readOnlyOneStatement = false);
     std::shared_ptr<Program> program();
     std::shared_ptr<Program> parse();
 };

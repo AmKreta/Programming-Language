@@ -1,5 +1,6 @@
 #include <parser/parser.hpp>
 #include <runable/expressionStatement.hpp>
+#include <evaluable/rValueConstFactory.hpp>
 
 std::shared_ptr<ForLoop> Parser::forLoop()
 {
@@ -22,7 +23,9 @@ std::shared_ptr<ForLoop> Parser::forLoop()
     this->eat(Token::Type::SEMI_COLON);
 
     // condition can be empty also
-    std::__1::shared_ptr<Evaluable> condition;
+    // if no condition, treat it as true
+    std::__1::shared_ptr<Evaluable> condition = RValConstFactory::createBooleanConstSharedPtr(true);
+    ;
     if (this->currentToken.getTokenType() != Token::Type::SEMI_COLON)
         condition = this->p11_expression();
     this->eat(Token::Type::SEMI_COLON);
@@ -47,7 +50,7 @@ std::shared_ptr<ForLoop> Parser::forLoop()
         this->eat(Token::Type::R_BRACES);
     }
     else
-        loopStatements = this->compoundStatement();
+        loopStatements = this->compoundStatement(true);
 
     auto initialization = std::make_shared<CompoundStatement>(initializationStatement);
     auto updation = std::make_shared<CompoundStatement>(updateStatement);
