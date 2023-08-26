@@ -11,6 +11,7 @@ void run(std::string input)
     Parser parser{lexer};
     SymbolTableBuilder stb{parser};
     auto st = stb.build();
+    //st->print();
     CallStack callStack{st};
     Interpreter interpreter{parser, callStack};
     std::cout << std::endl

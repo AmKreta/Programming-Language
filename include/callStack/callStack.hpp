@@ -12,6 +12,6 @@ public:
     CallStack(std::shared_ptr<SymbolTable>);
     void pushScope();
     void popScope();                         // on pop increment currentSymbolTableChild
-    void skipCurrentSymbokTableChildIndex(); // in case of if-else only one of the scope is executed
+    void skipScope(); // in case of if-else only one of the scope is executed
     void incrementChildIndex();
 };

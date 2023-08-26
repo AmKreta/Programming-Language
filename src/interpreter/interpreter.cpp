@@ -120,6 +120,7 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
     {
         // put this in symbol table
         auto val = rVal->acceptVisitor(this);
+
         globalScope.insert(std::pair(name, val));
     }
 }
@@ -129,36 +130,40 @@ void Interpreter::visitIfElse(IfElse *ifElse)
     auto condition = ifElse->getCondition()->acceptVisitor(this);
     if (ConversionFunctions::RValToBool(condition))
     {
-        // create a new child symbol table
+        //std::cout<<"if ran ";
+        this->callStack.pushScope();
         ifElse->getIfBlock()->acceptVisitor(this);
-        // exit child symbol table
+        this->callStack.popScope();
+        this->callStack.skipScope(); // skipping one symbol tree
     }
     else
     {
-        // create a new child symbol table
+        //std::cout << "else ran ";
+        this->callStack.skipScope();
+        this->callStack.pushScope();
         ifElse->getElseBlock()->acceptVisitor(this);
-        // exit child symbol table
+        this->callStack.popScope();
     }
 }
 
 void Interpreter::visitForLoop(ForLoop *forLoop)
 {
-    // create a new child in symbol table
+    this->callStack.pushScope();
     forLoop->getInitializations()->acceptVisitor(this);
     while (ConversionFunctions::RValToBool(forLoop->getCondition()->acceptVisitor(this)))
     {
         forLoop->getStatementList()->acceptVisitor(this);
         forLoop->getUpdates()->acceptVisitor(this);
     }
-    // exit symbol table
+    this->callStack.popScope();
 }
 
 void Interpreter::visitWhileLoop(WhileLoop *whileLoop)
 {
-    // create a new child in symbol table
+    this->callStack.pushScope();
     while (ConversionFunctions::RValToBool(whileLoop->getCondition()->acceptVisitor(this)))
         whileLoop->getCompoundStatement()->acceptVisitor(this);
-    // exit symbol table
+    this->callStack.popScope();
 }
 
 void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatement)
