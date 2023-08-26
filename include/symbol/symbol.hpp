@@ -3,24 +3,23 @@
 #include <string>
 #include <vector>
 
+// basically store all defined vars, classes, functions here
 class Symbol
 {
 public:
     enum class Type : int
     {
-        VARIABLE = 0,
-        CLASS,
-        FUNCTION,
+        FUNCTION = 0,
+        VARIABLE,
+        CLASS
     };
-
-private:
+    int scopeLevel;
     Symbol::Type type;
-
 public:
-    Symbol(Symbol::Type);
-    static std::vector<std::string> typeString;
-    static std::string getTokenTypeString(Symbol::Type);
-    std::string getTokenTypeString();
-    virtual std::string toString();
-    ~Symbol() = default;
+    Symbol(Symbol::Type, int);
+    int getScopeLevel();
+    void setScopeLevel(int);
+    Symbol::Type getType();
+    virtual std::string toString() = 0;
+    virtual ~Symbol() = default;
 };

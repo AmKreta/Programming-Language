@@ -1,15 +1,19 @@
 #pragma once
 
 #include <symbol/symbol.hpp>
+#include <rVal/rVal.hpp>
 
 class VarSymbol : public Symbol
 {
 private:
-    std::string instanceOf;
+    std::shared_ptr<RVal> value;
+    bool isInTemploralDeadzone; // set true in execution phase, when decleared
 public:
-    static std::string inTemporalDeadzone;
-    VarSymbol(Symbol::Type, std::string);
-    void setInstanceOf(std::string);
+    VarSymbol(std::string, int);
+    std::shared_ptr<RVal> getValue();
+    void setValue(std::shared_ptr<RVal>);
     std::string getInstanceOf();
-    std::string toString();
+    bool getIsInTemporalDeadZone();
+    void setIsInTemporalDeadZone(bool);
+    std::string toString() override;
 };
