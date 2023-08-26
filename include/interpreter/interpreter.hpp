@@ -2,14 +2,16 @@
 
 #include <visitor/visitor.hpp>
 #include <parser/parser.hpp>
+#include <callStack/callStack.hpp>
 
 class Interpreter : public Visitor
 {
 private:
     Parser parser;
+    CallStack callStack;
 
 public:
-    Interpreter(Parser);
+    Interpreter(Parser, CallStack);
     std::shared_ptr<RVal> visitRValConst(RVal *) override;
     std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) override;
     std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) override;
@@ -21,9 +23,9 @@ public:
     void visitVarDecleration(VarDecleration *) override;
     void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;
-    void visitCompoundStatement(CompoundStatement*) override;
+    void visitCompoundStatement(CompoundStatement *) override;
     void visitExpressionStatement(ExpressionStatement *) override;
-    void visitForLoop(ForLoop*) override;
-    void visitWhileLoop(WhileLoop*) override;
+    void visitForLoop(ForLoop *) override;
+    void visitWhileLoop(WhileLoop *) override;
     void interpret();
 };

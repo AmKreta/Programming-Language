@@ -13,7 +13,7 @@
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
-Interpreter::Interpreter(Parser parser) : parser(parser) {}
+Interpreter::Interpreter(Parser parser, CallStack callStack) : parser(parser), callStack(callStack) {}
 
 std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 {
@@ -185,7 +185,6 @@ void Interpreter::interpret()
 {
     auto eval = this->parser.parse();
     eval->acceptVisitor(this);
-    // Console::log(res);
     std::cout << std::endl
               << "\ncontent of symbol table\n"
               << std::endl;
