@@ -17,30 +17,6 @@ std::shared_ptr<RVal> AssignmentOperation::evaluate(Visitor *visitor, std::share
     {
         auto val = indexing->getVal();
         auto index = indexing->getIndex()->acceptVisitor(visitor);
-        auto var = std::dynamic_pointer_cast<Variable>(val);
-        if (var)
-        {
-            auto rVal = activationRecord->getVar(var->getVarName());
-            if (rVal->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
-            {
-
-                auto &arr = std::dynamic_pointer_cast<ArrayConst>(rVal)->getData();
-                auto idx = std::dynamic_pointer_cast<NumberConst>(index)->getData();
-                arr[idx] = res;
-                activationRecord->setVar(var->getVarName(), rVal);
-                return res;
-            }
-            if (rVal->getType() == RVal::Type::MAP)
-            {
-                auto &map = std::dynamic_pointer_cast<MapConst>(rVal)->getData();
-                map[index] = res;
-                activationRecord->setVar(var->getVarName(), rVal);
-                return res;
-            }
-            activationRecord->setVar(var->getVarName(), res);
-            return res;
-        }
-
         auto rVal = val->acceptVisitor(visitor);
         if (rVal->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
         {
