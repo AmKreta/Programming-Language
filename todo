@@ -4,6 +4,6 @@ create a parser that can parse +,-,/,*, variable, assignment, number, string, ar
 ✅ create an interpreter that extends visitor for interpreting the program
 - add ability to parse var decleration, function decleration, function call, var resolution, if-else, loops
 - create do while loop
-- create tree of symbolTable
-- 
+✅ create tree of symbolTable
+- fix compound statement not reading more than one if-esle, loop
 
