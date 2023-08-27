@@ -34,7 +34,7 @@ void CallStack::incrementChildIndex()
 {
     auto scope = this->scopes[this->scopes.size() - 1];
     auto corospondingST = scope->getCorospondingSymbolTable();
-    auto siblings =  corospondingST->getChildren(); // siblings of corosponding symbol table
+    auto siblings = corospondingST->getChildren(); // siblings of corosponding symbol table
 
     if (this->childIndex + 1 < siblings.size())
         // yet to visit all sibling
@@ -43,4 +43,14 @@ void CallStack::incrementChildIndex()
     else
         // ie all sibling scope has been covered
         this->childIndex = 0;
+}
+
+std::shared_ptr<Scope> CallStack::getActivationRecord()
+{
+    return this->scopes[this->scopes.size() - 1];
+}
+
+std::shared_ptr<Scope> CallStack::getGlobalScope()
+{
+    return this->scopes[0];
 }

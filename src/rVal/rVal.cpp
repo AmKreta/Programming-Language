@@ -7,7 +7,10 @@ std::vector<std::string> RVal::TypeStr = {
     "MAP",
     "SET",
     "OBJECT",
-    "FUNCTION"};
+    "FUNCTION",
+    "BOOLEAN",
+    "Null", // null,
+    "UNDEFINED"};
 
 RVal::RVal(RVal::Type type) : type(type){};
 

@@ -1,38 +1,57 @@
 #include <operations/assignmentOperation.hpp>
-#include<exception/exceptionFactory.hpp>
+#include <exception/exceptionFactory.hpp>
 
-std::shared_ptr<RVal> AssignmentOperation::evaluate(Visitor *visitor, std::shared_ptr<Evaluable> lhs, std::shared_ptr<Evaluable> rhs, std::unordered_map<std::string, std::shared_ptr<RVal>>& globalScope)
+std::shared_ptr<RVal> AssignmentOperation::evaluate(Visitor *visitor, std::shared_ptr<Evaluable> lhs, std::shared_ptr<Evaluable> rhs, std::shared_ptr<Scope> activationRecord)
 {
     auto res = rhs->acceptVisitor(visitor);
 
     auto var = std::dynamic_pointer_cast<Variable>(lhs);
     if (var)
     {
-        if (globalScope.find(var->getVarName()) != globalScope.end())
-        {
-            auto rVal = res;
-            globalScope[var->getVarName()] = rVal;
-            return rVal;
-        }
-        else
-            throw ExceptionFactory::create("variable", var->getVarName(), "is not defined");
+        activationRecord->setVar(var->getVarName(), res);
+        return res;
     }
-    
+
     auto indexing = std::dynamic_pointer_cast<Indexing>(lhs);
     if (indexing)
     {
-        auto val = indexing->getVal()->acceptVisitor(visitor);
+        auto val = indexing->getVal();
         auto index = indexing->getIndex()->acceptVisitor(visitor);
-        if (val->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
+        auto var = std::dynamic_pointer_cast<Variable>(val);
+        if (var)
+        {
+            auto rVal = activationRecord->getVar(var->getVarName());
+            if (rVal->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
+            {
+
+                auto &arr = std::dynamic_pointer_cast<ArrayConst>(rVal)->getData();
+                auto idx = std::dynamic_pointer_cast<NumberConst>(index)->getData();
+                arr[idx] = res;
+                activationRecord->setVar(var->getVarName(), rVal);
+                return res;
+            }
+            if (rVal->getType() == RVal::Type::MAP)
+            {
+                auto &map = std::dynamic_pointer_cast<MapConst>(rVal)->getData();
+                map[index] = res;
+                activationRecord->setVar(var->getVarName(), rVal);
+                return res;
+            }
+            activationRecord->setVar(var->getVarName(), res);
+            return res;
+        }
+
+        auto rVal = val->acceptVisitor(visitor);
+        if (rVal->getType() == RVal::Type::ARRAY && index->getType() == RVal::Type::NUMBER)
         {
 
-            auto &arr = std::dynamic_pointer_cast<ArrayConst>(val)->getData();
+            auto &arr = std::dynamic_pointer_cast<ArrayConst>(rVal)->getData();
             auto idx = std::dynamic_pointer_cast<NumberConst>(index)->getData();
             return arr[idx] = res;
         }
-        if (val->getType() == RVal::Type::MAP)
+        if (rVal->getType() == RVal::Type::MAP)
         {
-            auto &map = std::dynamic_pointer_cast<MapConst>(val)->getData();
+            auto &map = std::dynamic_pointer_cast<MapConst>(rVal)->getData();
             return map[index] = res;
         }
     }

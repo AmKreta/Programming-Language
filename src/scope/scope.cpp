@@ -10,10 +10,12 @@ std::shared_ptr<RVal> Scope::getVar(std::string name)
     return res->getValue();
 }
 
-void Scope::addVar(std::string name)
+void Scope::addVar(std::string name,  std::shared_ptr<RVal> value)
 {
     // call this on var decleration
-    this->corospondingSymbolTable->getVarSymbol(name)->setIsInTemporalDeadZone(false);
+    auto val = this->corospondingSymbolTable->getVarSymbol(name);
+    val->setIsInTemporalDeadZone(false);
+    val->setValue(value);
 }
 
 void Scope::setVar(std::string name, std::shared_ptr<RVal> value)

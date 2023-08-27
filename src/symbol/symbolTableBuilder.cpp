@@ -1,5 +1,6 @@
 #include <symbol/symbolTableBuilder.hpp>
 #include <symbol/varSymbol.hpp>
+#include <modules/console.hpp>
 
 SymbolTableBuilder::SymbolTableBuilder(Parser parser) : parser(parser), rootSymbolTable(nullptr), currentSymbolTable(nullptr) {}
 
@@ -74,7 +75,7 @@ void SymbolTableBuilder::visitVarDecleration(VarDecleration *varDecleration)
     auto declerations = varDecleration->getDeclerations();
     for (auto &[name, rVal] : declerations)
     {
-        auto symbol = std::make_shared<VarSymbol>("instanceOf", this->currentSymbolTable->getScopeLevel());
+        auto symbol = std::make_shared<VarSymbol>(this->currentSymbolTable->getScopeLevel());
         this->currentSymbolTable->addVarSymbol(name, symbol);
     }
 }

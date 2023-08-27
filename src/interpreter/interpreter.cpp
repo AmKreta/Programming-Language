@@ -53,7 +53,7 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
     auto op = binaryOperation->getOperation();
 
     if (op == Token::Type::ASSIGNMENT)
-        return AssignmentOperation::evaluate(this, binaryOperation->getLeftChild(), binaryOperation->getRightChild(), globalScope);
+        return AssignmentOperation::evaluate(this, binaryOperation->getLeftChild(), binaryOperation->getRightChild(), this->callStack.getActivationRecord());
 
     auto left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : nullptr;
     auto right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : nullptr;
@@ -107,21 +107,21 @@ std::shared_ptr<RVal> Interpreter::visitIndexing(Indexing *indexing)
 std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
 {
     auto name = variable->getVarName();
-    auto var = globalScope.find(name);
-    if (var != globalScope.end())
-        return var->second;
-    throw ExceptionFactory::create("Variable", name, "is not defined");
+    auto activationRecord = this->callStack.getActivationRecord();
+    auto res = activationRecord->getVar(name);
+    return res;
+    //throw ExceptionFactory::create("Variable", name, "is not defined");
 }
 
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
 {
     auto declerations = varDecleration->getDeclerations();
+    auto activationRecord = this->callStack.getActivationRecord();
     for (auto &[name, rVal] : declerations)
     {
         // put this in symbol table
         auto val = rVal->acceptVisitor(this);
-
-        globalScope.insert(std::pair(name, val));
+        activationRecord->addVar(name, val);
     }
 }
 
@@ -193,10 +193,5 @@ void Interpreter::interpret()
     std::cout << std::endl
               << "\ncontent of symbol table\n"
               << std::endl;
-    for (auto &[key, val] : globalScope)
-    {
-        std::cout << key << " ----> ";
-        Console::log(val);
-        std::cout << std::endl;
-    }
+    this->callStack.getGlobalScope()->getCorospondingSymbolTable()->print();
 }
