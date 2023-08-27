@@ -6,7 +6,7 @@
 #include <evaluable/rValConst.hpp>
 #include <evaluable/variable.hpp>
 #include <evaluable/indexing.hpp>
-#include<exception/exceptionFactory.hpp>
+#include <exception/exceptionFactory.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor()
 {
@@ -115,13 +115,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         }
         this->eat(Token::Type::R_BRACKET);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-        {
-            // might be indexing
-            this->eat(Token::Type::L_BRACKET);
-            auto index = this->p11_expression();
-            this->eat(Token::Type::R_BRACKET);
-            return std::make_shared<Indexing>(std::make_shared<ArrayAst>(arrAst), index);
-        }
+            return this->indexing(std::make_shared<ArrayAst>(arrAst));
         return std::make_shared<ArrayAst>(arrAst);
     }
 
@@ -153,13 +147,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         }
         this->eat(Token::Type::R_BRACES);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-        {
-            // might be indexing
-            this->eat(Token::Type::L_BRACKET);
-            auto index = this->p11_expression();
-            this->eat(Token::Type::R_BRACKET);
-            return std::make_shared<Indexing>(std::make_shared<MapAst>(mapAst), index);
-        }
+            return this->indexing(std::make_shared<MapAst>(mapAst));
         return std::make_shared<MapAst>(mapAst);
     }
 
@@ -182,18 +170,28 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
     {
         auto name = this->currentToken.getTokenValue();
         this->eat(Token::Type::ID);
+        auto var = std::make_shared<Variable>(name);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-        {
-            // might be indexing
-            this->eat(Token::Type::L_BRACKET);
-            auto index = this->p11_expression();
-            this->eat(Token::Type::R_BRACKET);
-            return std::make_shared<Indexing>(std::make_shared<Variable>(name), index);
-        }
-        return std::make_shared<Variable>(name);
+            return this->indexing(var);
+        return var;
     }
 
     throw ExceptionFactory::create("misplaced or unsupported token", this->currentToken.getTokenTypeString(), this->currentToken.getTokenValue());
     // remaining
     //  ',' , ++, --,
+}
+
+std::shared_ptr<Indexing> Parser::indexing(std::shared_ptr<Evaluable> expr)
+{
+
+    this->eat(Token::Type::L_BRACKET);
+    auto indexing = std::make_shared<Indexing>(expr, this->p11_expression());
+    this->eat(Token::Type::R_BRACKET);
+    while (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
+    {
+        this->eat(Token::Type::L_BRACKET);
+        indexing = std::make_shared<Indexing>(indexing, this->p11_expression());
+        this->eat(Token::Type::R_BRACKET);
+    }
+    return indexing;
 }

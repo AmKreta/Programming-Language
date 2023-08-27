@@ -2,6 +2,7 @@
 
 #include <lexer/lexer.hpp>
 #include <evaluable/evaluable.hpp>
+#include <evaluable/indexing.hpp>
 #include <runable/varDecleration.hpp>
 #include <runable/statement.hpp>
 #include <runable/program.hpp>
@@ -44,6 +45,7 @@ private:
 
 public:
     Parser(Lexer);
+    std::shared_ptr<Indexing> indexing(std::shared_ptr<Evaluable>);
     std::shared_ptr<Evaluable> P1_factor();                                         // +i, -i, ++i, --i, i++, i--, fn(), !i, rVal etc , logical not, bitwise not
     std::shared_ptr<Evaluable> P2_mathemetical_multiplicativeExpression();          //*,**,/,%
     std::shared_ptr<Evaluable> P3_mathemetical_addativeExpression();                //, +,-
