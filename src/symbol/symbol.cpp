@@ -1,26 +1,19 @@
 #include <symbol/symbol.hpp>
 #include <sstream>
 
-Symbol::Symbol(Symbol::Type type) : type(type) {}
+Symbol::Symbol(Symbol::Type type, int scopeLevel) : scopeLevel(scopeLevel), type(type) {}
 
-std::vector<std::string> Symbol::typeString = {
-    "VARIABLE",
-    "CLASS",
-    "FUNCTION"};
-
-std::string Symbol::getTokenTypeString(Symbol::Type type)
+int Symbol::getScopeLevel()
 {
-    return Symbol::typeString[static_cast<int>(type)];
+    return this->scopeLevel;
 }
 
-std::string Symbol::getTokenTypeString()
+void Symbol::setScopeLevel(int scopeLevel)
 {
-    return Symbol::typeString[static_cast<int>(this->type)];
+    this->scopeLevel = scopeLevel;
 }
 
-std::string Symbol::toString()
+Symbol::Type Symbol::getType()
 {
-    std::ostringstream oss;
-    oss << "Symbol ------> "<<this->getTokenTypeString();
-    return oss.str();
+    return this->type;
 }

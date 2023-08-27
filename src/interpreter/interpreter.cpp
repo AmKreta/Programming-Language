@@ -13,7 +13,7 @@
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
-Interpreter::Interpreter(Parser parser) : parser(parser) {}
+Interpreter::Interpreter(Parser parser, CallStack callStack) : parser(parser), callStack(callStack) {}
 
 std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 {
@@ -53,7 +53,7 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
     auto op = binaryOperation->getOperation();
 
     if (op == Token::Type::ASSIGNMENT)
-        return AssignmentOperation::evaluate(this, binaryOperation->getLeftChild(), binaryOperation->getRightChild(), globalScope);
+        return AssignmentOperation::evaluate(this, binaryOperation->getLeftChild(), binaryOperation->getRightChild(), this->callStack.getActivationRecord());
 
     auto left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : nullptr;
     auto right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : nullptr;
@@ -107,20 +107,21 @@ std::shared_ptr<RVal> Interpreter::visitIndexing(Indexing *indexing)
 std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
 {
     auto name = variable->getVarName();
-    auto var = globalScope.find(name);
-    if (var != globalScope.end())
-        return var->second;
-    throw ExceptionFactory::create("Variable", name, "is not defined");
+    auto activationRecord = this->callStack.getActivationRecord();
+    auto res = activationRecord->getVar(name);
+    return res;
+    //throw ExceptionFactory::create("Variable", name, "is not defined");
 }
 
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
 {
     auto declerations = varDecleration->getDeclerations();
+    auto activationRecord = this->callStack.getActivationRecord();
     for (auto &[name, rVal] : declerations)
     {
         // put this in symbol table
         auto val = rVal->acceptVisitor(this);
-        globalScope.insert(std::pair(name, val));
+        activationRecord->addVar(name, val);
     }
 }
 
@@ -129,36 +130,40 @@ void Interpreter::visitIfElse(IfElse *ifElse)
     auto condition = ifElse->getCondition()->acceptVisitor(this);
     if (ConversionFunctions::RValToBool(condition))
     {
-        // create a new child symbol table
+        //std::cout<<"if ran ";
+        this->callStack.pushScope();
         ifElse->getIfBlock()->acceptVisitor(this);
-        // exit child symbol table
+        this->callStack.popScope();
+        this->callStack.skipScope(); // skipping one symbol tree
     }
     else
     {
-        // create a new child symbol table
+        //std::cout << "else ran ";
+        this->callStack.skipScope();
+        this->callStack.pushScope();
         ifElse->getElseBlock()->acceptVisitor(this);
-        // exit child symbol table
+        this->callStack.popScope();
     }
 }
 
 void Interpreter::visitForLoop(ForLoop *forLoop)
 {
-    // create a new child in symbol table
+    this->callStack.pushScope();
     forLoop->getInitializations()->acceptVisitor(this);
     while (ConversionFunctions::RValToBool(forLoop->getCondition()->acceptVisitor(this)))
     {
         forLoop->getStatementList()->acceptVisitor(this);
         forLoop->getUpdates()->acceptVisitor(this);
     }
-    // exit symbol table
+    this->callStack.popScope();
 }
 
 void Interpreter::visitWhileLoop(WhileLoop *whileLoop)
 {
-    // create a new child in symbol table
+    this->callStack.pushScope();
     while (ConversionFunctions::RValToBool(whileLoop->getCondition()->acceptVisitor(this)))
         whileLoop->getCompoundStatement()->acceptVisitor(this);
-    // exit symbol table
+    this->callStack.popScope();
 }
 
 void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatement)
@@ -185,14 +190,8 @@ void Interpreter::interpret()
 {
     auto eval = this->parser.parse();
     eval->acceptVisitor(this);
-    // Console::log(res);
     std::cout << std::endl
               << "\ncontent of symbol table\n"
               << std::endl;
-    for (auto &[key, val] : globalScope)
-    {
-        std::cout << key << " ----> ";
-        Console::log(val);
-        std::cout << std::endl;
-    }
+    this->callStack.getGlobalScope()->getCorospondingSymbolTable()->print();
 }

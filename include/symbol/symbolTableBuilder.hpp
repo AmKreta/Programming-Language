@@ -2,16 +2,19 @@
 
 #include <visitor/visitor.hpp>
 #include <parser/parser.hpp>
-#include <callStack/callStack.hpp>
+#include <symbol/symbolTable.hpp>
 
-class Interpreter : public Visitor
+class SymbolTableBuilder : public Visitor
 {
 private:
     Parser parser;
-    CallStack callStack;
+    std::shared_ptr<SymbolTable> rootSymbolTable, currentSymbolTable;
+
 
 public:
-    Interpreter(Parser, CallStack);
+    SymbolTableBuilder(Parser);
+    void pushScope(); // add a new scope
+    void popScope(); // removes a scope
     std::shared_ptr<RVal> visitRValConst(RVal *) override;
     std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) override;
     std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) override;
@@ -27,5 +30,5 @@ public:
     void visitExpressionStatement(ExpressionStatement *) override;
     void visitForLoop(ForLoop *) override;
     void visitWhileLoop(WhileLoop *) override;
-    void interpret();
+    std::shared_ptr<SymbolTable> build();
 };
