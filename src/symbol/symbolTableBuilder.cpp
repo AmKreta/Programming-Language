@@ -83,8 +83,8 @@ void SymbolTableBuilder::visitVarDecleration(VarDecleration *varDecleration)
 // add a new scope here
 void SymbolTableBuilder::visitIfElse(IfElse *ifElse)
 {
-    this->pushScope();
     auto condition = ifElse->getCondition()->acceptVisitor(this);
+    this->pushScope();
     ifElse->getIfBlock()->acceptVisitor(this);
     this->popScope();
 

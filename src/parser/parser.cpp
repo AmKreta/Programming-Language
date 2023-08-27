@@ -6,8 +6,10 @@ Parser::Parser(Lexer lexer) : lexer(lexer), currentToken(this->lexer.getNextToke
 void Parser::eat(Token::Type type)
 {
     //std::cout << "before eat>>   " << this->currentToken << ", sent type -> " << Token::getTokenTypeString(type) << std::endl;
-    if (this->currentToken.getTokenType() == type)
+    if (this->currentToken.getTokenType() == type){
+        this->previousToken = this->currentToken;
         this->currentToken = this->lexer.getNextToken();
+    }
     else
     {
         throw ExceptionFactory::create(this->lexer.getLine(), ":", this->lexer.getColumn(), " -> ", "expected", Token::getTokenTypeString(type), "got", this->currentToken.getTokenTypeString());

@@ -63,6 +63,9 @@ std::shared_ptr<IfElse> Parser::ifElse()
             elseBlockStatements = this->compoundStatement(true);
     }
 
+    if(!elseBlockStatements)
+        elseBlockStatements = std::make_shared<CompoundStatement>(std::vector<std::shared_ptr<Statement>>());
+
     return std::make_shared<IfElse>(condition, ifBlockStatements, elseBlockStatements);
 }
 
@@ -89,9 +92,10 @@ std::shared_ptr<CompoundStatement> Parser::compoundStatement(bool readOnlyOneSta
     if (readOnlyOneStatement)
         this->eat(Token::Type::SEMI_COLON);
     else
-        while (this->currentToken.getTokenType() == Token::Type::SEMI_COLON)
+        while (this->currentToken.getTokenType() == Token::Type::SEMI_COLON || (this->previousToken.getTokenType() == Token::Type::R_BRACES && this->currentToken.getTokenType() != Token::Type::END_OF_FILE))
         {
-            this->eat(Token::Type::SEMI_COLON);
+            if(this->currentToken.getTokenType() == Token::Type::SEMI_COLON)
+                this->eat(Token::Type::SEMI_COLON);
             // places where statement can end
             if (!(this->currentToken.getTokenType() == Token::Type::END_OF_FILE || this->currentToken.getTokenType() == Token::Type::R_BRACES || this->currentToken.getTokenType() == Token::Type::ELSE))
                 statementList.push_back(this->statement());
