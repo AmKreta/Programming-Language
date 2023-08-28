@@ -33,7 +33,7 @@ std::shared_ptr<SymbolTable> SymbolTable::getEnclosingScope()
     return this->enclosingScope;
 }
 
-std::vector<std::shared_ptr<SymbolTable>> &SymbolTable::getChildren()
+std::list<std::shared_ptr<SymbolTable>> &SymbolTable::getChildren()
 {
     return this->children;
 }
@@ -51,5 +51,15 @@ void SymbolTable::print()
         std::cout << var << " -> " << symbol->toString() << std::endl;
     for (auto child : this->children)
         child->print();
+    std::cout << "Exiting Scope" << std::endl;
+}
+
+void SymbolTable::printThis()
+{
+    std::cout << std::endl
+              << "Entering Scope" << std::endl;
+    std::cout<<"variables............."<<std::endl;          
+    for (auto [var, symbol] : this->varSymbols)
+        std::cout << var << " -> " << symbol->toString() << std::endl;
     std::cout << "Exiting Scope" << std::endl;
 }
