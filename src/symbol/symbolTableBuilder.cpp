@@ -107,6 +107,7 @@ void SymbolTableBuilder::visitForLoop(ForLoop *forLoop)
 void SymbolTableBuilder::visitWhileLoop(WhileLoop *whileLoop)
 {
     this->pushScope();
+    whileLoop->getCondition()->acceptVisitor(this);
     whileLoop->getCompoundStatement()->acceptVisitor(this);
     this->popScope();
 }

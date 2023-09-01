@@ -110,7 +110,7 @@ std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
     auto activationRecord = this->callStack.getActivationRecord();
     auto res = activationRecord->getVar(name);
     return res;
-    //throw ExceptionFactory::create("Variable", name, "is not defined");
+    // throw ExceptionFactory::create("Variable", name, "is not defined");
 }
 
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
@@ -130,7 +130,7 @@ void Interpreter::visitIfElse(IfElse *ifElse)
     auto condition = ifElse->getCondition()->acceptVisitor(this);
     if (ConversionFunctions::RValToBool(condition))
     {
-        //std::cout<<"if ran ";
+        // std::cout<<"if ran ";
         this->callStack.pushScope();
         ifElse->getIfBlock()->acceptVisitor(this);
         this->callStack.popScope();
@@ -138,7 +138,7 @@ void Interpreter::visitIfElse(IfElse *ifElse)
     }
     else
     {
-        //std::cout << "else ran ";
+        // std::cout << "else ran ";
         this->callStack.skipScope();
         this->callStack.pushScope();
         ifElse->getElseBlock()->acceptVisitor(this);
@@ -163,7 +163,7 @@ void Interpreter::visitWhileLoop(WhileLoop *whileLoop)
     this->callStack.pushScope();
     while (ConversionFunctions::RValToBool(whileLoop->getCondition()->acceptVisitor(this)))
         whileLoop->getCompoundStatement()->acceptVisitor(this);
-    this->callStack.popScope();
+    //this->callStack.popScope();
 }
 
 void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatement)

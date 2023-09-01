@@ -19,7 +19,7 @@ std::shared_ptr<WhileLoop> Parser::whileLoop()
     if (this->currentToken.getTokenType() == Token::Type::L_BRACES)
     {
         this->eat(Token::Type::L_BRACES);
-        compoundStatement = this->compoundStatement();
+        compoundStatement = this->compoundStatement(false, Token::Type::R_BRACES);
         this->eat(Token::Type::R_BRACES);
     }
     else

@@ -62,7 +62,7 @@ public:
     std::shared_ptr<ForLoop> forLoop();
     std::shared_ptr<WhileLoop> whileLoop();
     std::shared_ptr<Statement> statement();
-    std::shared_ptr<CompoundStatement> compoundStatement(bool readOnlyOneStatement = false);
+    std::shared_ptr<CompoundStatement> compoundStatement(bool readOnlyOneStatement = false, Token::Type delimiter = Token::Type::END_OF_FILE);
     std::shared_ptr<Program> program();
     std::shared_ptr<Program> parse();
 };

@@ -25,7 +25,6 @@ std::shared_ptr<ForLoop> Parser::forLoop()
     // condition can be empty also
     // if no condition, treat it as true
     std::__1::shared_ptr<Evaluable> condition = RValConstFactory::createBooleanConstSharedPtr(true);
-    ;
     if (this->currentToken.getTokenType() != Token::Type::SEMI_COLON)
         condition = this->p11_expression();
     this->eat(Token::Type::SEMI_COLON);
@@ -42,18 +41,18 @@ std::shared_ptr<ForLoop> Parser::forLoop()
     this->eat(Token::Type::R_PAREN);
 
     // for loop block
-    std::shared_ptr<CompoundStatement> loopStatements;
+    std::shared_ptr<CompoundStatement> compoundStatement;
     if (this->currentToken.getTokenType() == Token::Type::L_BRACES)
     {
         this->eat(Token::Type::L_BRACES);
-        loopStatements = this->compoundStatement();
+        compoundStatement = this->compoundStatement(false, Token::Type::R_BRACES);
         this->eat(Token::Type::R_BRACES);
     }
     else
-        loopStatements = this->compoundStatement(true);
+        compoundStatement = this->compoundStatement(true);
 
     auto initialization = std::make_shared<CompoundStatement>(initializationStatement);
     auto updation = std::make_shared<CompoundStatement>(updateStatement);
 
-    return std::make_shared<ForLoop>(initialization, condition, updation, loopStatements);
+    return std::make_shared<ForLoop>(initialization, condition, updation, compoundStatement);
 }
