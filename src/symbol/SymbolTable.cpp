@@ -2,7 +2,7 @@
 #include <exception/exceptionFactory.hpp>
 #include <iostream>
 
-SymbolTable::SymbolTable(std::shared_ptr<SymbolTable> enclosingScope) : enclosingScope(enclosingScope), scopeLevel(enclosingScope ? enclosingScope->getScopeLevel() + 1 : 0), varSymbols({}), children({}) {}
+SymbolTable::SymbolTable(std::shared_ptr<SymbolTable> enclosingScope, bool shouldDestroyChildren) : enclosingScope(enclosingScope), scopeLevel(enclosingScope ? enclosingScope->getScopeLevel() + 1 : 0), varSymbols({}), children({}), shouldDestroyChildren(shouldDestroyChildren) {}
 
 int SymbolTable::getScopeLevel()
 {
@@ -33,7 +33,7 @@ std::shared_ptr<SymbolTable> SymbolTable::getEnclosingScope()
     return this->enclosingScope;
 }
 
-std::list<std::shared_ptr<SymbolTable>> &SymbolTable::getChildren()
+std::vector<std::shared_ptr<SymbolTable>> &SymbolTable::getChildren()
 {
     return this->children;
 }
@@ -61,4 +61,8 @@ void SymbolTable::printThis()
     for (auto [var, symbol] : this->varSymbols)
         std::cout << var << " -> " << symbol->toString() << std::endl;
     std::cout << "Exiting Scope level "<< this->scopeLevel << std::endl<<std::endl;
+}
+
+bool SymbolTable::getshouldDestroyChildren(){
+    return this->shouldDestroyChildren;
 }

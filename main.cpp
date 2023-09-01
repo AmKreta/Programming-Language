@@ -51,7 +51,7 @@ int main()
     // run("let i=0;");
     // run("let a = [1, 2, 3, 4, 5];\na[0] = {'name':'Amresh'};\na[0]['name'] = 'Amk';\nlet b;\nb = {'Foo':'Baar'};\nb['Foo'] = 'Foo What ?';");
     //run("let a=0; if(a==0) a=5; if(a==4){ a = a+3;} else { a = a+8;}");
-    run("let a = 0, b=0; while(a<1){while(b<1)b = b+1; a=a+1;}");
+    run("let a = 0, b=0;\nwhile(a<2){\n  let c = 0; \n  while(c<2){\n    b = b+1;\n    c = c+1;\n  }\n  while(c<4){\n    b = b+1;\n    c = c+1;\n  }\n  a=a+1;\n}");
     //run("if(true)if(true){}else if(true){} else{}");
     std::cout << std::endl;
     return 0;

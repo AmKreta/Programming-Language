@@ -13,7 +13,7 @@ private:
 
 public:
     SymbolTableBuilder(Parser);
-    void pushScope(); // add a new scope
+    void pushScope(bool isLoop = false); // add a new scope
     void popScope(); // removes a scope
     std::shared_ptr<RVal> visitRValConst(RVal *) override;
     std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) override;

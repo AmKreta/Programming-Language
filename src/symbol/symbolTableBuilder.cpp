@@ -96,7 +96,7 @@ void SymbolTableBuilder::visitIfElse(IfElse *ifElse)
 // add a new scope here
 void SymbolTableBuilder::visitForLoop(ForLoop *forLoop)
 {
-    this->pushScope();
+    this->pushScope(true);
     forLoop->getInitializations()->acceptVisitor(this);
     forLoop->getStatementList()->acceptVisitor(this);
     forLoop->getUpdates()->acceptVisitor(this);
@@ -106,7 +106,7 @@ void SymbolTableBuilder::visitForLoop(ForLoop *forLoop)
 // add a new scope here
 void SymbolTableBuilder::visitWhileLoop(WhileLoop *whileLoop)
 {
-    this->pushScope();
+    this->pushScope(true);
     whileLoop->getCondition()->acceptVisitor(this);
     whileLoop->getCompoundStatement()->acceptVisitor(this);
     this->popScope();
@@ -132,9 +132,9 @@ void SymbolTableBuilder::visitProgram(Program *program)
     compoundStatement->acceptVisitor(this);
 }
 
-void SymbolTableBuilder::pushScope()
+void SymbolTableBuilder::pushScope(bool isLoop)
 {
-    auto symbolTableChild = std::make_shared<SymbolTable>(this->currentSymbolTable);
+    auto symbolTableChild = std::make_shared<SymbolTable>(this->currentSymbolTable, !isLoop);
     this->currentSymbolTable->getChildren().push_back(symbolTableChild);
     this->currentSymbolTable = symbolTableChild;
 }

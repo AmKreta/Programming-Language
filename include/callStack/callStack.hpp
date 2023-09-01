@@ -15,5 +15,6 @@ public:
     void skipScope(); // in case of if-else only one of the scope executes
     std::shared_ptr<Scope> getActivationRecord(); // returns active scope, ie last element of scopes vector
     std::shared_ptr<Scope> getGlobalScope();
+    void incrementChildIndex();
     ~CallStack();
 };

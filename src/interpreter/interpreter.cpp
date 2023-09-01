@@ -163,7 +163,7 @@ void Interpreter::visitWhileLoop(WhileLoop *whileLoop)
     this->callStack.pushScope();
     while (ConversionFunctions::RValToBool(whileLoop->getCondition()->acceptVisitor(this)))
         whileLoop->getCompoundStatement()->acceptVisitor(this);
-    //this->callStack.popScope();
+    this->callStack.popScope();
 }
 
 void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatement)
