@@ -3,6 +3,7 @@
 #include <rVal/rVal.hpp>
 #include <evaluable/evaluable.hpp>
 #include <iostream>
+#include <evaluable/function.hpp>
 // need to define template class in header itlself
 template <typename T>
 class RValConst : public RVal, public Evaluable, public std::enable_shared_from_this<RValConst<T>>
@@ -105,3 +106,5 @@ typedef RValConst<RValPointerMap> MapConst;
 
 typedef RValConst<std::shared_ptr<void>> NullConst;
 typedef RValConst<std::shared_ptr<void>> UndefinedConst;
+
+typedef RValConst<Function> FunctionConst;

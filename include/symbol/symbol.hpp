@@ -20,6 +20,7 @@ public:
     int getScopeLevel();
     void setScopeLevel(int);
     Symbol::Type getType();
+    virtual std::string getInstanceOf() = 0;
     virtual std::string toString() = 0;
     virtual ~Symbol() = default;
 };
