@@ -2,11 +2,11 @@
 #include<evaluable/variable.hpp>
 #include<evaluable/rValueConstFactory.hpp>
 
-std::shared_ptr<Evaluable> Parser::function(){
+std::shared_ptr<Evaluable> Parser::function(bool isAnonymous){
     this->eat(Token::Type::FUNCTION);
     
     auto name = "anonymous"; // if name is anonymous don't store in symbol table function symbol
-    if(this->currentToken.getTokenType() == Token::Type::ID){
+    if(!isAnonymous){
         auto name = this->currentToken.getTokenValue();
         this->eat(Token::Type::ID);
     }
@@ -25,10 +25,10 @@ std::shared_ptr<Evaluable> Parser::function(){
         if(this->currentToken.getTokenType()!=Token::Type::R_PAREN)
             this->eat(Token::Type::COMMA);
     }
+    this->eat(Token::Type::R_PAREN);
 
     this->eat(Token::Type::L_BRACES);
-    auto statementList = this->compoundStatement();
+    auto statementList = this->compoundStatement(false, Token::Type::R_BRACES);
     this->eat(Token::Type::R_BRACES);
-
-    
+    return RValConstFactory::createNullConstSharedPtr();
 }

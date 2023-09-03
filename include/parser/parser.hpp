@@ -46,7 +46,7 @@ private:
 public:
     Parser(Lexer);
     std::shared_ptr<Indexing> indexing(std::shared_ptr<Evaluable>);
-    std::shared_ptr<Evaluable> function();
+    std::shared_ptr<Evaluable> function(bool isAnonymous = false);
     std::shared_ptr<Evaluable> P1_factor();                                         // +i, -i, ++i, --i, i++, i--, fn(), !i, rVal etc , logical not, bitwise not
     std::shared_ptr<Evaluable> P2_mathemetical_multiplicativeExpression();          //*,**,/,%
     std::shared_ptr<Evaluable> P3_mathemetical_addativeExpression();                //, +,-

@@ -177,7 +177,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
     }
 
     if(this->currentToken.getTokenType() == Token::Type::FUNCTION)
-        return this->function();
+        return this->function(true);
 
     throw ExceptionFactory::create("misplaced or unsupported token", this->currentToken.getTokenTypeString(), this->currentToken.getTokenValue());
     // remaining
