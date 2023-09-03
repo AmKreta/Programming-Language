@@ -14,7 +14,7 @@ void SymbolTable::addVarSymbol(std::string name, std::shared_ptr<VarSymbol> symb
     if (this->varSymbols.find(name) == this->varSymbols.end())
         this->varSymbols.insert(std::pair(name, symbol));
     else
-        throw ExceptionFactory::create("Redeclearation of symbol", name);
+        throw ExceptionFactory::create("Redeclearation of variable", name);
 }
 
 std::shared_ptr<VarSymbol> SymbolTable::getVarSymbol(std::string name)
@@ -25,7 +25,7 @@ std::shared_ptr<VarSymbol> SymbolTable::getVarSymbol(std::string name)
         return res->second;
     else if (this->enclosingScope != nullptr)
         return this->enclosingScope->getVarSymbol(name);
-    throw ExceptionFactory::create("Symbol not found", name);
+    throw ExceptionFactory::create("variable not found", name);
 }
 
 std::shared_ptr<SymbolTable> SymbolTable::getEnclosingScope()
@@ -49,9 +49,22 @@ void SymbolTable::print()
               << "Entering Scope level " << this->scopeLevel << std::endl;
     for (auto child : this->children)
         child->print();
-    for (auto [var, symbol] : this->varSymbols)
-        std::cout << var << " -> " << symbol->toString() << std::endl;
-    std::cout << "Exiting Scope level "<< this->scopeLevel << std::endl<<std::endl;
+    if (this->varSymbols.size())
+    {
+        std::cout << std::endl
+                  << "variables .................." << std::endl;
+        for (auto &[var, symbol] : this->varSymbols)
+            std::cout << var << " -> " << symbol->toString() << std::endl;
+    }
+    if (this->funSymbols.size())
+    {
+        std::cout << std::endl
+                  << "functions .................." << std::endl;
+        for (auto [name, funSymbol] : this->funSymbols)
+            std::cout << name << " -> " << funSymbol->toString() << std::endl;
+    }
+    std::cout << "Exiting Scope level " << this->scopeLevel << std::endl
+              << std::endl;
 }
 
 void SymbolTable::printThis()
@@ -60,9 +73,29 @@ void SymbolTable::printThis()
               << "Entering Scope level " << this->scopeLevel << std::endl;
     for (auto [var, symbol] : this->varSymbols)
         std::cout << var << " -> " << symbol->toString() << std::endl;
-    std::cout << "Exiting Scope level "<< this->scopeLevel << std::endl<<std::endl;
+    std::cout << "Exiting Scope level " << this->scopeLevel << std::endl
+              << std::endl;
 }
 
-bool SymbolTable::getshouldDestroyChildren(){
+bool SymbolTable::getshouldDestroyChildren()
+{
     return this->shouldDestroyChildren;
+}
+
+void SymbolTable::addFuncSymbol(std::string name, std::shared_ptr<FunctionSymbol> funSymbol)
+{
+    if (this->funSymbols.find(name) == this->funSymbols.end())
+        this->funSymbols.insert(std::pair(name, funSymbol));
+    else
+        throw ExceptionFactory::create("Redeclearation of function", name);
+}
+
+std::shared_ptr<FunctionSymbol> SymbolTable::getFunSymbol(std::string name)
+{
+    auto res = this->funSymbols.find(name);
+    if (res != this->funSymbols.end())
+        return res->second;
+    else if (this->enclosingScope != nullptr)
+        return this->enclosingScope->getFunSymbol(name);
+    throw ExceptionFactory::create("variable not found", name);
 }

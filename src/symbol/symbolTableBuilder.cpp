@@ -1,8 +1,11 @@
 #include <symbol/symbolTableBuilder.hpp>
 #include <symbol/varSymbol.hpp>
 #include <modules/console.hpp>
+#include <evaluable/rValueConstFactory.hpp>
 
-SymbolTableBuilder::SymbolTableBuilder(Parser parser) : parser(parser), rootSymbolTable(nullptr), currentSymbolTable(nullptr) {}
+SymbolTableBuilder::SymbolTableBuilder(Parser parser) : ast(parser.parse()), rootSymbolTable(nullptr), currentSymbolTable(nullptr) {}
+
+SymbolTableBuilder::SymbolTableBuilder(std::shared_ptr<Runable> ast, std::shared_ptr<SymbolTable> rootSymbolTable) : ast(ast), rootSymbolTable(rootSymbolTable), currentSymbolTable(rootSymbolTable) {}
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitRValConst(RVal *rValConst)
 {
@@ -66,6 +69,28 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitVariable(Variable *variable)
         // adding a refrence
         this->currentSymbolTable->addVarSymbol(name, res);
     }
+    return nullptr;
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
+{
+    this->pushScope();
+    function->setCorospondingSymbolable(this->currentSymbolTable);
+    auto params = function->getParams();
+    for (auto &[variable, expr] : params)
+    {
+        auto name = variable->getVarName();
+        auto symbol = std::make_shared<VarSymbol>(this->currentSymbolTable->getScopeLevel());
+        this->currentSymbolTable->addVarSymbol(name, symbol);
+    }
+    auto statementList = function->getCompoundStatement();
+    statementList->acceptVisitor(this);
+    auto functionSymbolTable = this->currentSymbolTable;
+    this->popScope();
+    auto name = function->getName();
+    std::shared_ptr<Function> fn(function);
+    auto funSymbol = std::make_shared<FunctionSymbol>(this->currentSymbolTable->getScopeLevel(), fn, functionSymbolTable);
+    this->currentSymbolTable->addFuncSymbol(name, funSymbol);
     return nullptr;
 }
 
@@ -146,9 +171,11 @@ void SymbolTableBuilder::popScope()
 
 std::shared_ptr<SymbolTable> SymbolTableBuilder::build()
 {
-    this->rootSymbolTable = std::make_shared<SymbolTable>();
-    this->currentSymbolTable = this->rootSymbolTable;
-    auto ast = parser.parse();
-    ast->acceptVisitor(this);
+    if (!rootSymbolTable)
+    {
+        this->rootSymbolTable = std::make_shared<SymbolTable>();
+        this->currentSymbolTable = this->rootSymbolTable;
+    }
+    this->ast->acceptVisitor(this);
     return this->rootSymbolTable;
 }

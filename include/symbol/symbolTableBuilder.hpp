@@ -3,18 +3,19 @@
 #include <visitor/visitor.hpp>
 #include <parser/parser.hpp>
 #include <symbol/symbolTable.hpp>
+#include <runable/runable.hpp>
 
 class SymbolTableBuilder : public Visitor
 {
 private:
-    Parser parser;
+    std::shared_ptr<Runable> ast;
     std::shared_ptr<SymbolTable> rootSymbolTable, currentSymbolTable;
-
 
 public:
     SymbolTableBuilder(Parser);
+    SymbolTableBuilder(std::shared_ptr<Runable>, std::shared_ptr<SymbolTable>);
     void pushScope(bool isLoop = false); // add a new scope
-    void popScope(); // removes a scope
+    void popScope();                     // removes a scope
     std::shared_ptr<RVal> visitRValConst(RVal *) override;
     std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) override;
     std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) override;
@@ -23,6 +24,7 @@ public:
     std::shared_ptr<RVal> visitConditionalOperation(ConditionalOperation *) override;
     std::shared_ptr<RVal> visitIndexing(Indexing *) override;
     std::shared_ptr<RVal> visitVariable(Variable *) override;
+    std::shared_ptr<RVal> visitFunction(Function *) override;
     void visitVarDecleration(VarDecleration *) override;
     void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;

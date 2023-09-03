@@ -12,7 +12,7 @@ public:
     VarSymbol(int);
     std::shared_ptr<RVal> getValue();
     void setValue(std::shared_ptr<RVal>);
-    std::string getInstanceOf();
+    std::string getInstanceOf() override;
     bool getIsInTemporalDeadZone();
     void setIsInTemporalDeadZone(bool);
     std::string toString() override;

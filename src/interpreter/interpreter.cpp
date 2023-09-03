@@ -113,6 +113,11 @@ std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
     // throw ExceptionFactory::create("Variable", name, "is not defined");
 }
 
+std::shared_ptr<RVal> Interpreter::visitFunction(Function* function){
+    // do nothing
+    return nullptr;
+}
+
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
 {
     auto declerations = varDecleration->getDeclerations();
