@@ -16,6 +16,7 @@ private:
 public:
     FunctionSymbol(int, std::shared_ptr<Function>, std::shared_ptr<SymbolTable>);
     std::shared_ptr<SymbolTable> getCorospndingSymbolTable();
+    void setCorospndingSymbolTable(std::shared_ptr<SymbolTable>);
     std::shared_ptr<Function> getFunction();
     std::string getInstanceOf() override;
     std::string toString() override;

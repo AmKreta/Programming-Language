@@ -25,3 +25,7 @@ std::shared_ptr<SymbolTable> FunctionSymbol::getCorospndingSymbolTable()
 {
     return this->corospondingSymbolTable;
 }
+
+void FunctionSymbol::setCorospndingSymbolTable(std::shared_ptr<SymbolTable> corospondingSymbolTable){
+    this->corospondingSymbolTable = corospondingSymbolTable;
+}  

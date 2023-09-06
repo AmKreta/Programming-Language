@@ -29,3 +29,7 @@ std::string Function::getName(){
 void Function::setCorospondingSymbolable(std::shared_ptr<SymbolTable> corospondingSymbolTable){
     this->corospondingSymbolTable = corospondingSymbolTable;
 }
+
+std::shared_ptr<Function> Function::getSharedPtr(){
+    return this->shared_from_this();
+}

@@ -7,7 +7,7 @@
 
 class SymbolTable;
 
-class Function : public Evaluable
+class Function : public Evaluable, public std::enable_shared_from_this<Function>
 {
 private:
     std::vector<std::pair<std::shared_ptr<Variable>, std::shared_ptr<Evaluable>>> params;
@@ -24,4 +24,5 @@ public:
     std::shared_ptr<Evaluable> getReturnVal();
     void setCorospondingSymbolable(std::shared_ptr<SymbolTable>);
     std::shared_ptr<RVal> acceptVisitor(Visitor *) override;
+    std::shared_ptr<Function> getSharedPtr();
 };
