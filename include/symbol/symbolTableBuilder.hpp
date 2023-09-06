@@ -8,12 +8,12 @@
 class SymbolTableBuilder : public Visitor
 {
 private:
-    std::shared_ptr<Runable> ast;
+    std::shared_ptr<AstNode> ast;
     std::shared_ptr<SymbolTable> rootSymbolTable, currentSymbolTable;
+    SymbolTableBuilder(std::shared_ptr<AstNode>, std::shared_ptr<SymbolTable>);
 
 public:
     SymbolTableBuilder(Parser);
-    SymbolTableBuilder(std::shared_ptr<Runable>, std::shared_ptr<SymbolTable>);
     void pushScope(bool isLoop = false); // add a new scope
     void popScope();                     // removes a scope
     std::shared_ptr<RVal> visitRValConst(RVal *) override;
@@ -33,4 +33,5 @@ public:
     void visitForLoop(ForLoop *) override;
     void visitWhileLoop(WhileLoop *) override;
     std::shared_ptr<SymbolTable> build();
+    std::shared_ptr<SymbolTable> buildForFunction(Function *);
 };

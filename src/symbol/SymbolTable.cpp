@@ -60,8 +60,10 @@ void SymbolTable::print()
     {
         std::cout << std::endl
                   << "functions .................." << std::endl;
-        for (auto [name, funSymbol] : this->funSymbols)
+        for (auto [name, funSymbol] : this->funSymbols){
             std::cout << name << " -> " << funSymbol->toString() << std::endl;
+            funSymbol->getCorospndingSymbolTable()->print();
+        }
     }
     std::cout << "Exiting Scope level " << this->scopeLevel << std::endl
               << std::endl;
