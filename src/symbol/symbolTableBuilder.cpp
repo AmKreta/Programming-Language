@@ -1,8 +1,8 @@
 #include <symbol/symbolTableBuilder.hpp>
-#include <symbol/varSymbol.hpp>
 #include <modules/console.hpp>
 #include <evaluable/rValueConstFactory.hpp>
 #include <exception/exceptionFactory.hpp>
+#include <symbol/symbolFactory.hpp>
 
 SymbolTableBuilder::SymbolTableBuilder(Parser parser) : ast(parser.parse()), rootSymbolTable(nullptr), currentSymbolTable(nullptr) {}
 
@@ -62,26 +62,30 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitIndexing(Indexing *indexing)
 std::shared_ptr<RVal> SymbolTableBuilder::visitVariable(Variable *variable)
 {
     auto name = variable->getVarName();
-    auto res = this->currentSymbolTable->getVarSymbol(name);
-    if (this->currentSymbolTable->getVarSymbolsMap().find(name) == this->currentSymbolTable->getVarSymbolsMap().end() &&
+    auto res = this->currentSymbolTable->getSymbol(name);
+    if (this->currentSymbolTable->getSymbolsMap().find(name) == this->currentSymbolTable->getSymbolsMap().end() &&
         res->getScopeLevel() != this->currentSymbolTable->getScopeLevel())
     {
         // ie it exists in enclosing scope
         // adding a refrence
-        this->currentSymbolTable->addVarSymbol(name, res);
+        this->currentSymbolTable->addSymbol(name, res);
     }
+    return nullptr;
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitFunctionCall(FunctionCall *functionCall)
+{
+    auto fnConst = functionCall->getFunction()->acceptVisitor(this);
     return nullptr;
 }
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
 {
-    auto fn = function->getSharedPtr();	
-    std::shared_ptr<SymbolTable> functionSymbolTable = std::make_shared<SymbolTable>(this->currentSymbolTable);	
-    auto symbolTableBuilder = SymbolTableBuilder(fn, functionSymbolTable);	
-    symbolTableBuilder.buildForFunction(function);	
-    auto name = function->getName();	
-    auto funSymbol = std::make_shared<FunctionSymbol>(this->currentSymbolTable->getScopeLevel(), fn, functionSymbolTable);	
-    this->currentSymbolTable->addFuncSymbol(name, funSymbol);
+    auto symbolTableBuilder = SymbolTableBuilder(function->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
+    symbolTableBuilder.buildForFunction(function);
+    auto fnConst = RValConstFactory::createFunctionConstSharedPtr(*function);
+    auto funSymbol = SymbolFactory::createFuncSymbol(this->currentSymbolTable->getScopeLevel(), fnConst);
+    this->currentSymbolTable->addSymbol(function->getName(), funSymbol);
     return nullptr;
 }
 
@@ -91,8 +95,8 @@ void SymbolTableBuilder::visitVarDecleration(VarDecleration *varDecleration)
     auto declerations = varDecleration->getDeclerations();
     for (auto &[name, rVal] : declerations)
     {
-        auto symbol = std::make_shared<VarSymbol>(this->currentSymbolTable->getScopeLevel());
-        this->currentSymbolTable->addVarSymbol(name, symbol);
+        auto symbol = SymbolFactory::createVarSymbol(this->currentSymbolTable->getScopeLevel());
+        this->currentSymbolTable->addSymbol(name, symbol);
     }
 }
 
@@ -177,17 +181,17 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::build()
     throw ExceptionFactory::create("while building symbol table got evaluble , expected runable");
 }
 
-std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForFunction(Function *function)	
-{	
-    function->setCorospondingSymbolable(this->rootSymbolTable);	
-    auto params = function->getParams();	
-    for (auto &[variable, expr] : params)	
-    {	
-        auto name = variable->getVarName();	
-        auto symbol = std::make_shared<VarSymbol>(this->currentSymbolTable->getScopeLevel());	
-        this->currentSymbolTable->addVarSymbol(name, symbol);	
-    }	
-    auto statementList = function->getCompoundStatement();	
-    statementList->acceptVisitor(this);	
-    return this->rootSymbolTable;	
+std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForFunction(Function *function)
+{
+    function->setCorospondingSymbolTable(this->rootSymbolTable);
+    auto params = function->getParams();
+    for (auto &[variable, expr] : params)
+    {
+        auto name = variable->getVarName();
+        auto symbol = SymbolFactory::createVarSymbol(this->rootSymbolTable->getScopeLevel());
+        this->currentSymbolTable->addSymbol(name, symbol);
+    }
+    auto statementList = function->getCompoundStatement();
+    statementList->acceptVisitor(this);
+    return this->rootSymbolTable;
 }

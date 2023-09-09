@@ -13,7 +13,7 @@ std::shared_ptr<CompoundStatement> Function::getCompoundStatement()
     return this->compoundStatement;
 }
 
-std::shared_ptr<Evaluable> Function::getReturnVal()
+std::shared_ptr<RVal> Function::getReturnVal()
 {
     return this->returnVal;
 }
@@ -26,8 +26,12 @@ std::string Function::getName(){
     return this->name;
 }
 
-void Function::setCorospondingSymbolable(std::shared_ptr<SymbolTable> corospondingSymbolTable){
+void Function::setCorospondingSymbolTable(std::shared_ptr<SymbolTable> corospondingSymbolTable){
     this->corospondingSymbolTable = corospondingSymbolTable;
+}
+
+std::shared_ptr<SymbolTable> Function::getCorospondingSymbolTable(){
+    return this->corospondingSymbolTable;
 }
 
 std::shared_ptr<Function> Function::getSharedPtr(){

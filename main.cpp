@@ -11,13 +11,17 @@ void run(std::string input)
     Parser parser{lexer};
     SymbolTableBuilder stb{parser};
     auto st = stb.build();
-    //st->print();
+    // st->print();
     CallStack callStack{st};
-    Interpreter interpreter{parser, callStack};
+    Interpreter interpreter{&parser, callStack};
     std::cout << std::endl
               << input
               << " ";
     interpreter.interpret();
+    std::cout << std::endl
+              << "\ncontent of symbol table\n"
+              << std::endl;
+    interpreter.getCallStack().getGlobalScope()->print();
 }
 
 void printTokens(std::string input)
@@ -43,16 +47,17 @@ int main()
     // run("2 | 3;");
     // run("2 << 3 + 5;");
     // run("5 == 2 + 3 ? true ? 'this is true' : 'this is false' : false;");
-    //run("if(true){ let a = 5; } else { let b = 10; }");
+    // run("if(true){ let a = 5; } else { let b = 10; }");
     // run("if(false){ let a = 5; } else { let b = 10; }");
-    //run("let a = 11;\n\nlet message = a % 2 == 1\n  ? ['the no. is even']\n  : {'res' : 'the no. is odd'};\n\nlet c;\nif (message[0] == 'the no. is even')\n  {c = message[0]; let d = 5;}\nelse\n  {c = message['res']; let f='amk';}");
-    //run("let a = ['Amk']; let b = a[0] == 'Amk';");
+    // run("let a = 11;\n\nlet message = a % 2 == 1\n  ? ['the no. is even']\n  : {'res' : 'the no. is odd'};\n\nlet c;\nif (message[0] == 'the no. is even')\n  {c = message[0]; let d = 5;}\nelse\n  {c = message['res']; let f='amk';}");
+    // run("let a = ['Amk']; let b = a[0] == 'Amk';");
     // run("let i=0;\nlet j=1;\nfor(; j <= 4; j = j+1 ){\n  i = i*10 + j;\n}");
     // run("let i=0;");
     // run("let a = [1, 2, 3, 4, 5];\na[0] = {'name':'Amresh'};\na[0]['name'] = 'Amk';\nlet b;\nb = {'Foo':'Baar'};\nb['Foo'] = 'Foo What ?';");
-    //run("let a=0; if(a==0) a=5; if(a==4){ a = a+3;} else { a = a+8;}");
-    run("let a = 0, b=0;\nwhile(a<2){\n  let c = 0; \n  while(c<2){\n    b = b+1;\n    c = c+1;\n  }\n  while(c<4){\n    b = b+1;\n    c = c+1;\n  }\n  a=a+1;\n}");
-    //run("if(true)if(true){}else if(true){} else{}");
+    // run("let a=0; if(a==0) a=5; if(a==4){ a = a+3;} else { a = a+8;}");
+    // run("let a = 0, b=0;\nwhile(a<2){\n  let c = 0; \n  while(c<2){\n    b = b+1;\n    c = c+1;\n  }\n  while(c<4){\n    b = b+1;\n    c = c+1;\n  }\n  a=a+1;\n}");
+    // run("if(true)if(true){}else if(true){} else{}");
+    run("let a=0; function amk(){ let b=0; while(b<10){ a=a+10; b=b+1;} } amk();");
     std::cout << std::endl;
     return 0;
 }

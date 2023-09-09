@@ -25,6 +25,7 @@ public:
     std::shared_ptr<RVal> visitIndexing(Indexing *) override;
     std::shared_ptr<RVal> visitVariable(Variable *) override;
     std::shared_ptr<RVal> visitFunction(Function *) override;
+     std::shared_ptr<RVal> visitFunctionCall(FunctionCall *) override;
     void visitVarDecleration(VarDecleration *) override;
     void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;

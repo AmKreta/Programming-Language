@@ -81,7 +81,7 @@ std::shared_ptr<RVal> RelationalExpression::lessThan(std::shared_ptr<RVal> left,
 {
     auto typeLeft = left->getType(), typeRight = right->getType();
     if (typeLeft != typeRight)
-        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+        throw ExceptionFactory::create("can't compare ", left->getTypeString(), "and", right->getTypeString());
 
     if (typeLeft == RVal::Type::NUMBER)
     {
@@ -97,14 +97,14 @@ std::shared_ptr<RVal> RelationalExpression::lessThan(std::shared_ptr<RVal> left,
         return RValConstFactory::createBooleanConstSharedPtr(leftStr < rightStr);
     }
 
-    throw ExceptionFactory::create("can compare (<) ", left->getTypeString(), "and", right->getTypeString());
+    throw ExceptionFactory::create("can't compare (<) ", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> RelationalExpression::lessThanEqualTo(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
     auto typeLeft = left->getType(), typeRight = right->getType();
     if (typeLeft != typeRight)
-        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+        throw ExceptionFactory::create("can't compare ", left->getTypeString(), "and", right->getTypeString());
 
     if (typeLeft == RVal::Type::NUMBER)
     {
@@ -120,14 +120,14 @@ std::shared_ptr<RVal> RelationalExpression::lessThanEqualTo(std::shared_ptr<RVal
         return RValConstFactory::createBooleanConstSharedPtr(leftStr <= rightStr);
     }
 
-    throw ExceptionFactory::create("can compare (<=", left->getTypeString(), "and", right->getTypeString());
+    throw ExceptionFactory::create("can't compare (<=", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> RelationalExpression::greaterThan(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
     auto typeLeft = left->getType(), typeRight = right->getType();
     if (typeLeft != typeRight)
-        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+        throw ExceptionFactory::create("can't compare ", left->getTypeString(), "and", right->getTypeString());
 
     if (typeLeft == RVal::Type::NUMBER)
     {
@@ -143,14 +143,14 @@ std::shared_ptr<RVal> RelationalExpression::greaterThan(std::shared_ptr<RVal> le
         return RValConstFactory::createBooleanConstSharedPtr(leftStr > rightStr);
     }
 
-    throw ExceptionFactory::create("can compare (>)", left->getTypeString(), "and", right->getTypeString());
+    throw ExceptionFactory::create("can't compare (>)", left->getTypeString(), "and", right->getTypeString());
 }
 
 std::shared_ptr<RVal> RelationalExpression::greaterThanEqualTo(std::shared_ptr<RVal> left, std::shared_ptr<RVal> right)
 {
     auto typeLeft = left->getType(), typeRight = right->getType();
     if (typeLeft != typeRight)
-        throw ExceptionFactory::create("can compare ", left->getTypeString(), "and", right->getTypeString());
+        throw ExceptionFactory::create("can't compare ", left->getTypeString(), "and", right->getTypeString());
 
     if (typeLeft == RVal::Type::NUMBER)
     {
@@ -166,5 +166,5 @@ std::shared_ptr<RVal> RelationalExpression::greaterThanEqualTo(std::shared_ptr<R
         return RValConstFactory::createBooleanConstSharedPtr(leftStr >= rightStr);
     }
 
-    throw ExceptionFactory::create("can compare (>=)", left->getTypeString(), "and", right->getTypeString());
+    throw ExceptionFactory::create("can't compare (>=)", left->getTypeString(), "and", right->getTypeString());
 }

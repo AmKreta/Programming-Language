@@ -13,7 +13,9 @@
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
-Interpreter::Interpreter(Parser parser, CallStack callStack) : parser(parser), callStack(callStack) {}
+Interpreter::Interpreter(Parser* parser, CallStack callStack) : parser(parser), callStack(callStack) {}
+
+Interpreter::Interpreter(CallStack callStack) : callStack(callStack), parser(nullptr) {}
 
 std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 {
@@ -50,6 +52,7 @@ std::shared_ptr<RVal> Interpreter::visitUnaryOperation(UnaryOperation *unaryOper
 
 std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
 {
+    std::cout<<"ran\n";
     auto op = binaryOperation->getOperation();
 
     if (op == Token::Type::ASSIGNMENT)
@@ -108,9 +111,23 @@ std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
 {
     auto name = variable->getVarName();
     auto activationRecord = this->callStack.getActivationRecord();
-    auto res = activationRecord->getVar(name);
+    auto res = activationRecord->getSymbol(name)->getValue();
     return res;
-    // throw ExceptionFactory::create("Variable", name, "is not defined");
+}
+
+std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
+{
+    auto fn = functionCall->getFunction()->acceptVisitor(this);
+    if(fn->getType() == RVal::Type::FUNCTION){
+        auto fnConst = std::dynamic_pointer_cast<FunctionConst>(fn);
+        auto &functionAst = fnConst->getData();
+        CallStack callStack{functionAst.getCorospondingSymbolTable()};
+        Interpreter interpreter{callStack};
+        interpreter.interpretFunction(functionAst);
+        auto res = functionAst.getReturnVal();
+        return res;
+    }
+    throw ExceptionFactory::create("expression of type", fn->getTypeString(), "is not callable");
 }
 
 std::shared_ptr<RVal> Interpreter::visitFunction(Function *function)
@@ -126,7 +143,7 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
     {
         // put this in symbol table
         auto val = rVal->acceptVisitor(this);
-        activationRecord->addVar(name, val);
+        activationRecord->setSymbol(name, val);
     }
 }
 
@@ -193,10 +210,18 @@ void Interpreter::visitProgram(Program *program)
 
 void Interpreter::interpret()
 {
-    auto eval = this->parser.parse();
+    auto eval = this->parser->parse();
     eval->acceptVisitor(this);
-    std::cout << std::endl
-              << "\ncontent of symbol table\n"
-              << std::endl;
-    this->callStack.getGlobalScope()->getCorospondingSymbolTable()->print();
+}
+
+void Interpreter::interpretFunction(Function& function){
+   auto params = function.getParams();
+   auto activationRecord = this->callStack.getActivationRecord();
+   for(auto& [var, expr]:params)
+    activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
+   function.getCompoundStatement()->acceptVisitor(this);
+}
+
+CallStack& Interpreter::getCallStack(){
+    return this->callStack;
 }

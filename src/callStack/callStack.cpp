@@ -1,15 +1,15 @@
 #include <callStack/callStack.hpp>
 
-CallStack::CallStack(std::shared_ptr<SymbolTable> symbolTable) : scopes({std::make_shared<Scope>(symbolTable)}), activeScopeIndex(0) {}
+CallStack::CallStack(std::shared_ptr<SymbolTable> symbolTable) : scopes({symbolTable}), activeScopeIndex(0) {}
 
 void CallStack::pushScope()
 {
 
-    auto currentScope = this->scopes[this->scopes.size() - 1];
-    auto corospondingST = currentScope->getCorospondingSymbolTable();
+    auto currentScopeLevel = this->scopes.size() - 1;
+    auto corospondingST = this->scopes[currentScopeLevel];
     auto children = corospondingST->getChildren();
-    auto scope = std::make_shared<Scope>(children[this->childIndex]);
-    this->scopes.push_back(scope);
+    auto currentChild = children[this->childIndex];
+    this->scopes.push_back(currentChild);
 }
 
 void CallStack::popScope()
@@ -32,8 +32,8 @@ void CallStack::skipScope()
 
 void CallStack::incrementChildIndex()
 {
-    auto scope = this->scopes[this->scopes.size() - 1];
-    auto corospondingST = scope->getCorospondingSymbolTable();
+    auto scopeLevel = this->scopes.size() - 1;
+    auto corospondingST = this->scopes[scopeLevel];
     auto siblings = corospondingST->getChildren(); // siblings of corosponding symbol table
 
     if (this->childIndex + 1 < siblings.size())
@@ -45,16 +45,16 @@ void CallStack::incrementChildIndex()
         this->childIndex = 0;
 }
 
-std::shared_ptr<Scope> CallStack::getActivationRecord()
+std::shared_ptr<SymbolTable> CallStack::getActivationRecord()
 {
     return this->scopes[this->scopes.size() - 1];
 }
 
-std::shared_ptr<Scope> CallStack::getGlobalScope()
+std::shared_ptr<SymbolTable> CallStack::getGlobalScope()
 {
     return this->scopes[0];
 }
 
-CallStack::~CallStack(){
-    
+CallStack::~CallStack()
+{
 }
