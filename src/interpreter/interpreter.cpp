@@ -52,7 +52,6 @@ std::shared_ptr<RVal> Interpreter::visitUnaryOperation(UnaryOperation *unaryOper
 
 std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryOperation)
 {
-    std::cout<<"ran\n";
     auto op = binaryOperation->getOperation();
 
     if (op == Token::Type::ASSIGNMENT)
