@@ -26,7 +26,7 @@ bool Symbol::getIsInTemporalDeadZone()
 
 void Symbol::setIsInTemporalDeadZone(bool isInTemporalDeadzone)
 {
-    this->isInTemploralDeadzone = isInTemploralDeadzone;
+    this->isInTemploralDeadzone = isInTemporalDeadzone;
 }
 
 std::shared_ptr<RVal> Symbol::getValue()
@@ -36,7 +36,7 @@ std::shared_ptr<RVal> Symbol::getValue()
 
 void Symbol::setValue(std::shared_ptr<RVal> value)
 {
-    this->value = value;
+    //this->value = value;
 }
 
 std::string Symbol::getInstanceOf()
