@@ -115,4 +115,4 @@ typedef RValConst<RValPointerMap> MapConst;
 typedef RValConst<std::shared_ptr<void>> NullConst;
 typedef RValConst<std::shared_ptr<void>> UndefinedConst;
 
-typedef RValConst<Function> FunctionConst;
+typedef RValConst<std::shared_ptr<Function>> FunctionConst;

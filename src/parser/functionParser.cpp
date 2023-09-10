@@ -6,7 +6,7 @@ std::shared_ptr<Evaluable> Parser::function(bool isAnonymous)
 {
     this->eat(Token::Type::FUNCTION);
 
-    std::string name = "anonymous"; // if name is anonymous don't store in symbol table function symbol
+    std::string name = "!__ANONYMOUS__"; // if name is anonymous don't store in symbol table function symbol
     if (!isAnonymous)
     {
         name = this->currentToken.getTokenValue();
@@ -37,7 +37,7 @@ std::shared_ptr<Evaluable> Parser::function(bool isAnonymous)
 
     if (isAnonymous)
     {
-        auto fn = Function{name, params, statementList};
+        auto fn = std::make_shared<Function>(name, params, statementList);
         return RValConstFactory::createFunctionConstSharedPtr(fn);
     }
 

@@ -82,8 +82,8 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunctionCall(FunctionCall *functi
 std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
 {
     auto symbolTableBuilder = SymbolTableBuilder(function->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
-    symbolTableBuilder.buildForFunction(function);
-    auto fnConst = RValConstFactory::createFunctionConstSharedPtr(*function);
+    symbolTableBuilder.buildForFunction(function->getSharedPtr());
+    auto fnConst = RValConstFactory::createFunctionConstSharedPtr(function->getSharedPtr());
     auto funSymbol = SymbolFactory::createFuncSymbol(this->currentSymbolTable->getScopeLevel(), fnConst);
     this->currentSymbolTable->addSymbol(function->getName(), funSymbol);
     return nullptr;
@@ -181,7 +181,7 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::build()
     throw ExceptionFactory::create("while building symbol table got evaluble , expected runable");
 }
 
-std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForFunction(Function *function)
+std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForFunction(std::shared_ptr<Function> function)
 {
     function->setCorospondingSymbolTable(this->rootSymbolTable);
     auto params = function->getParams();

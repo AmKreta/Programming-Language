@@ -10,6 +10,7 @@
 #include <modules/console.hpp>
 #include <rVal/rVal.hpp>
 #include <utility/conversionFunctions.hpp>
+#include <symbol/symbolTableBuilder.hpp>
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
@@ -19,6 +20,13 @@ Interpreter::Interpreter(CallStack callStack) : callStack(callStack), parser(nul
 
 std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 {
+    // if(rValConst->getType()==RVal::Type::FUNCTION){
+    //     auto fnConst = std::dynamic_pointer_cast<FunctionConst>(rValConst->getSharedPtr());
+    //     auto fnAst = fnConst->getData();
+    //     auto symbolTableBuilder = SymbolTableBuilder(fnAst->getSharedPtr(), std::make_shared<SymbolTable>(this->callStack.getActivationRecord()));
+    //     symbolTableBuilder.buildForFunction(fnAst.get());
+    //     return fnConst;
+    // }
     return rValConst->getSharedPtr();
 }
 
@@ -120,10 +128,10 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
     if(fn->getType() == RVal::Type::FUNCTION){
         auto fnConst = std::dynamic_pointer_cast<FunctionConst>(fn);
         auto &functionAst = fnConst->getData();
-        CallStack callStack{functionAst.getCorospondingSymbolTable()};
+        CallStack callStack{functionAst->getCorospondingSymbolTable()};
         Interpreter interpreter{callStack};
         interpreter.interpretFunction(functionAst);
-        auto res = functionAst.getReturnVal();
+        auto res = functionAst->getReturnVal();
         return res;
     }
     throw ExceptionFactory::create("expression of type", fn->getTypeString(), "is not callable");
@@ -213,12 +221,12 @@ void Interpreter::interpret()
     eval->acceptVisitor(this);
 }
 
-void Interpreter::interpretFunction(Function& function){
-   auto params = function.getParams();
+void Interpreter::interpretFunction(std::shared_ptr<Function> function){
+   auto params = function->getParams();
    auto activationRecord = this->callStack.getActivationRecord();
    for(auto& [var, expr]:params)
     activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
-   function.getCompoundStatement()->acceptVisitor(this);
+   function->getCompoundStatement()->acceptVisitor(this);
 }
 
 CallStack& Interpreter::getCallStack(){

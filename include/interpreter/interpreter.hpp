@@ -34,5 +34,5 @@ public:
     void visitWhileLoop(WhileLoop *) override;
     CallStack &getCallStack();
     void interpret();
-    void interpretFunction(Function&);
+    void interpretFunction(std::shared_ptr<Function>);
 };

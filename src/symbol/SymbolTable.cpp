@@ -72,7 +72,7 @@ void SymbolTable::print(int ident)
             {
                 auto fnConst = std::dynamic_pointer_cast<FunctionConst>(symbol->getValue());
                 if (symbol->getScopeLevel() == this->scopeLevel)
-                    fnConst->getData().getCorospondingSymbolTable()->print((ident + 1) * 2);
+                    fnConst->getData()->getCorospondingSymbolTable()->print((ident + 1) * 2);
             }
         }
     }
