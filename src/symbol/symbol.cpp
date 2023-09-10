@@ -36,7 +36,7 @@ std::shared_ptr<RVal> Symbol::getValue()
 
 void Symbol::setValue(std::shared_ptr<RVal> value)
 {
-    //this->value = value;
+    this->value = value;
 }
 
 std::string Symbol::getInstanceOf()
