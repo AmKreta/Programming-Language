@@ -2,8 +2,12 @@
 
 #include <rVal/rVal.hpp>
 #include <evaluable/evaluable.hpp>
-#include <iostream>
 #include <evaluable/function.hpp>
+
+template <typename T>
+class RValConst;
+
+std::shared_ptr<RVal> visitorFn(Visitor*, RVal*);
 
 // need to define template class in header itlself
 template <typename T>
@@ -25,8 +29,11 @@ public:
         this->data = data;
     }
 
-    std::shared_ptr<RVal> acceptVisitor(Visitor *visitor)
-    {
+    std::shared_ptr<RVal> acceptVisitor(Visitor *visitor) override{
+        return visitorFn(visitor, this);
+    }
+
+    std::shared_ptr<RVal> getSharedPtr() override{
         return this->shared_from_this();
     }
 };

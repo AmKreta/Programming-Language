@@ -19,7 +19,7 @@ Interpreter::Interpreter(CallStack callStack) : callStack(callStack), parser(nul
 
 std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 {
-    return std::shared_ptr<RVal>{rValConst};
+    return rValConst->getSharedPtr();
 }
 
 std::shared_ptr<RVal> Interpreter::visitArrayAst(ArrayAst *arrayAst)

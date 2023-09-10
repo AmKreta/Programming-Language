@@ -27,7 +27,8 @@ public:
     RVal::Type getType();
     std::string getTypeString();
     static std::string getTypeString(RVal::Type);
-    virtual void fn(){}
+    virtual std::shared_ptr<RVal> getSharedPtr() = 0;
+    virtual ~RVal() = default;
     // also add size of operator
     // toString
     //cout overload virtual function
