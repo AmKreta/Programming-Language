@@ -11,7 +11,7 @@ void run(std::string input)
     Parser parser{lexer};
     SymbolTableBuilder stb{parser};
     auto st = stb.build();
-    // st->print();
+    //st->print();
     CallStack callStack{st};
     Interpreter interpreter{&parser, callStack};
     std::cout << std::endl
@@ -57,7 +57,8 @@ int main()
     // run("let a=0; if(a==0) a=5; if(a==4){ a = a+3;} else { a = a+8;}");
     // run("let a = 0, b=0;\nwhile(a<2){\n  let c = 0; \n  while(c<2){\n    b = b+1;\n    c = c+1;\n  }\n  while(c<4){\n    b = b+1;\n    c = c+1;\n  }\n  a=a+1;\n}");
     // run("if(true)if(true){}else if(true){} else{}");
-    run("let a=0; function amk(){ let b=0; while(b<10){ a=a+10; b=b+1;} } amk();");
+    //run("let a=0; function amk(){ let b=0; while(b<10){ a=a+10; b=b+1;} } amk();");
+    run("let b=0; let a = function(){ b=100;}; a();");
     std::cout << std::endl;
     return 0;
 }
