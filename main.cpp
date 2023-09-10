@@ -58,7 +58,7 @@ int main()
     // run("let a = 0, b=0;\nwhile(a<2){\n  let c = 0; \n  while(c<2){\n    b = b+1;\n    c = c+1;\n  }\n  while(c<4){\n    b = b+1;\n    c = c+1;\n  }\n  a=a+1;\n}");
     // run("if(true)if(true){}else if(true){} else{}");
     //run("let a=0; function amk(){ let b=0; while(b<10){ a=a+10; b=b+1;} } amk();");
-    run("let b=0; let a = function(){ b=100;}; a();");
+    run("let b=0;\nlet a = function(){\n  return function(){\n    return 100;\n  };\n};\nb = a()();");
     std::cout << std::endl;
     return 0;
 }

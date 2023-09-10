@@ -94,6 +94,13 @@ std::shared_ptr<Statement> Parser::statement()
         return res;
     }
 
+    if(this->currentToken.getTokenType() == Token::Type::RETURN){
+        this->eat(Token::Type::RETURN);
+        auto ret = std::make_shared<Return>(this->p11_expression());
+        this->eat(Token::Type::SEMI_COLON);
+        return ret;
+    }
+
     auto res = std::make_shared<ExpressionStatement>(this->p11_expression());
     this->eat(Token::Type::SEMI_COLON);
     return res;

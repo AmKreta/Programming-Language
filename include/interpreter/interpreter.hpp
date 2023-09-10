@@ -9,12 +9,12 @@
 class Interpreter : public Visitor
 {
 private:
-    Parser* parser;
+    std::shared_ptr<AstNode> astNode;
     CallStack callStack;
-
+    bool hasReturned;
 public:
     Interpreter(Parser*, CallStack);
-    Interpreter(CallStack);
+    Interpreter(std::shared_ptr<AstNode>, CallStack);
     std::shared_ptr<RVal> visitRValConst(RVal *) override;
     std::shared_ptr<RVal> visitUnaryOperation(UnaryOperation *) override;
     std::shared_ptr<RVal> visitBinaryOperation(BinaryOperation *) override;
@@ -32,7 +32,7 @@ public:
     void visitExpressionStatement(ExpressionStatement *) override;
     void visitForLoop(ForLoop *) override;
     void visitWhileLoop(WhileLoop *) override;
+    void visitReturn(Return*) override;
     CallStack &getCallStack();
     void interpret();
-    void interpretFunction(std::shared_ptr<Function>);
 };

@@ -22,6 +22,7 @@ public:
     std::vector<std::pair<std::shared_ptr<Variable>, std::shared_ptr<Evaluable>>> getParams();
     std::shared_ptr<CompoundStatement> getCompoundStatement();
     std::shared_ptr<RVal> getReturnVal();
+    void setReturnVal(std::shared_ptr<RVal>);
     void setCorospondingSymbolTable(std::shared_ptr<SymbolTable>);
     std::shared_ptr<SymbolTable> getCorospondingSymbolTable();
     std::shared_ptr<RVal> acceptVisitor(Visitor *) override;

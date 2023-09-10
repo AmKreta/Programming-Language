@@ -89,6 +89,11 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
     return nullptr;
 }
 
+void SymbolTableBuilder::visitReturn(Return* ret){
+    auto expr = ret->getExpr();
+    expr->acceptVisitor(this);
+}
+
 // add vars to symbol table
 void SymbolTableBuilder::visitVarDecleration(VarDecleration *varDecleration)
 {

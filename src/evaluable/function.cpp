@@ -18,22 +18,32 @@ std::shared_ptr<RVal> Function::getReturnVal()
     return this->returnVal;
 }
 
-std::shared_ptr<RVal> Function::acceptVisitor(Visitor* visitor){
+std::shared_ptr<RVal> Function::acceptVisitor(Visitor *visitor)
+{
     return visitor->visitFunction(this);
 }
 
-std::string Function::getName(){
+std::string Function::getName()
+{
     return this->name;
 }
 
-void Function::setCorospondingSymbolTable(std::shared_ptr<SymbolTable> corospondingSymbolTable){
+void Function::setCorospondingSymbolTable(std::shared_ptr<SymbolTable> corospondingSymbolTable)
+{
     this->corospondingSymbolTable = corospondingSymbolTable;
 }
 
-std::shared_ptr<SymbolTable> Function::getCorospondingSymbolTable(){
+std::shared_ptr<SymbolTable> Function::getCorospondingSymbolTable()
+{
     return this->corospondingSymbolTable;
 }
 
-std::shared_ptr<Function> Function::getSharedPtr(){
+std::shared_ptr<Function> Function::getSharedPtr()
+{
     return this->shared_from_this();
+}
+
+void Function::setReturnVal(std::shared_ptr<RVal> val)
+{
+    this->returnVal = val;
 }

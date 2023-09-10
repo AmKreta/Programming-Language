@@ -19,6 +19,7 @@
 #include <runable/varDecleration.hpp>
 #include <runable/forLoop.hpp>
 #include <runable/whileLoop.hpp>
+#include <runable/return.hpp>
 
 class Visitor
 {
@@ -40,5 +41,6 @@ public:
     virtual void visitExpressionStatement(ExpressionStatement *) = 0;
     virtual void visitForLoop(ForLoop *) = 0;
     virtual void visitWhileLoop(WhileLoop *) = 0;
+    virtual void visitReturn(Return*) = 0;
     virtual ~Visitor() = default;
 };

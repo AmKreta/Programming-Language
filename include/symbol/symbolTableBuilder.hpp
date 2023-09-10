@@ -33,6 +33,7 @@ public:
     void visitExpressionStatement(ExpressionStatement *) override;
     void visitForLoop(ForLoop *) override;
     void visitWhileLoop(WhileLoop *) override;
+    void visitReturn(Return*) override;
     std::shared_ptr<SymbolTable> build();
     std::shared_ptr<SymbolTable> buildForFunction(std::shared_ptr<Function>);
 };

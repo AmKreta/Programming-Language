@@ -12,11 +12,9 @@
 #include <utility/conversionFunctions.hpp>
 #include <symbol/symbolTableBuilder.hpp>
 
-auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
+Interpreter::Interpreter(Parser *parser, CallStack callStack) : astNode(parser->parse()), callStack(callStack), hasReturned(false) {}
 
-Interpreter::Interpreter(Parser *parser, CallStack callStack) : parser(parser), callStack(callStack) {}
-
-Interpreter::Interpreter(CallStack callStack) : callStack(callStack), parser(nullptr) {}
+Interpreter::Interpreter(std::shared_ptr<AstNode> astNode, CallStack callStack) : callStack(callStack), astNode(astNode), hasReturned(false) {}
 
 std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 {
@@ -131,11 +129,10 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         auto fnConst = std::dynamic_pointer_cast<FunctionConst>(fn);
         auto &functionAst = fnConst->getData();
         CallStack callStack{functionAst->getCorospondingSymbolTable()};
-        Interpreter interpreter{callStack};
-        interpreter.interpretFunction(functionAst);
+        Interpreter interpreter{functionAst, callStack};
+        interpreter.interpret();
         auto res = functionAst->getReturnVal();
         return res;
-        return nullptr;
     }
     throw ExceptionFactory::create("expression of type", fn->getTypeString(), "is not callable");
 }
@@ -143,6 +140,18 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
 std::shared_ptr<RVal> Interpreter::visitFunction(Function *function)
 {
     return nullptr;
+}
+
+void Interpreter::visitReturn(Return* ret){
+    auto fn = std::dynamic_pointer_cast<Function>(this->astNode);
+    if(fn){
+        auto expr = ret->getExpr();
+        auto res = expr->acceptVisitor(this);
+        fn->setReturnVal(res);
+        this->hasReturned = true;
+        // reset function here
+    }
+    else throw ExceptionFactory::create("Return can only be used inside function");
 }
 
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
@@ -206,8 +215,11 @@ void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatem
 void Interpreter::visitCompoundStatement(CompoundStatement *compoundStatement)
 {
     auto statementList = compoundStatement->getStatementList();
-    for (auto statement : statementList)
+    for (auto statement : statementList){
+        if(this->hasReturned)
+            break;
         statement->acceptVisitor(this);
+    }
 }
 
 void Interpreter::visitProgram(Program *program)
@@ -219,17 +231,26 @@ void Interpreter::visitProgram(Program *program)
 
 void Interpreter::interpret()
 {
-    auto eval = this->parser->parse();
-    eval->acceptVisitor(this);
-}
-
-void Interpreter::interpretFunction(std::shared_ptr<Function> function)
-{
-    auto params = function->getParams();
-    auto activationRecord = this->callStack.getActivationRecord();
-    for (auto &[var, expr] : params)
-        activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
-    function->getCompoundStatement()->acceptVisitor(this);
+    auto program = std::dynamic_pointer_cast<Program>(this->astNode);
+    if (program)
+    {
+        program->acceptVisitor(this);
+    }
+    else
+    {
+        auto function = std::dynamic_pointer_cast<Function>(this->astNode);
+        if (function)
+        {
+            auto params = function->getParams();
+            auto activationRecord = this->callStack.getActivationRecord();
+            for (auto &[var, expr] : params)
+                activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
+            function->getCompoundStatement()->acceptVisitor(this);
+        }
+        else{
+            throw ExceptionFactory::create("Interpret can only interpret Function and Program");
+        }
+    }
 }
 
 CallStack &Interpreter::getCallStack()
