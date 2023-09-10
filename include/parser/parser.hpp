@@ -12,6 +12,7 @@
 #include <runable/forLoop.hpp>
 #include <runable/whileLoop.hpp>
 #include <runable/return.hpp>
+#include <runable/print.hpp>
 
 // grammer
 // program : compoundStatement
@@ -46,6 +47,7 @@ private:
 
 public:
     Parser(Lexer);
+    std::shared_ptr<Print> print();
     std::shared_ptr<Evaluable> indexingOrFunctionCall(std::shared_ptr<Evaluable>);
     std::shared_ptr<Evaluable> function(bool isAnonymous = false);
     std::shared_ptr<RVal> functionCall();

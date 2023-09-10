@@ -73,6 +73,13 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitVariable(Variable *variable)
     return nullptr;
 }
 
+void SymbolTableBuilder::visitPrint(Print *print)
+{
+    auto args = print->getArgs();
+    for (auto arg : args)
+        arg->acceptVisitor(this);
+}
+
 std::shared_ptr<RVal> SymbolTableBuilder::visitFunctionCall(FunctionCall *functionCall)
 {
     auto fnConst = functionCall->getFunction()->acceptVisitor(this);
@@ -89,7 +96,8 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
     return nullptr;
 }
 
-void SymbolTableBuilder::visitReturn(Return* ret){
+void SymbolTableBuilder::visitReturn(Return *ret)
+{
     auto expr = ret->getExpr();
     expr->acceptVisitor(this);
 }

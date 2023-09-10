@@ -95,7 +95,10 @@ public:
         // return
         RETURN,
         END_OF_FILE,
-        START_OF_FILE
+        START_OF_FILE,
+
+        // print
+        PRINT
     };
 
     static std::vector<std::string> TypeStr;

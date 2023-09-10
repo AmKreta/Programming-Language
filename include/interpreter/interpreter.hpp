@@ -33,6 +33,7 @@ public:
     void visitForLoop(ForLoop *) override;
     void visitWhileLoop(WhileLoop *) override;
     void visitReturn(Return*) override;
+    void visitPrint(Print* ) override;
     CallStack &getCallStack();
     void interpret();
 };

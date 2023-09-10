@@ -121,6 +121,16 @@ std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
     return res;
 }
 
+void Interpreter::visitPrint(Print *print)
+{
+    auto args = print->getArgs();
+    for (auto arg : args)
+    {
+        auto res = arg->acceptVisitor(this);
+        Console::log(res);
+    }
+}
+
 std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
 {
     auto fn = functionCall->getFunction()->acceptVisitor(this);
@@ -142,16 +152,19 @@ std::shared_ptr<RVal> Interpreter::visitFunction(Function *function)
     return nullptr;
 }
 
-void Interpreter::visitReturn(Return* ret){
+void Interpreter::visitReturn(Return *ret)
+{
     auto fn = std::dynamic_pointer_cast<Function>(this->astNode);
-    if(fn){
+    if (fn)
+    {
         auto expr = ret->getExpr();
         auto res = expr->acceptVisitor(this);
         fn->setReturnVal(res);
         this->hasReturned = true;
         // reset function here
     }
-    else throw ExceptionFactory::create("Return can only be used inside function");
+    else
+        throw ExceptionFactory::create("Return can only be used inside function");
 }
 
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
@@ -215,8 +228,9 @@ void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatem
 void Interpreter::visitCompoundStatement(CompoundStatement *compoundStatement)
 {
     auto statementList = compoundStatement->getStatementList();
-    for (auto statement : statementList){
-        if(this->hasReturned)
+    for (auto statement : statementList)
+    {
+        if (this->hasReturned)
             break;
         statement->acceptVisitor(this);
     }
@@ -247,7 +261,8 @@ void Interpreter::interpret()
                 activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
             function->getCompoundStatement()->acceptVisitor(this);
         }
-        else{
+        else
+        {
             throw ExceptionFactory::create("Interpret can only interpret Function and Program");
         }
     }

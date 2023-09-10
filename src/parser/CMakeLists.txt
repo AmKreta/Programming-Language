@@ -11,5 +11,6 @@ ternaryParser.cpp
 runable.cpp 
 forLoopParser.cpp 
 whileLoopParser.cpp
-functionParser.cpp)
+functionParser.cpp
+printParser.cpp)
 target_include_directories(parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../include)

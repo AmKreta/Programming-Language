@@ -101,6 +101,12 @@ std::shared_ptr<Statement> Parser::statement()
         return ret;
     }
 
+    if(this->currentToken.getTokenType() == Token::Type::PRINT){
+        auto res = this->print();
+        this->eat(Token::Type::SEMI_COLON);
+        return res;
+    }
+
     auto res = std::make_shared<ExpressionStatement>(this->p11_expression());
     this->eat(Token::Type::SEMI_COLON);
     return res;
