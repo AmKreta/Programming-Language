@@ -59,6 +59,12 @@ void Console::logUndefined()
     std::cout << "undefined";
 }
 
+void Console::logFunction(std::shared_ptr<FunctionConst> fn)
+{
+    auto name = fn->getData()->getName();
+    std::cout << "[Function - " << name << "]";
+}
+
 void Console::log(std::shared_ptr<RVal> rval)
 {
     auto type = rval->getType();
@@ -76,4 +82,6 @@ void Console::log(std::shared_ptr<RVal> rval)
         return Console::logNull();
     if (type == RVal::Type::UNDEFINED)
         return Console::logUndefined();
+    if (type == RVal::Type::FUNCTION)
+        return Console::logFunction(std::dynamic_pointer_cast<FunctionConst>(rval));
 }

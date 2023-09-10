@@ -6,6 +6,7 @@
 #include <evaluable/rValConst.hpp>
 #include <evaluable/variable.hpp>
 #include <evaluable/indexing.hpp>
+#include <evaluable/functionCall.hpp>
 #include <exception/exceptionFactory.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor()
@@ -115,7 +116,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         }
         this->eat(Token::Type::R_BRACKET);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-            return this->indexing(std::make_shared<ArrayAst>(arrAst));
+            return this->indexingOrFunctionCall(std::make_shared<ArrayAst>(arrAst));
         return std::make_shared<ArrayAst>(arrAst);
     }
 
@@ -147,7 +148,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         }
         this->eat(Token::Type::R_BRACES);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-            return this->indexing(std::make_shared<MapAst>(mapAst));
+            return this->indexingOrFunctionCall(std::make_shared<MapAst>(mapAst));
         return std::make_shared<MapAst>(mapAst);
     }
 
@@ -171,27 +172,46 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         auto name = this->currentToken.getTokenValue();
         this->eat(Token::Type::ID);
         auto var = std::make_shared<Variable>(name);
-        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-            return this->indexing(var);
+        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN)
+            return this->indexingOrFunctionCall(var);
         return var;
     }
+
+    if (this->currentToken.getTokenType() == Token::Type::FUNCTION)
+        return this->function(true);
 
     throw ExceptionFactory::create("misplaced or unsupported token", this->currentToken.getTokenTypeString(), this->currentToken.getTokenValue());
     // remaining
     //  ',' , ++, --,
 }
 
-std::shared_ptr<Indexing> Parser::indexing(std::shared_ptr<Evaluable> expr)
+std::shared_ptr<Evaluable> Parser::indexingOrFunctionCall(std::shared_ptr<Evaluable> expr)
 {
-
-    this->eat(Token::Type::L_BRACKET);
-    auto indexing = std::make_shared<Indexing>(expr, this->p11_expression());
-    this->eat(Token::Type::R_BRACKET);
-    while (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
+    auto res = expr;
+    while (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN)
     {
-        this->eat(Token::Type::L_BRACKET);
-        indexing = std::make_shared<Indexing>(indexing, this->p11_expression());
-        this->eat(Token::Type::R_BRACKET);
+        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
+        {
+            this->eat(Token::Type::L_BRACKET);
+            res = std::make_shared<Indexing>(res, this->p11_expression());
+            this->eat(Token::Type::R_BRACKET);
+        }
+        else
+        {
+            this->eat(Token::Type::L_PAREN);
+            std::vector<std::shared_ptr<Evaluable>> args;
+            if (this->currentToken.getTokenType() != Token::Type::R_PAREN)
+            {
+                args.push_back(this->p11_expression());
+                while (this->currentToken.getTokenType() == Token::Type::COMMA)
+                {
+                    this->eat(Token::Type::COMMA);
+                    args.push_back(this->p11_expression());
+                }
+            }
+            this->eat(Token::Type::R_PAREN);
+            res = std::make_shared<FunctionCall>(res, args);
+        }
     }
-    return indexing;
+    return res;
 }

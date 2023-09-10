@@ -321,6 +321,14 @@ Token Lexer::readID() // reads keywords and identifires
         return TokenFactory::build(Token::Type::TRUE);
     if(input == "false")
         return TokenFactory::build(Token::Type::FALSE);
+    
+    // return
+    if(input == "return")
+        return TokenFactory::build(Token::Type::RETURN);
+
+    // print
+    if(input == "print")
+        return TokenFactory::build(Token::Type::PRINT);
 
     return TokenFactory::build(Token::Type::ID, input);
 

@@ -46,4 +46,8 @@ public:
 
     // for undefined
     static std::shared_ptr<UndefinedConst> createUndefinedConstSharedPtr();
+
+    // for functions
+    static std::shared_ptr<FunctionConst> createFunctionConstSharedPtr(std::shared_ptr<Function>);
+    static FunctionConst* createFunctionConstPtr(std::shared_ptr<Function>);
 };

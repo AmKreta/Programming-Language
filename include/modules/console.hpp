@@ -18,6 +18,8 @@ class Console{
         static void logNull();
         
         static void logUndefined();
+
+        static void logFunction(std::shared_ptr<FunctionConst>);
         
     public:
         static void log(std::shared_ptr<RVal>);

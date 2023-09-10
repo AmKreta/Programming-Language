@@ -71,3 +71,14 @@ std::shared_ptr<UndefinedConst> RValConstFactory::createUndefinedConstSharedPtr(
 {
     return RValConstFactory::UndefinedSharedPtr;
 }
+
+// for function
+std::shared_ptr<FunctionConst> RValConstFactory::createFunctionConstSharedPtr(std::shared_ptr<Function> fn)
+{
+    return RValConstFactory::createSharedPtr<std::shared_ptr<Function>>(fn, RVal::Type::FUNCTION);
+}
+
+FunctionConst *RValConstFactory::createFunctionConstPtr(std::shared_ptr<Function> fn)
+{
+    return RValConstFactory::createPtr<std::shared_ptr<Function>>(fn, RVal::Type::FUNCTION);
+}

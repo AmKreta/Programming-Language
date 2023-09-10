@@ -1,2 +1,2 @@
-add_library(runable STATIC expressionStatement.cpp varDecleration.cpp program.cpp ifElse.cpp compoundStatement.cpp forLoop.cpp whileLoop.cpp)
+add_library(runable STATIC expressionStatement.cpp varDecleration.cpp program.cpp ifElse.cpp compoundStatement.cpp forLoop.cpp whileLoop.cpp return.cpp print.cpp)
 target_include_directories(runable PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../../include)

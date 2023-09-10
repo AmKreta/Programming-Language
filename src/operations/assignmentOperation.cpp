@@ -1,14 +1,15 @@
 #include <operations/assignmentOperation.hpp>
 #include <exception/exceptionFactory.hpp>
+#include <symbol/symbolTable.hpp>
 
-std::shared_ptr<RVal> AssignmentOperation::evaluate(Visitor *visitor, std::shared_ptr<Evaluable> lhs, std::shared_ptr<Evaluable> rhs, std::shared_ptr<Scope> activationRecord)
+std::shared_ptr<RVal> AssignmentOperation::evaluate(Visitor *visitor, std::shared_ptr<Evaluable> lhs, std::shared_ptr<Evaluable> rhs, std::shared_ptr<SymbolTable> activationRecord)
 {
     auto res = rhs->acceptVisitor(visitor);
 
     auto var = std::dynamic_pointer_cast<Variable>(lhs);
     if (var)
     {
-        activationRecord->setVar(var->getVarName(), res);
+        activationRecord->setSymbol(var->getVarName(), res);
         return res;
     }
 

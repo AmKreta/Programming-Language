@@ -88,6 +88,25 @@ std::shared_ptr<Statement> Parser::statement()
     if (this->currentToken.getTokenType() == Token::Type::WHILE)
         return this->whileLoop();
 
+    if (this->currentToken.getTokenType() == Token::Type::FUNCTION)
+    {
+        auto res = std::make_shared<ExpressionStatement>(this->function());
+        return res;
+    }
+
+    if(this->currentToken.getTokenType() == Token::Type::RETURN){
+        this->eat(Token::Type::RETURN);
+        auto ret = std::make_shared<Return>(this->p11_expression());
+        this->eat(Token::Type::SEMI_COLON);
+        return ret;
+    }
+
+    if(this->currentToken.getTokenType() == Token::Type::PRINT){
+        auto res = this->print();
+        this->eat(Token::Type::SEMI_COLON);
+        return res;
+    }
+
     auto res = std::make_shared<ExpressionStatement>(this->p11_expression());
     this->eat(Token::Type::SEMI_COLON);
     return res;
@@ -104,7 +123,8 @@ std::shared_ptr<CompoundStatement> Parser::compoundStatement(bool readOnlyOneSta
         return std::make_shared<CompoundStatement>(statementList);
     }
 
-    while (this->currentToken.getTokenType() != delimiter){
+    while (this->currentToken.getTokenType() != delimiter)
+    {
         statementList.push_back(this->statement());
     }
 
