@@ -2,6 +2,7 @@
 #include <iostream>
 #include <token/token.hpp>
 #include <sstream>
+#include <exception/exceptionFactory.hpp>
 
 std::string ToString::convertNumberConst(std::shared_ptr<NumberConst> num)
 {
@@ -85,4 +86,15 @@ std::string ToString::convert(std::shared_ptr<RVal> rval)
         return ToString::convertNull();
     if (type == RVal::Type::UNDEFINED)
         return ToString::convertUndefined();
+    if (type == RVal::Type::FUNCTION)
+    {
+        std::ostringstream oss;
+        oss << "[FUNCTION - ";
+        auto name = std::dynamic_pointer_cast<FunctionConst>(rval)->getData()->getName();
+        oss << (name == "!__ANONYMOUS__" ? "ANONYMOUS" : name);
+        oss << "]";
+        return oss.str();
+    }
+
+    throw ExceptionFactory::create("unable to convert" , rval->getTypeString(), "to string");
 }

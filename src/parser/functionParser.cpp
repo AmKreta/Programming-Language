@@ -35,11 +35,10 @@ std::shared_ptr<Evaluable> Parser::function(bool isAnonymous)
     auto statementList = this->compoundStatement(false, Token::Type::R_BRACES);
     this->eat(Token::Type::R_BRACES);
 
-    if (isAnonymous)
-    {
-        auto fn = std::make_shared<Function>(name, params, statementList);
-        return RValConstFactory::createFunctionConstSharedPtr(fn);
-    }
+    auto fn = std::make_shared<Function>(name, params, statementList);
 
-    return std::make_shared<Function>(name, params, statementList);
+    if (isAnonymous)
+        return RValConstFactory::createFunctionConstSharedPtr(fn);
+
+    return fn;
 }

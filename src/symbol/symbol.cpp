@@ -2,7 +2,7 @@
 #include <sstream>
 #include <utility/toString.hpp>
 
-Symbol::Symbol(Symbol::Type type, int scopeLevel, std::shared_ptr<RVal> value, bool isInTemporalDeadZone) : scopeLevel(scopeLevel), type(type), value(value), isInTemploralDeadzone(isInTemploralDeadzone) {}
+Symbol::Symbol(Symbol::Type type, int scopeLevel, std::shared_ptr<RVal> value, bool isInTemporalDeadZone) : scopeLevel(scopeLevel), type(type), value(value), isInTemploralDeadzone(isInTemporalDeadZone) {}
 
 int Symbol::getScopeLevel()
 {

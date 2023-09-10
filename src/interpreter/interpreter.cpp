@@ -14,19 +14,20 @@
 
 auto globalScope = std::unordered_map<std::string, std::shared_ptr<RVal>>();
 
-Interpreter::Interpreter(Parser* parser, CallStack callStack) : parser(parser), callStack(callStack) {}
+Interpreter::Interpreter(Parser *parser, CallStack callStack) : parser(parser), callStack(callStack) {}
 
 Interpreter::Interpreter(CallStack callStack) : callStack(callStack), parser(nullptr) {}
 
 std::shared_ptr<RVal> Interpreter::visitRValConst(RVal *rValConst)
 {
-    // if(rValConst->getType()==RVal::Type::FUNCTION){
-    //     auto fnConst = std::dynamic_pointer_cast<FunctionConst>(rValConst->getSharedPtr());
-    //     auto fnAst = fnConst->getData();
-    //     auto symbolTableBuilder = SymbolTableBuilder(fnAst->getSharedPtr(), std::make_shared<SymbolTable>(this->callStack.getActivationRecord()));
-    //     symbolTableBuilder.buildForFunction(fnAst.get());
-    //     return fnConst;
-    // }
+    if (rValConst->getType() == RVal::Type::FUNCTION)
+    {
+        auto fnConst = std::dynamic_pointer_cast<FunctionConst>(rValConst->getSharedPtr());
+        auto fnAst = fnConst->getData();
+        auto symbolTableBuilder = SymbolTableBuilder(fnAst->getSharedPtr(), std::make_shared<SymbolTable>(this->callStack.getActivationRecord()));
+        symbolTableBuilder.buildForFunction(fnAst);
+        return fnConst;
+    }
     return rValConst->getSharedPtr();
 }
 
@@ -125,7 +126,8 @@ std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
 std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
 {
     auto fn = functionCall->getFunction()->acceptVisitor(this);
-    if(fn->getType() == RVal::Type::FUNCTION){
+    if (fn->getType() == RVal::Type::FUNCTION)
+    {
         auto fnConst = std::dynamic_pointer_cast<FunctionConst>(fn);
         auto &functionAst = fnConst->getData();
         CallStack callStack{functionAst->getCorospondingSymbolTable()};
@@ -133,6 +135,7 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         interpreter.interpretFunction(functionAst);
         auto res = functionAst->getReturnVal();
         return res;
+        return nullptr;
     }
     throw ExceptionFactory::create("expression of type", fn->getTypeString(), "is not callable");
 }
@@ -146,10 +149,9 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
 {
     auto declerations = varDecleration->getDeclerations();
     auto activationRecord = this->callStack.getActivationRecord();
-    for (auto &[name, rVal] : declerations)
+    for (auto &[name, expr] : declerations)
     {
-        // put this in symbol table
-        auto val = rVal->acceptVisitor(this);
+        auto val = expr->acceptVisitor(this);
         activationRecord->setSymbol(name, val);
     }
 }
@@ -221,14 +223,16 @@ void Interpreter::interpret()
     eval->acceptVisitor(this);
 }
 
-void Interpreter::interpretFunction(std::shared_ptr<Function> function){
-   auto params = function->getParams();
-   auto activationRecord = this->callStack.getActivationRecord();
-   for(auto& [var, expr]:params)
-    activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
-   function->getCompoundStatement()->acceptVisitor(this);
+void Interpreter::interpretFunction(std::shared_ptr<Function> function)
+{
+    auto params = function->getParams();
+    auto activationRecord = this->callStack.getActivationRecord();
+    for (auto &[var, expr] : params)
+        activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
+    function->getCompoundStatement()->acceptVisitor(this);
 }
 
-CallStack& Interpreter::getCallStack(){
+CallStack &Interpreter::getCallStack()
+{
     return this->callStack;
 }
