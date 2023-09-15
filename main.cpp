@@ -92,6 +92,7 @@ int main()
     //         print('*');\n\
     //         print('\n');\n\
     //     }");
+    run("function fun(a='no arg passed'){\n  print(a);\n}\nlet funExpr = function(b='no arg passed'){\n  print(b);\n};\nfun();\nprint(', ');\nfun('hello');\nprint(', ');\nfunExpr();\nprint(', ');\nfunExpr('world');");
     std::cout << std::endl;
     return 0;
 }

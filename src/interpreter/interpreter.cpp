@@ -140,7 +140,7 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         auto &functionAst = fnConst->getData();
         CallStack callStack{functionAst->getCorospondingSymbolTable()};
         Interpreter interpreter{functionAst, callStack};
-        interpreter.interpret();
+        interpreter.interpret(functionCall->getArgs());
         auto res = functionAst->getReturnVal();
         return res;
     }
@@ -243,7 +243,7 @@ void Interpreter::visitProgram(Program *program)
     compoundStatement->acceptVisitor(this);
 }
 
-void Interpreter::interpret()
+void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
 {
     auto program = std::dynamic_pointer_cast<Program>(this->astNode);
     if (program)
@@ -257,8 +257,13 @@ void Interpreter::interpret()
         {
             auto params = function->getParams();
             auto activationRecord = this->callStack.getActivationRecord();
-            for (auto &[var, expr] : params)
-                activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
+            for(int i=0;i<params.size();i++){
+                auto &[var, expr] = params[i];
+                if(i<args.size())
+                    activationRecord->setSymbol(var->getVarName(), args[i]->acceptVisitor(this));
+                else
+                    activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
+            }
             function->getCompoundStatement()->acceptVisitor(this);
         }
         else

@@ -35,5 +35,5 @@ public:
     void visitReturn(Return*) override;
     void visitPrint(Print* ) override;
     CallStack &getCallStack();
-    void interpret();
+    void interpret(std::vector<std::shared_ptr<Evaluable>> args = {});
 };
