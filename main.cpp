@@ -61,8 +61,37 @@ int main()
     // run("let a = 0, b=0;\nwhile(a<2){\n  let c = 0; \n  while(c<2){\n    b = b+1;\n    c = c+1;\n  }\n  while(c<4){\n    b = b+1;\n    c = c+1;\n  }\n  a=a+1;\n}");
     // run("if(true)if(true){}else if(true){} else{}");
     // run("let a=0; function amk(){ let b=0; while(b<10){ a=a+10; b=b+1;} } amk();");
-    run("let b=0;\nlet a = function(){\n  return function(){\n    return 100;\n  };\n};\nb = a()();\nprint('value of b is ', b);");
+    //run("let b=0;\nlet fn = function(){\n  let c = 100;\n  return function(){\n    return c;\n  };\n};\nb = fn()();\nprint('value of b is ', b);");
     //run("print('Amk is great !')");
+    // run("for(let i=0;i<10;i=i+1){\n  for(let j=0;j<=i;j=j+1){\n    print('*');\n  }\n  for(let j=i+1;j<20-i;j=j+1){\n    print(' ');\n  }\n  for(let j=0;j<=i;j=j+1){\n    print('*');\n  }\n  print('\n');}");
+    // run("function heart(){\n\
+    //         let size=10;\n\
+    //         for(let i=0;i<5;i=i+1){\n\
+    //             for(let s=5;s>=i;s=s-1)\n\
+    //                 print(' ');\n\
+    //             print('*');\n\
+    //             for(let s=0;s<i;s=s+1)\n\
+    //                 print('  ');\n\
+    //             print('*');\n\
+    //             for(let s=5-i+2;s>=i;s=s-1)\n\
+    //                 print(' ');\n\
+    //             print('*');\n\
+    //             for(let s=0;s<i;s=s+1)\n\
+    //                 print('  ');\n\
+    //             print('*');\n\
+    //             print('\n');\n\
+    //         }\n\
+    //     }\n\
+    //     heart();\n\
+    //     for(let i=0;i<=10;i = i+1){\n\
+    //         for(let s=0;s<=i;s=s+1)\n\
+    //             print(' ');\n\
+    //         print('*');\n\
+    //         for(let s=i;s<20-i;s=s+1)\n\
+    //             print(' ');\n\
+    //         print('*');\n\
+    //         print('\n');\n\
+    //     }");
     std::cout << std::endl;
     return 0;
 }

@@ -9,7 +9,7 @@ void Console::logNumberConst(std::shared_ptr<NumberConst> num)
 
 void Console::logStringConst(std::shared_ptr<StringConst> str)
 {
-    std::cout << "\"" << str->getData() << "\"";
+    std::cout<<str->getData();
 }
 
 void Console::logArrayConst(std::shared_ptr<ArrayConst> arr)
