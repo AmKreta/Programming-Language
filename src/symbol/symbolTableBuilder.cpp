@@ -88,11 +88,12 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunctionCall(FunctionCall *functi
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
 {
-    auto symbolTableBuilder = SymbolTableBuilder(function->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
-    symbolTableBuilder.buildForFunction(function->getSharedPtr());
     auto fnConst = RValConstFactory::createFunctionConstSharedPtr(function->getSharedPtr());
     auto funSymbol = SymbolFactory::createFuncSymbol(this->currentSymbolTable->getScopeLevel(), fnConst);
     this->currentSymbolTable->addSymbol(function->getName(), funSymbol);
+    // building symbol table for new execution context
+    auto symbolTableBuilder = SymbolTableBuilder(function->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
+    symbolTableBuilder.buildForFunction(function->getSharedPtr());
     return nullptr;
 }
 
