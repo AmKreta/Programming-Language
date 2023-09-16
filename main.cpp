@@ -4,9 +4,15 @@
 #include <interpreter/interpreter.hpp>
 #include <symbol/symbolTableBuilder.hpp>
 #include <callStack/callStack.hpp>
+#include <chrono>
 
 void run(std::string input)
 {
+       std::cout << std::endl
+              << input
+              << std::endl
+              << std::endl;
+    auto start = std::chrono::high_resolution_clock::now();
     Lexer lexer{input};
     Parser parser{lexer};
     SymbolTableBuilder stb{parser};
@@ -14,12 +20,11 @@ void run(std::string input)
     // st->print();
     CallStack callStack{st};
     Interpreter interpreter{&parser, callStack};
-    std::cout << std::endl
-              << input
-              << std::endl
-              << std::endl;
     interpreter.interpret();
     std::cout << std::endl
+              << std::endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << "executed successfully in " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " millisecond ........" << std::endl
               << std::endl;
     // std::cout << std::endl
     //           << "\ncontent of symbol table\n"
