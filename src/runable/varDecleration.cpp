@@ -3,7 +3,7 @@
 
 VarDecleration::VarDecleration(std::vector<std::pair<std::string, std::shared_ptr<Evaluable>>> declerations) : declerations(declerations) {}
 
-std::vector<std::pair<std::string, std::shared_ptr<Evaluable>>> VarDecleration::getDeclerations()
+std::vector<std::pair<std::string, std::shared_ptr<Evaluable>>>& VarDecleration::getDeclerations()
 {
     return this->declerations;
 }

@@ -12,6 +12,6 @@ private:
 
 public:
     CompoundStatement(std::vector<std::shared_ptr<Statement>>);
-    std::vector<std::shared_ptr<Statement>> getStatementList();
+    std::vector<std::shared_ptr<Statement>>& getStatementList();
     void acceptVisitor(Visitor *) override;
 };

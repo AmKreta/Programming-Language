@@ -3,7 +3,7 @@
 
 Function::Function(std::string name, std::vector<std::pair<std::shared_ptr<Variable>, std::shared_ptr<Evaluable>>> params, std::shared_ptr<CompoundStatement> compoundStatement) : name(name), params(params), compoundStatement(compoundStatement), returnVal(nullptr), corospondingSymbolTable(nullptr) {}
 
-std::vector<std::pair<std::shared_ptr<Variable>, std::shared_ptr<Evaluable>>> Function::getParams()
+std::vector<std::pair<std::shared_ptr<Variable>, std::shared_ptr<Evaluable>>>& Function::getParams()
 {
     return this->params;
 }

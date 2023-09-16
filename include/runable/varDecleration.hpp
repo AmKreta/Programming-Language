@@ -16,6 +16,6 @@ private:
 
 public:
     VarDecleration(std::vector<std::pair<std::string, std::shared_ptr<Evaluable>>>);
-    std::vector<std::pair<std::string, std::shared_ptr<Evaluable>>> getDeclerations();
+    std::vector<std::pair<std::string, std::shared_ptr<Evaluable>>>& getDeclerations();
     void acceptVisitor(Visitor *) override;
 };

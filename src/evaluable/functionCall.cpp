@@ -3,7 +3,7 @@
 
 FunctionCall::FunctionCall(std::shared_ptr<Evaluable> function, std::vector<std::shared_ptr<Evaluable>> arguments):function(function), arguments(arguments){}
 
-std::vector<std::shared_ptr<Evaluable>> FunctionCall::getArgs(){
+std::vector<std::shared_ptr<Evaluable>>& FunctionCall::getArgs(){
     return this->arguments;
 }
 

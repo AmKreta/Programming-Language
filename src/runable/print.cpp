@@ -3,7 +3,7 @@
 
 Print::Print(std::vector<std::shared_ptr<Evaluable>> args) : args(args) {}
 
-std::vector<std::shared_ptr<Evaluable>> Print::getArgs()
+std::vector<std::shared_ptr<Evaluable>>& Print::getArgs()
 {
     return this->args;
 }

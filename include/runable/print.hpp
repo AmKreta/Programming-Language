@@ -11,5 +11,5 @@ private:
 public:
     Print(std::vector<std::shared_ptr<Evaluable>>);
     void acceptVisitor(Visitor *) override;
-    std::vector<std::shared_ptr<Evaluable>> getArgs();
+    std::vector<std::shared_ptr<Evaluable>>& getArgs();
 };

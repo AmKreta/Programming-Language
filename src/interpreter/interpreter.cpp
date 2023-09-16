@@ -123,7 +123,7 @@ std::shared_ptr<RVal> Interpreter::visitVariable(Variable *variable)
 
 void Interpreter::visitPrint(Print *print)
 {
-    auto args = print->getArgs();
+    auto &args = print->getArgs();
     for (auto arg : args)
     {
         auto res = arg->acceptVisitor(this);
@@ -169,7 +169,7 @@ void Interpreter::visitReturn(Return *ret)
 
 void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
 {
-    auto declerations = varDecleration->getDeclerations();
+    auto &declerations = varDecleration->getDeclerations();
     auto activationRecord = this->callStack.getActivationRecord();
     for (auto &[name, expr] : declerations)
     {
@@ -227,7 +227,7 @@ void Interpreter::visitExpressionStatement(ExpressionStatement *expressionStatem
 
 void Interpreter::visitCompoundStatement(CompoundStatement *compoundStatement)
 {
-    auto statementList = compoundStatement->getStatementList();
+    auto &statementList = compoundStatement->getStatementList();
     for (auto statement : statementList)
     {
         if (this->hasReturned)
@@ -255,7 +255,7 @@ void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
         auto function = std::dynamic_pointer_cast<Function>(this->astNode);
         if (function)
         {
-            auto params = function->getParams();
+            auto &params = function->getParams();
             auto activationRecord = this->callStack.getActivationRecord();
             for(int i=0;i<params.size();i++){
                 auto &[var, expr] = params[i];

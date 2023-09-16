@@ -12,6 +12,6 @@ private:
 
 public:
     MapAst(std::unordered_map<std::shared_ptr<Evaluable>, std::shared_ptr<Evaluable>>);
-    std::unordered_map<std::shared_ptr<Evaluable>, std::shared_ptr<Evaluable>> getEntries();
+    std::unordered_map<std::shared_ptr<Evaluable>, std::shared_ptr<Evaluable>>& getEntries();
     std::shared_ptr<RVal> acceptVisitor(Visitor *) override;
 };

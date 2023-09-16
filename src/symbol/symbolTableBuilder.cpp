@@ -75,7 +75,7 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitVariable(Variable *variable)
 
 void SymbolTableBuilder::visitPrint(Print *print)
 {
-    auto args = print->getArgs();
+    auto &args = print->getArgs();
     for (auto arg : args)
         arg->acceptVisitor(this);
 }
@@ -105,7 +105,7 @@ void SymbolTableBuilder::visitReturn(Return *ret)
 // add vars to symbol table
 void SymbolTableBuilder::visitVarDecleration(VarDecleration *varDecleration)
 {
-    auto declerations = varDecleration->getDeclerations();
+    auto &declerations = varDecleration->getDeclerations();
     for (auto &[name, rVal] : declerations)
     {
         auto symbol = SymbolFactory::createVarSymbol(this->currentSymbolTable->getScopeLevel());
@@ -153,7 +153,7 @@ void SymbolTableBuilder::visitExpressionStatement(ExpressionStatement *expressio
 
 void SymbolTableBuilder::visitCompoundStatement(CompoundStatement *compoundStatement)
 {
-    auto statementList = compoundStatement->getStatementList();
+    auto &statementList = compoundStatement->getStatementList();
     for (auto statement : statementList)
         statement->acceptVisitor(this);
 }
@@ -197,7 +197,7 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::build()
 std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForFunction(std::shared_ptr<Function> function)
 {
     function->setCorospondingSymbolTable(this->rootSymbolTable);
-    auto params = function->getParams();
+    auto &params = function->getParams();
     for (auto &[variable, expr] : params)
     {
         auto name = variable->getVarName();

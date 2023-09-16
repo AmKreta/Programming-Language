@@ -3,7 +3,7 @@
 
 MapAst::MapAst(std::unordered_map<std::shared_ptr<Evaluable>, std::shared_ptr<Evaluable>> entries) : entries(entries) {}
 
-std::unordered_map<std::shared_ptr<Evaluable>, std::shared_ptr<Evaluable>> MapAst::getEntries()
+std::unordered_map<std::shared_ptr<Evaluable>, std::shared_ptr<Evaluable>>& MapAst::getEntries()
 {
     return this->entries;
 }

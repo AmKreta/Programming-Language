@@ -4,7 +4,7 @@
 
 CompoundStatement::CompoundStatement(std::vector<std::shared_ptr<Statement>> statementList) : statementList(statementList) {}
 
-std::vector<std::shared_ptr<Statement>> CompoundStatement::getStatementList()
+std::vector<std::shared_ptr<Statement>>& CompoundStatement::getStatementList()
 {
     return this->statementList;
 }

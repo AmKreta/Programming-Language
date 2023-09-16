@@ -10,7 +10,7 @@ private:
 
 public:
     FunctionCall(std::shared_ptr<Evaluable>, std::vector<std::shared_ptr<Evaluable>>);
-    std::vector<std::shared_ptr<Evaluable>> getArgs();
+    std::vector<std::shared_ptr<Evaluable>>& getArgs();
     std::shared_ptr<Evaluable> getFunction();
     std::shared_ptr<RVal> acceptVisitor(Visitor *) override;
 };
