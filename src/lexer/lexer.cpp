@@ -192,6 +192,11 @@ Token Lexer::getNextToken()
             this->advance();
             return this->currentToken =  TokenFactory::build(Token::Type::R_BRACES);
 
+        // dot operator
+        case '.':
+            this->advance();
+            return this->currentToken = TokenFactory::build(Token::Type::DOT);
+
 
         default:
             // keywords and identifire
@@ -329,6 +334,10 @@ Token Lexer::readID() // reads keywords and identifires
     // print
     if(input == "print")
         return TokenFactory::build(Token::Type::PRINT);
+
+    // instantiation
+    if(input == "new")
+        return TokenFactory::build(Token::Type::NEW);
 
     return TokenFactory::build(Token::Type::ID, input);
 

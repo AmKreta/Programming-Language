@@ -116,7 +116,13 @@ std::vector<std::string> Token::TypeStr = {
     // return
     "RETURN",
     "END OF FILE",
-    "START_OF_FILE"
+    "START_OF_FILE",
     
     // print
-    "PRINT"};
+    "PRINT",
+    
+    // Instantiation
+    "NEW",
+    
+    // dot operator
+    "DOT"};
