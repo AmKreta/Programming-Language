@@ -112,6 +112,18 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitClassDecleration(ClassDecleration
     return nullptr;
 }
 
+std::shared_ptr<RVal> SymbolTableBuilder::visitInstance(Instance *instance)
+{
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitDotOperator(DotOperator *dotOperator)
+{
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitNew(New *newObj)
+{
+}
+
 void SymbolTableBuilder::visitReturn(Return *ret)
 {
     auto expr = ret->getExpr();

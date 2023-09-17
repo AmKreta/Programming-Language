@@ -13,7 +13,7 @@ std::vector<std::shared_ptr<Evaluable>> &New::getArgs()
     return this->args;
 }
 
-std::shared_ptr<RVal> New::acceptVisitor(Visitor *)
+std::shared_ptr<RVal> New::acceptVisitor(Visitor *visitor)
 {
-
+    return visitor->visitNew(this);
 }

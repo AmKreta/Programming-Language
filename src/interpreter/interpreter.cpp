@@ -184,6 +184,18 @@ std::shared_ptr<RVal> Interpreter::visitClassDecleration(ClassDecleration *class
     return nullptr;
 }
 
+std::shared_ptr<RVal> Interpreter::visitInstance(Instance *instance)
+{
+}
+
+std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
+{
+}
+
+std::shared_ptr<RVal>  Interpreter::visitNew(New *newObj)
+{
+}
+
 void Interpreter::visitIfElse(IfElse *ifElse)
 {
     auto condition = ifElse->getCondition()->acceptVisitor(this);

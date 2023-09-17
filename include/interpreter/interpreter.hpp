@@ -26,6 +26,9 @@ public:
     std::shared_ptr<RVal> visitFunction(Function *) override;
     std::shared_ptr<RVal> visitFunctionCall(FunctionCall *) override;
     std::shared_ptr<RVal> visitClassDecleration(ClassDecleration *) override;
+    std::shared_ptr<RVal> visitInstance(Instance *) override;
+    std::shared_ptr<RVal> visitDotOperator(DotOperator *) override;
+    std::shared_ptr<RVal> visitNew(New*) override;
     void visitVarDecleration(VarDecleration *) override;
     void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;
