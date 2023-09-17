@@ -9,4 +9,5 @@ class SymbolFactory
 public:
     static std::shared_ptr<Symbol> createVarSymbol(int, std::shared_ptr<RVal> value = RValConstFactory::createUndefinedConstSharedPtr(), bool isIntemporalDeadZone = true);
     static std::shared_ptr<Symbol> createFuncSymbol(int, std::shared_ptr<RVal> value);  
+    static std::shared_ptr<Symbol> createClassSymbol(int, std::shared_ptr<RVal>, bool isIntemporalDeadZone = true);
 };

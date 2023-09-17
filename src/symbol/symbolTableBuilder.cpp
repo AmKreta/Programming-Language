@@ -97,8 +97,18 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
     return nullptr;
 }
 
-std::shared_ptr<RVal> SymbolTableBuilder::visitClassDecleration(ClassDecleration *classDecleration){
-    std::cout<<"symbol table class Decleration";
+std::shared_ptr<RVal> SymbolTableBuilder::visitClassDecleration(ClassDecleration *classDecleration)
+{
+    pushScope();
+    auto name = classDecleration->getName();
+    auto &staticMembers = classDecleration->getStaticMembers();
+    auto constructorFn = staticMembers.find("constructor");
+    if (constructorFn != staticMembers.end())
+        constructorFn->second->acceptVisitor(this);
+    for (auto &[name, function] : staticMembers)
+        if (name != "constructor")
+            function->acceptVisitor(this);
+    popScope();
     return nullptr;
 }
 

@@ -3,6 +3,7 @@
 #include <lexer/lexer.hpp>
 #include <evaluable/evaluable.hpp>
 #include <evaluable/indexing.hpp>
+#include <evaluable/classDecleration.hpp>
 #include <runable/varDecleration.hpp>
 #include <runable/statement.hpp>
 #include <runable/program.hpp>
@@ -50,6 +51,7 @@ public:
     std::shared_ptr<Print> print();
     std::shared_ptr<Evaluable> indexingOrFunctionCall(std::shared_ptr<Evaluable>);
     std::shared_ptr<Evaluable> function(bool isAnonymous = false);
+    std::shared_ptr<ClassDecleration> classDecleration();
     std::shared_ptr<RVal> functionCall();
     std::shared_ptr<Evaluable> P1_factor();                                         // +i, -i, ++i, --i, i++, i--, fn(), !i, rVal etc , logical not, bitwise not
     std::shared_ptr<Evaluable> P2_mathemetical_multiplicativeExpression();          //*,**,/,%

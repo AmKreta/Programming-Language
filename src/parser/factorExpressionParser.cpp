@@ -179,6 +179,11 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
 
     if (this->currentToken.getTokenType() == Token::Type::FUNCTION)
         return this->function(true);
+    
+    if(this->currentToken.getTokenType() == Token::Type::CLASS){
+        throw ExceptionFactory::create("Class decleration cant be assigned");
+    }
+
 
     throw ExceptionFactory::create("misplaced or unsupported token", this->currentToken.getTokenTypeString(), this->currentToken.getTokenValue());
     // remaining
