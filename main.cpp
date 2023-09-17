@@ -97,7 +97,8 @@ int main()
     //         print('*');\n\
     //         print('\n');\n\
     //     }");
-    run("function fun(a='no arg passed'){\n  print(a);\n}\nlet funExpr = function(b='no arg passed'){\n  print(b);\n};\nfun();\nprint(', ');\nfun('hello');\nprint(', ');\nfunExpr();\nprint(', ');\nfunExpr('world');");
+    //run("function fun(a='no arg passed'){\n  print(a);\n}\nlet funExpr = function(b='no arg passed'){\n  print(b);\n};\nfun();\nprint(', ');\nfun('hello');\nprint(', ');\nfunExpr();\nprint(', ');\nfunExpr('world');");
+    run("let a = {'arr':[1,2,3,4,5]}; print(a['arr'][4]);");
     std::cout << std::endl;
     return 0;
 }

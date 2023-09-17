@@ -4,6 +4,7 @@
 #include <evaluable/evaluable.hpp>
 #include <evaluable/indexing.hpp>
 #include <evaluable/classDecleration.hpp>
+#include <evaluable/new.hpp>
 #include <runable/varDecleration.hpp>
 #include <runable/statement.hpp>
 #include <runable/program.hpp>
@@ -49,7 +50,8 @@ private:
 public:
     Parser(Lexer);
     std::shared_ptr<Print> print();
-    std::shared_ptr<Evaluable> indexingOrFunctionCall(std::shared_ptr<Evaluable>);
+    std::shared_ptr<Evaluable> indexingOrFunctionCallOrDot(std::shared_ptr<Evaluable>);
+    std::shared_ptr<New> parseNew();
     std::shared_ptr<Evaluable> function(bool isAnonymous = false);
     std::shared_ptr<ClassDecleration> classDecleration();
     std::shared_ptr<RVal> functionCall();

@@ -1,11 +1,11 @@
 #include <evaluable/new.hpp>
 #include <visitor/visitor.hpp>
 
-New::New(std::string className, std::vector<std::shared_ptr<Evaluable>> args) : className(className), args(args) {}
+New::New(std::shared_ptr<Evaluable> classNameExpr, std::vector<std::shared_ptr<Evaluable>> args) : classNameExpr(classNameExpr), args(args) {}
 
-std::string &New::getClassName()
+std::shared_ptr<Evaluable> New::getClassNameExpr()
 {
-    return this->className;
+    return this->classNameExpr;
 }
 
 std::vector<std::shared_ptr<Evaluable>> &New::getArgs()

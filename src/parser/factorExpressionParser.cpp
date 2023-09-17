@@ -6,8 +6,10 @@
 #include <evaluable/rValConst.hpp>
 #include <evaluable/variable.hpp>
 #include <evaluable/indexing.hpp>
+#include <evaluable/dotOperator.hpp>
 #include <evaluable/functionCall.hpp>
 #include <exception/exceptionFactory.hpp>
+#include <evaluable/new.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor()
 {
@@ -116,7 +118,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         }
         this->eat(Token::Type::R_BRACKET);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-            return this->indexingOrFunctionCall(std::make_shared<ArrayAst>(arrAst));
+            return this->indexingOrFunctionCallOrDot(std::make_shared<ArrayAst>(arrAst));
         return std::make_shared<ArrayAst>(arrAst);
     }
 
@@ -148,7 +150,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         }
         this->eat(Token::Type::R_BRACES);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
-            return this->indexingOrFunctionCall(std::make_shared<MapAst>(mapAst));
+            return this->indexingOrFunctionCallOrDot(std::make_shared<MapAst>(mapAst));
         return std::make_shared<MapAst>(mapAst);
     }
 
@@ -173,33 +175,41 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         this->eat(Token::Type::ID);
         auto var = std::make_shared<Variable>(name);
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN)
-            return this->indexingOrFunctionCall(var);
+            return this->indexingOrFunctionCallOrDot(var);
         return var;
     }
 
     if (this->currentToken.getTokenType() == Token::Type::FUNCTION)
         return this->function(true);
-    
-    if(this->currentToken.getTokenType() == Token::Type::CLASS){
+
+    if (this->currentToken.getTokenType() == Token::Type::NEW)
+        return this->parseNew();
+
+    if (this->currentToken.getTokenType() == Token::Type::CLASS)
+    {
         throw ExceptionFactory::create("Class decleration cant be assigned");
     }
-
 
     throw ExceptionFactory::create("misplaced or unsupported token", this->currentToken.getTokenTypeString(), this->currentToken.getTokenValue());
     // remaining
     //  ',' , ++, --,
 }
 
-std::shared_ptr<Evaluable> Parser::indexingOrFunctionCall(std::shared_ptr<Evaluable> expr)
+std::shared_ptr<Evaluable> Parser::indexingOrFunctionCallOrDot(std::shared_ptr<Evaluable> expr)
 {
     auto res = expr;
-    while (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN)
+    while (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN || this->currentToken.getTokenType() == Token::Type::DOT)
     {
         if (this->currentToken.getTokenType() == Token::Type::L_BRACKET)
         {
             this->eat(Token::Type::L_BRACKET);
             res = std::make_shared<Indexing>(res, this->p11_expression());
             this->eat(Token::Type::R_BRACKET);
+        }
+        else if (this->currentToken.getTokenType() == Token::Type::DOT)
+        {
+            this->eat(Token::Type::DOT);
+            res = std::make_shared<DotOperator>(res, this->p11_expression());
         }
         else
         {
@@ -219,4 +229,23 @@ std::shared_ptr<Evaluable> Parser::indexingOrFunctionCall(std::shared_ptr<Evalua
         }
     }
     return res;
+}
+
+std::shared_ptr<New> Parser::parseNew()
+{
+    this->eat(Token::Type::NEW);
+    auto classNameExpr = this->p11_expression();
+    this->eat(Token::Type::L_PAREN);
+    std::vector<std::shared_ptr<Evaluable>> args{};
+    if (this->currentToken.getTokenType() != Token::Type::R_PAREN)
+    {
+        args.push_back(this->p11_expression());
+        while (this->currentToken.getTokenType() == Token::Type::COMMA)
+        {
+            this->eat(Token::Type::COMMA);
+            args.push_back(this->p11_expression());
+        }
+    }
+    this->eat(Token::Type::R_PAREN);
+    return std::make_shared<New>(classNameExpr, args);
 }
