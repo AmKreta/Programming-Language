@@ -15,7 +15,9 @@ public:
         FUNCTION,
         BOOLEAN,
         Null, // null,
-        UNDEFINED
+        UNDEFINED,
+        CLASS,
+        INSTANCE
     };
     static std::vector<std::string> TypeStr;
 

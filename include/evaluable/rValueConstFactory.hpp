@@ -49,5 +49,13 @@ public:
 
     // for functions
     static std::shared_ptr<FunctionConst> createFunctionConstSharedPtr(std::shared_ptr<Function>);
-    static FunctionConst* createFunctionConstPtr(std::shared_ptr<Function>);
+    static FunctionConst *createFunctionConstPtr(std::shared_ptr<Function>);
+
+    // for classes
+    static std::shared_ptr<ClassDeclerationConst> createClassDeclerationConstSharedPtr(std::shared_ptr<ClassDecleration>);
+    static ClassDeclerationConst* createClassDeclerationCnstPtr(std::shared_ptr<ClassDecleration>);
+
+    // for Instances
+    static std::shared_ptr<InstanceConst> createInstanceConstSharedPtr(std::shared_ptr<Instance>);
+    static InstanceConst *createInstanceConstPtr(std::shared_ptr<Instance>);
 };

@@ -82,3 +82,25 @@ FunctionConst *RValConstFactory::createFunctionConstPtr(std::shared_ptr<Function
 {
     return RValConstFactory::createPtr<std::shared_ptr<Function>>(fn, RVal::Type::FUNCTION);
 }
+
+// for classes
+std::shared_ptr<ClassDeclerationConst> RValConstFactory::createClassDeclerationConstSharedPtr(std::shared_ptr<ClassDecleration> classDecleration)
+{
+    return RValConstFactory::createSharedPtr<std::shared_ptr<ClassDecleration>>(classDecleration, RVal::Type::CLASS);
+}
+
+ClassDeclerationConst *RValConstFactory::createClassDeclerationCnstPtr(std::shared_ptr<ClassDecleration> classDecleration)
+{
+    return RValConstFactory::createPtr<std::shared_ptr<ClassDecleration>>(classDecleration, RVal::Type::CLASS);
+}
+
+// for Instances
+std::shared_ptr<InstanceConst> RValConstFactory::createInstanceConstSharedPtr(std::shared_ptr<Instance> instance)
+{
+    return RValConstFactory::createSharedPtr<std::shared_ptr<Instance>>(instance, RVal::Type::INSTANCE);
+}
+
+InstanceConst *RValConstFactory::createInstanceConstPtr(std::shared_ptr<Instance> instance)
+{
+    return RValConstFactory::createPtr<std::shared_ptr<Instance>>(instance, RVal::Type::INSTANCE);
+}

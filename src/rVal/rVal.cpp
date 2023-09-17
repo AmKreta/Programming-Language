@@ -10,7 +10,9 @@ std::vector<std::string> RVal::TypeStr = {
     "FUNCTION",
     "BOOLEAN",
     "Null", // null,
-    "UNDEFINED"};
+    "UNDEFINED",
+    "CLASS",
+    "INSTANCE"};
 
 RVal::RVal(RVal::Type type) : type(type){};
 
