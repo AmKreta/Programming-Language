@@ -178,6 +178,12 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
     }
 }
 
+std::shared_ptr<RVal> Interpreter::visitClassDecleration(ClassDecleration *classDecleration)
+{
+    std::cout << "Interpreter visit class Decleration";
+    return nullptr;
+}
+
 void Interpreter::visitIfElse(IfElse *ifElse)
 {
     auto condition = ifElse->getCondition()->acceptVisitor(this);
@@ -257,9 +263,10 @@ void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
         {
             auto &params = function->getParams();
             auto activationRecord = this->callStack.getActivationRecord();
-            for(int i=0;i<params.size();i++){
+            for (int i = 0; i < params.size(); i++)
+            {
                 auto &[var, expr] = params[i];
-                if(i<args.size())
+                if (i < args.size())
                     activationRecord->setSymbol(var->getVarName(), args[i]->acceptVisitor(this));
                 else
                     activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));

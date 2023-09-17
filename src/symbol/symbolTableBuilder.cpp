@@ -97,6 +97,11 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
     return nullptr;
 }
 
+std::shared_ptr<RVal> SymbolTableBuilder::visitClassDecleration(ClassDecleration *classDecleration){
+    std::cout<<"symbol table class Decleration";
+    return nullptr;
+}
+
 void SymbolTableBuilder::visitReturn(Return *ret)
 {
     auto expr = ret->getExpr();
