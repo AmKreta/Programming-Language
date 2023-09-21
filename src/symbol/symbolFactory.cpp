@@ -10,3 +10,13 @@ std::shared_ptr<Symbol> SymbolFactory::createFuncSymbol(int scopeLevel, std::sha
 {
     return std::make_shared<Symbol>(Symbol::Type::FUNCTION, scopeLevel, value, false);
 }
+
+std::shared_ptr<Symbol> SymbolFactory::createClassSymbol(int scopeLevel, std::shared_ptr<RVal> value, bool isInTemporalDeadZone)
+{
+    return std::make_shared<Symbol>(Symbol::Type::CLASS, scopeLevel, value, isInTemporalDeadZone);
+}
+
+std::shared_ptr<Symbol> SymbolFactory::createToBeHoistedSymbol(int scopeLevel)
+{
+    
+}

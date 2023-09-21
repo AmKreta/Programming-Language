@@ -18,6 +18,7 @@ public:
     void addSymbol(std::string, std::shared_ptr<Symbol>);
     std::shared_ptr<Symbol> getSymbol(std::string);
     void setSymbol(std::string, std::shared_ptr<RVal>);
+    void replaceSymbol(std::string, std::shared_ptr<Symbol>);
     std::vector<std::shared_ptr<SymbolTable>> &getChildren();
     std::unordered_map<std::string, std::shared_ptr<Symbol>> &getSymbolsMap();
     int getScopeLevel();

@@ -90,7 +90,12 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
 {
     auto fnConst = RValConstFactory::createFunctionConstSharedPtr(function->getSharedPtr());
     auto funSymbol = SymbolFactory::createFuncSymbol(this->currentSymbolTable->getScopeLevel(), fnConst);
-    this->currentSymbolTable->addSymbol(function->getName(), funSymbol);
+    auto symbols = this->currentSymbolTable->getSymbolsMap();
+    auto hoistedSymbol = symbols.find(function->getName());
+    if (hoistedSymbol != symbols.end() && hoistedSymbol->second == nullptr)
+        this->currentSymbolTable->replaceSymbol(function->getName(), funSymbol);
+    else
+        this->currentSymbolTable->addSymbol(function->getName(), funSymbol);
     // building symbol table for new execution context
     auto symbolTableBuilder = SymbolTableBuilder(function->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
     symbolTableBuilder.buildForFunction(function->getSharedPtr());
@@ -99,16 +104,11 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitClassDecleration(ClassDecleration *classDecleration)
 {
-    pushScope();
-    auto name = classDecleration->getName();
-    auto &staticMembers = classDecleration->getStaticMembers();
-    auto constructorFn = staticMembers.find("constructor");
-    if (constructorFn != staticMembers.end())
-        constructorFn->second->acceptVisitor(this);
-    for (auto &[name, function] : staticMembers)
-        if (name != "constructor")
-            function->acceptVisitor(this);
-    popScope();
+    auto classDeclConst = RValConstFactory::createClassDeclerationConstSharedPtr(classDecleration->getSharedPtr());
+    auto classSymbol = SymbolFactory::createClassSymbol(this->currentSymbolTable->getScopeLevel(), classDeclConst);
+    this->currentSymbolTable->addSymbol(classDecleration->getName(), classSymbol);
+    auto symbolTableBuilder = SymbolTableBuilder(classDecleration->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
+    symbolTableBuilder.buildForClass(classDecleration->getSharedPtr());
     return nullptr;
 }
 
@@ -218,7 +218,6 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::build()
         runable->acceptVisitor(this);
         return this->rootSymbolTable;
     }
-    auto evaluable = std::dynamic_pointer_cast<Evaluable>(this->ast);
     throw ExceptionFactory::create("while building symbol table got evaluble , expected runable");
 }
 
@@ -234,5 +233,22 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForFunction(std::shared_pt
     }
     auto statementList = function->getCompoundStatement();
     statementList->acceptVisitor(this);
+    return this->rootSymbolTable;
+}
+
+std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForClass(std::shared_ptr<ClassDecleration> classDecleration)
+{
+    classDecleration->setCorospondingSymbolTable(this->rootSymbolTable);
+    auto &members = classDecleration->getMembers();
+    // adding all functions in scope
+    for (auto [name, fn] : members)
+        if (name != "constructor")
+            this->rootSymbolTable->addSymbol(name, nullptr);
+    auto constructorFn = members.find("constructor");
+    if (constructorFn != members.end())
+        constructorFn->second->acceptVisitor(this);
+    for (auto [name, fn] : members)
+        if (name != "constructor")
+            fn->acceptVisitor(this);
     return this->rootSymbolTable;
 }

@@ -17,15 +17,15 @@ void run(std::string input)
     Parser parser{lexer};
     SymbolTableBuilder stb{parser};
     auto st = stb.build();
-    // st->print();
-    CallStack callStack{st};
-    Interpreter interpreter{&parser, callStack};
-    interpreter.interpret();
-    std::cout << std::endl
-              << std::endl;
-    auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "executed successfully in " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " millisecond ........" << std::endl
-              << std::endl;
+    st->print();
+    // CallStack callStack{st};
+    // Interpreter interpreter{&parser, callStack};
+    // interpreter.interpret();
+    // std::cout << std::endl
+    //           << std::endl;
+    // auto end = std::chrono::high_resolution_clock::now();
+    // std::cout << "executed successfully in " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " millisecond ........" << std::endl
+    //           << std::endl;
     // std::cout << std::endl
     //           << "\ncontent of symbol table\n"
     //           << std::endl;
@@ -98,7 +98,8 @@ int main()
     //         print('\n');\n\
     //     }");
     //run("function fun(a='no arg passed'){\n  print(a);\n}\nlet funExpr = function(b='no arg passed'){\n  print(b);\n};\nfun();\nprint(', ');\nfun('hello');\nprint(', ');\nfunExpr();\nprint(', ');\nfunExpr('world');");
-    run("let a = {'arr':[1,2,3,4,5]}; print(a['arr'][4]);");
+    //run("let a = {'arr':[1,2,3,4,5]}; print(a['arr'][4]);");
+    run("class amk{ function a(){} function constructor(){} };");
     std::cout << std::endl;
     return 0;
 }

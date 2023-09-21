@@ -8,7 +8,7 @@ std::shared_ptr<ClassDecleration> Parser::classDecleration()
     auto name = this->currentToken.getTokenValue();
     this->eat(Token::Type::ID);
     this->eat(Token::Type::L_BRACES);
-    std::unordered_map<std::string, std::shared_ptr<FunctionConst>> staticMembers;
+    std::unordered_map<std::string, std::shared_ptr<Function>> staticMembers;
     while (this->currentToken.getTokenType() == Token::Type::FUNCTION)
     {
         auto fn = this->function();
@@ -16,8 +16,7 @@ std::shared_ptr<ClassDecleration> Parser::classDecleration()
         if (!function)
             throw ExceptionFactory::create("Expected a function");
         auto name = function->getName();
-        auto fnConst = RValConstFactory::createFunctionConstSharedPtr(function);
-        staticMembers.insert(std::pair(name, fnConst));
+        staticMembers.insert(std::pair(name, function));
     }
     this->eat(Token::Type::R_BRACES);
     return std::make_shared<ClassDecleration>(name, staticMembers);

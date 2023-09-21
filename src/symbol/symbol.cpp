@@ -1,6 +1,7 @@
 #include <symbol/symbol.hpp>
 #include <sstream>
 #include <utility/toString.hpp>
+#include <evaluable/classDecleration.hpp>
 
 Symbol::Symbol(Symbol::Type type, int scopeLevel, std::shared_ptr<RVal> value, bool isInTemporalDeadZone) : scopeLevel(scopeLevel), type(type), value(value), isInTemploralDeadzone(isInTemporalDeadZone) {}
 
@@ -45,6 +46,15 @@ std::string Symbol::getInstanceOf()
         return "UNDEFINED";
     if (this->value->getType() == RVal::Type::Null)
         return "NULL";
+    if (this->value->getType() == RVal::Type::INSTANCE)
+    {
+        auto instance = std::dynamic_pointer_cast<InstanceConst>(this->value);
+        auto classSymbol = instance->getData()->getClassSymbol()->getValue();
+        auto classConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol);
+        auto classDecleration = classConst->getData();
+        auto name = classDecleration->getName();
+        return name;
+    }
     return this->value->getTypeString();
 }
 
@@ -57,7 +67,11 @@ std::string Symbol::toString()
             << "value -> " << ToString::convert(this->value) << ", "
             << "isInTemporalDeadZone -> " << this->isInTemploralDeadzone << ">";
     if (this->type == Symbol::Type::FUNCTION)
-    oss << "<Instance Of -> '" << this->getInstanceOf() << "', "
-        << "Scope Level -> " << this->scopeLevel << ">";
+        oss << "<Instance Of -> '" << this->getInstanceOf() << "', "
+            << "Scope Level -> " << this->scopeLevel << ">";
+    if (this->type == Symbol::Type::CLASS)
+        oss << "<Instance Of -> 'ClassDecleration"
+            << "', "
+            << "Scope Level -> " << this->scopeLevel << ">";
     return oss.str();
 }
