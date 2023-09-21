@@ -5,12 +5,12 @@
 class New : public Evaluable
 {
 private:
-    std::shared_ptr<Evaluable> classNameExpr;
+    std::string className;
     std::vector<std::shared_ptr<Evaluable>> args;
 
 public:
-    New(std::shared_ptr<Evaluable>, std::vector<std::shared_ptr<Evaluable>>);
-    std::shared_ptr<Evaluable> getClassNameExpr();
+    New(std::string, std::vector<std::shared_ptr<Evaluable>>);
+    std::string getClassName();
     std::vector<std::shared_ptr<Evaluable>> &getArgs();
     std::shared_ptr<RVal> acceptVisitor(Visitor *) override;
 };

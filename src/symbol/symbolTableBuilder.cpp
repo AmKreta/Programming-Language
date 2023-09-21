@@ -122,6 +122,12 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitDotOperator(DotOperator *dotOpera
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitNew(New *newObj)
 {
+    auto className = newObj->getClassName();
+    this->currentSymbolTable->getSymbol(className);
+    auto args = newObj->getArgs();
+    for(auto arg:args)
+        arg->acceptVisitor(this);
+    return nullptr;
 }
 
 void SymbolTableBuilder::visitReturn(Return *ret)

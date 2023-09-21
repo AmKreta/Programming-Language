@@ -180,7 +180,6 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
 
 std::shared_ptr<RVal> Interpreter::visitClassDecleration(ClassDecleration *classDecleration)
 {
-    std::cout << "Interpreter visit class Decleration";
     return nullptr;
 }
 

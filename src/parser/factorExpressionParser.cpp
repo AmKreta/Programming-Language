@@ -234,7 +234,8 @@ std::shared_ptr<Evaluable> Parser::indexingOrFunctionCallOrDot(std::shared_ptr<E
 std::shared_ptr<New> Parser::parseNew()
 {
     this->eat(Token::Type::NEW);
-    auto classNameExpr = this->p11_expression();
+    auto className = this->currentToken.getTokenValue();
+    this->eat(Token::Type::ID);
     this->eat(Token::Type::L_PAREN);
     std::vector<std::shared_ptr<Evaluable>> args{};
     if (this->currentToken.getTokenType() != Token::Type::R_PAREN)
@@ -247,5 +248,5 @@ std::shared_ptr<New> Parser::parseNew()
         }
     }
     this->eat(Token::Type::R_PAREN);
-    return std::make_shared<New>(classNameExpr, args);
+    return std::make_shared<New>(className, args);
 }
