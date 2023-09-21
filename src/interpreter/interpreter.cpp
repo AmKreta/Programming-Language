@@ -185,14 +185,22 @@ std::shared_ptr<RVal> Interpreter::visitClassDecleration(ClassDecleration *class
 
 std::shared_ptr<RVal> Interpreter::visitInstance(Instance *instance)
 {
+    return nullptr;
 }
 
 std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
 {
 }
 
-std::shared_ptr<RVal>  Interpreter::visitNew(New *newObj)
+std::shared_ptr<RVal> Interpreter::visitNew(New *newObj)
 {
+    auto className = newObj->getClassName();
+    auto classSymbol = this->callStack.getActivationRecord()->getSymbol(className);
+    auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+    auto classDecl = classDeclConst->getData();
+    auto classSmbolTable = classDecl->getCorospondingSymbolTable();
+    auto instance = std::make_shared<Instance>(classSymbol);
+    return RValConstFactory::createInstanceConstSharedPtr(instance);
 }
 
 void Interpreter::visitIfElse(IfElse *ifElse)

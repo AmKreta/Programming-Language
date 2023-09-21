@@ -49,9 +49,9 @@ std::string Symbol::getInstanceOf()
     if (this->value->getType() == RVal::Type::INSTANCE)
     {
         auto instance = std::dynamic_pointer_cast<InstanceConst>(this->value);
-        auto classSymbol = instance->getData()->getClassSymbol()->getValue();
-        auto classConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol);
-        auto classDecleration = classConst->getData();
+        auto classConst = instance->getData()->getClassSymbol()->getValue();
+        auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classConst);
+        auto classDecleration = classDeclConst->getData();
         auto name = classDecleration->getName();
         return name;
     }
