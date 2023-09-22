@@ -174,7 +174,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         auto name = this->currentToken.getTokenValue();
         this->eat(Token::Type::ID);
         auto var = std::make_shared<Variable>(name);
-        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN)
+        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN || this->currentToken.getTokenType() == Token::Type::DOT)
             return this->indexingOrFunctionCallOrDot(var);
         return var;
     }
