@@ -190,6 +190,27 @@ std::shared_ptr<RVal> Interpreter::visitInstance(Instance *instance)
 
 std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
 {
+    auto instanceExpr = dotOperator->getInstanceExpr()->acceptVisitor(this);
+    auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
+    if (!instanceConst)
+        throw ExceptionFactory::create("dot operator can only be used with instances");
+    auto instance = instanceConst->getData();
+    auto classSymbol = instance->getClassSymbol();
+    auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+    auto classDecl = classDeclConst->getData();
+    auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+    CallStack callStack{classSymbolTable};
+    Interpreter interpreter{classDecl, callStack};
+    auto member = interpreter.resolveInstanceMember(dotOperator);
+    return member;
+    //return nullptr;
+}
+
+std::shared_ptr<RVal> Interpreter::resolveInstanceMember(DotOperator *dotOperator)
+{
+    auto member = dotOperator->getMember()->acceptVisitor(this);
+    return member;
+    //return nullptr;
 }
 
 std::shared_ptr<RVal> Interpreter::visitNew(New *newObj)
@@ -302,4 +323,8 @@ void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
 CallStack &Interpreter::getCallStack()
 {
     return this->callStack;
+}
+
+std::shared_ptr<RVal> Interpreter::getClassMember()
+{
 }

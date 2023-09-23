@@ -114,10 +114,27 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitClassDecleration(ClassDecleration
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitInstance(Instance *instance)
 {
+    std::cout << "instance ran";
+    return nullptr;
 }
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitDotOperator(DotOperator *dotOperator)
 {
+    // auto instanceExpr = dotOperator->acceptVisitor(this);
+    // auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
+    // if (!instanceConst)
+    //     throw ExceptionFactory::create("dot operator can only be used with instances");
+    // auto instance = instanceConst->getData();
+
+    // auto member = dotOperator->getMember()->acceptVisitor(this);
+    // auto fnCall = std::dynamic_pointer_cast<FunctionCall>(member);
+    // if (fnCall)
+    //     // function is called
+    //     return fnCall->acceptVisitor(this);
+    // else
+    //     // var is called
+    //     return nullptr;
+    return nullptr;
 }
 
 std::shared_ptr<RVal> SymbolTableBuilder::visitNew(New *newObj)
@@ -125,7 +142,7 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitNew(New *newObj)
     auto className = newObj->getClassName();
     this->currentSymbolTable->getSymbol(className);
     auto args = newObj->getArgs();
-    for(auto arg:args)
+    for (auto arg : args)
         arg->acceptVisitor(this);
     return nullptr;
 }

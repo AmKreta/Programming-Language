@@ -29,6 +29,7 @@ public:
     std::shared_ptr<RVal> visitInstance(Instance *) override;
     std::shared_ptr<RVal> visitDotOperator(DotOperator *) override;
     std::shared_ptr<RVal> visitNew(New*) override;
+    std::shared_ptr<RVal> getClassMember();
     void visitVarDecleration(VarDecleration *) override;
     void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;
@@ -40,4 +41,5 @@ public:
     void visitPrint(Print* ) override;
     CallStack &getCallStack();
     void interpret(std::vector<std::shared_ptr<Evaluable>> args = {});
+    std::shared_ptr<RVal> resolveInstanceMember(DotOperator *);
 };
