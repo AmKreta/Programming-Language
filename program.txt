@@ -1,0 +1,9 @@
+class cls{
+    function fun(){
+        print('called fun() which is member function of class cls');
+    }
+};
+
+let x = new cls();
+
+x.fun();
