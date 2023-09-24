@@ -154,6 +154,8 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         Interpreter interpreter{functionAst, callStack};
         interpreter.interpret(functionCall->getArgs());
         auto res = functionAst->getReturnVal();
+        if(!res)
+            return RValConstFactory::createUndefinedConstSharedPtr();
         return res;
     }
     throw ExceptionFactory::create("expression of type", fn->getTypeString(), "is not callable");

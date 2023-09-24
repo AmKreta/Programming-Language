@@ -1,22 +1,28 @@
-class Cls{
-    function constructor(info){
-        this.info = info;
-        this.a=5;
+class Wheels{
+    function constructor(diameter = 100){
+        this.diameter = diameter;
     }
 };
 
-class Container{
-    function constructor(cls){
-        this.cls = cls;
-        this.a = 5;
+class Engine{
+    function constructor(hp = 400){
+        this.hp = hp;
+    }
+};
+
+class Car{
+    function constructor(wheels = new Wheels(), engine = new Engine()){
+        this.wheels = wheels;
+        this.engine = engine;
     }
 
     function getInfo(){
-        printLn(this.cls.info);
-        printLn(this.a);
+        let wheels = this.wheels;
+        let diameter = wheels.diameter;
+        printLn('car with ', diameter,' centimeter wheels and ', this.engine.hp, ' horsepower engine');
     }
 };
 
-let container = new Container(new Cls(100));
-
-container.getInfo();
+let car = new Car( new Wheels(130), new Engine(700));
+car.getInfo();
+printLn(car);
