@@ -1,0 +1,40 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+$primary: mat.define-palette(mat.$indigo-palette);
+$accent: mat.define-palette(mat.$pink-palette);
+$warn: mat.define-palette(mat.$red-palette);
+
+$theme: mat.define-light-theme((color: (primary: $primary, accent: $accent, warn: $warn),
+        ));
+
+$color-config: mat.get-color-config($theme);
+$primary-palette: map.get($color-config, 'primary');
+
+.container {
+    text-align: center;
+    margin-top: 128px;
+
+    .icon {
+        height: 150px;
+        width: 150px;
+        font-size: 150px;
+    }
+
+    .mat-headline-2 {
+        color: mat.get-color-from-palette($primary-palette, 500);
+        margin-bottom: 128px;
+    }
+
+    .mat-headline-5 {
+        color: mat.get-color-from-palette($primary-palette, 500);
+    }
+
+    .cta-container {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        justify-content: center;
+        margin-top: 40px;
+    }
+}

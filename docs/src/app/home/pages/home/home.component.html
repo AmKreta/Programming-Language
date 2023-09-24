@@ -1,1 +1,12 @@
-<p>home works!</p>
+<div class="container">
+    <mat-icon aria-hidden="false" fontIcon="token" class="icon" color="primary"></mat-icon>
+    <h1 class="mat-headline-2" [style.font-weight]="600" [style.letter-spacing]="'14px'">Token</h1>
+    <p class="mat-headline-5">An interpreted programming language written in C++ compiled to webassembly using Emscripten.</p>
+    <div class="cta-container">
+        <a mat-flat-button color="primary" [routerLink]="'/docs'">Learn</a>
+        <a mat-stroked-button color="primary" [routerLink]="'/playground'">
+            <mat-icon fontIcon="code"></mat-icon>
+            <span>Play around</span>
+        </a>
+    </div>
+</div>

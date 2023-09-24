@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'docs';
+
+  navBarList:{
+    icon:string, 
+    title: string,
+    routerLink:string
+  }[]=[
+    {icon:'insert_drive_file', title:'Docs', routerLink:'/docs'},
+    {icon:'code', title:'Playground', routerLink:'/playground'},
+    {icon:'person-pin', title:'About Me', routerLink:"/about-me"}
+  ]
 }

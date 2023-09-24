@@ -1,10 +1,25 @@
-<header>
-  header
-</header>
-<main>
-  <div>main</div>
-  <router-outlet></router-outlet>     
-</main>
-<footer>
-  footer
-</footer>
+<mat-toolbar color="primary" class="mat-elevation-z1">
+  <a class="logo" [routerLink]="''">
+    <mat-icon aria-hidden="false" fontIcon="token" class="logo-icon"></mat-icon>
+    <span>Token</span>
+  </a>
+  <nav>
+    <ng-container *ngFor="let item of navBarList">
+      <ng-container
+        *ngTemplateOutlet="
+          navBarItems;
+          context: { icon: item.icon, title: item.title, routerLink: item.routerLink }
+        "
+      ></ng-container>
+    </ng-container>
+  </nav>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
+
+<ng-template #navBarItems let-icon="icon" let-title="title" let-routerLink="routerLink">
+  <a class="navbar-item" [routerLink]="routerLink">
+    <mat-icon aria-hidden="false" [fontIcon]="icon"></mat-icon>
+    <span>{{title}}</span>
+  </a>
+</ng-template>
