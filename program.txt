@@ -1,9 +1,19 @@
 class cls{
+    
+    function constructor(){
+       this.a = 5;
+    }
+
     function fun(){
         print('called fun() which is member function of class cls');
     }
+
 };
 
 let x = new cls();
 
+print(' , ');
+
 x.fun();
+
+print(' , ', x.a);

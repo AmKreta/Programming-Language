@@ -209,7 +209,7 @@ std::shared_ptr<Evaluable> Parser::indexingOrFunctionCallOrDot(std::shared_ptr<E
         else if (this->currentToken.getTokenType() == Token::Type::DOT)
         {
             this->eat(Token::Type::DOT);
-            res = std::make_shared<DotOperator>(res, this->p11_expression());
+            res = std::make_shared<DotOperator>(res, this->P1_factor());
         }
         else
         {

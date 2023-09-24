@@ -32,6 +32,6 @@ std::shared_ptr<RVal> AssignmentOperation::evaluate(Visitor *visitor, std::share
             return map[index] = res;
         }
     }
-
-    throw ExceptionFactory::create("lhs should be a variable, or indexed array or object");
+    
+    throw ExceptionFactory::create("lhs should be a variable, dotOperator or indexed array or object");
 }

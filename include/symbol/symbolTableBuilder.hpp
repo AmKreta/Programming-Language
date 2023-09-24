@@ -42,4 +42,5 @@ public:
     std::shared_ptr<SymbolTable> build();
     std::shared_ptr<SymbolTable> buildForFunction(std::shared_ptr<Function>);
     std::shared_ptr<SymbolTable> buildForClass(std::shared_ptr<ClassDecleration>);
+    std::shared_ptr<RVal> resolveInstanceMember(DotOperator *);
 };

@@ -1,7 +1,7 @@
 #include <evaluable/classDecleration.hpp>
 #include <visitor/visitor.hpp>
 
-ClassDecleration::ClassDecleration(std::string name, std::unordered_map<std::string, std::shared_ptr<Function>> members) : name(name), members(members), corospondingSymbolTable(nullptr){};
+ClassDecleration::ClassDecleration(std::string name, std::unordered_map<std::string, std::shared_ptr<Function>> members) : name(name), members(members), corospondingSymbolTable(nullptr), dataMembers({}){};
 
 std::string ClassDecleration::getName()
 {
@@ -31,4 +31,14 @@ std::shared_ptr<SymbolTable> ClassDecleration::getCorospondingSymbolTable()
 void ClassDecleration::setCorospondingSymbolTable(std::shared_ptr<SymbolTable> corospondingSymbolTable)
 {
     this->corospondingSymbolTable = corospondingSymbolTable;
+}
+
+std::unordered_map<std::string, std::shared_ptr<RVal>> &ClassDecleration::getDataMembers()
+{
+    return this->dataMembers;
+}
+
+void ClassDecleration::setDataMember(std::string name, std::shared_ptr<RVal> val)
+{
+    this->dataMembers.insert(std::pair(name, val));
 }

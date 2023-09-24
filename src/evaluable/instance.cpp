@@ -1,7 +1,7 @@
 #include <evaluable/instance.hpp>
 #include <visitor/visitor.hpp>
 
-Instance::Instance(std::shared_ptr<Symbol> classSymbol) : classSymbol(classSymbol), dataMembers({}) {}
+Instance::Instance(std::shared_ptr<Symbol> classSymbol, std::unordered_map<std::string, std::shared_ptr<RVal>> dataMembers) : classSymbol(classSymbol), dataMembers(dataMembers) {}
 
 std::shared_ptr<Symbol> Instance::getClassSymbol()
 {
