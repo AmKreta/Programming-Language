@@ -99,6 +99,8 @@ public:
 
         // print
         PRINT,
+        PRINT_LN,
+        ENDL,
 
         // Instantiation
         NEW,

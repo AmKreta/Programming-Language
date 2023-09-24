@@ -334,6 +334,9 @@ Token Lexer::readID() // reads keywords and identifires
     // print
     if(input == "print")
         return TokenFactory::build(Token::Type::PRINT);
+    
+    if(input =="printLn")
+        return TokenFactory::build(Token::Type::PRINT_LN);
 
     // instantiation
     if(input == "new")

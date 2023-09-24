@@ -11,7 +11,7 @@
 #include <exception/exceptionFactory.hpp>
 #include <evaluable/new.hpp>
 
-std::shared_ptr<Evaluable> Parser::P1_factor()
+std::shared_ptr<Evaluable> Parser::P1_factor(bool parseSingleExpression)
 {
     // number
     if (this->currentToken.getTokenType() == Token::Type::NUMBER_CONST)
@@ -174,7 +174,7 @@ std::shared_ptr<Evaluable> Parser::P1_factor()
         auto name = this->currentToken.getTokenValue();
         this->eat(Token::Type::ID);
         auto var = std::make_shared<Variable>(name);
-        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN || this->currentToken.getTokenType() == Token::Type::DOT)
+        if (this->currentToken.getTokenType() == Token::Type::L_BRACKET || this->currentToken.getTokenType() == Token::Type::L_PAREN || (this->currentToken.getTokenType() == Token::Type::DOT && !parseSingleExpression))
             return this->indexingOrFunctionCallOrDot(var);
         return var;
     }
@@ -209,7 +209,7 @@ std::shared_ptr<Evaluable> Parser::indexingOrFunctionCallOrDot(std::shared_ptr<E
         else if (this->currentToken.getTokenType() == Token::Type::DOT)
         {
             this->eat(Token::Type::DOT);
-            res = std::make_shared<DotOperator>(res, this->P1_factor());
+            res = std::make_shared<DotOperator>(res, this->P1_factor(true));
         }
         else
         {

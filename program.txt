@@ -1,19 +1,22 @@
-class cls{
-    
-    function constructor(){
-       this.a = 5;
+class Cls{
+    function constructor(info){
+        this.info = info;
+        this.a=5;
     }
-
-    function fun(){
-        print('called fun() which is member function of class cls');
-    }
-
 };
 
-let x = new cls();
+class Container{
+    function constructor(cls){
+        this.cls = cls;
+        this.a = 5;
+    }
 
-print(' , ');
+    function getInfo(){
+        printLn(this.cls.info);
+        printLn(this.a);
+    }
+};
 
-x.fun();
+let container = new Container(new Cls(100));
 
-print(' , ', x.a);
+container.getInfo();

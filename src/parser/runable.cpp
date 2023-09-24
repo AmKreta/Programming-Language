@@ -109,6 +109,12 @@ std::shared_ptr<Statement> Parser::statement()
         return res;
     }
 
+    if(this->currentToken.getTokenType() == Token::Type::PRINT_LN){
+        auto res = this->print(true);
+        this->eat(Token::Type::SEMI_COLON);
+        return res;
+    }
+
     if (this->currentToken.getTokenType() == Token::Type::CLASS)
     {
         auto res = std::make_shared<ExpressionStatement>(this->classDecleration());

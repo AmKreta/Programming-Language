@@ -120,6 +120,8 @@ std::vector<std::string> Token::TypeStr = {
     
     // print
     "PRINT",
+    "PRINT_LN",
+    "ENDL"
     
     // Instantiation
     "NEW",

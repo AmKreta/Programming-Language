@@ -60,6 +60,8 @@ std::unordered_map<Token::Type, std::string> TokenFactory::tokenTypeValMap = {
     {Token::Type::END_OF_FILE, "END_OF_FILE"},
     {Token::Type::START_OF_FILE, "START_OF_FILE"},
     {Token::Type::PRINT, "print"},
+    {Token::Type::PRINT_LN, "printLn"},
+    {Token::Type::PRINT, "endl"},
     {Token::Type::NEW, "new"},
     {Token::Type::DOT, "."}};
 

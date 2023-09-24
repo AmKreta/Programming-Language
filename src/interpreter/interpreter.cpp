@@ -139,6 +139,8 @@ void Interpreter::visitPrint(Print *print)
         auto res = arg->acceptVisitor(this);
         Console::log(res);
     }
+    if (print->hasNewLine())
+        std::cout << std::endl;
 }
 
 std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
@@ -228,6 +230,9 @@ std::shared_ptr<RVal> Interpreter::resolveInstanceMember(DotOperator *dotOperato
             return member->second;
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
+    auto instanceConst = std::dynamic_pointer_cast<Instance>(member);
+    if (instanceConst)
+        return instanceConst->acceptVisitor(this);
     auto funCall = std::dynamic_pointer_cast<FunctionCall>(member);
     if (funCall)
     {
