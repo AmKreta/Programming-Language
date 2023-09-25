@@ -1,15 +1,4 @@
-@use 'sass:map';
-@use '@angular/material' as mat;
-
-$primary: mat.define-palette(mat.$indigo-palette);
-$accent: mat.define-palette(mat.$pink-palette);
-$warn: mat.define-palette(mat.$red-palette);
-
-$theme: mat.define-light-theme((color: (primary: $primary, accent: $accent, warn: $warn),
-        ));
-
-$color-config: mat.get-color-config($theme);
-$primary-palette: map.get($color-config, 'primary');
+@use '../../../shared//shared.styles' as theme;
 
 .container {
     text-align: center;
@@ -22,12 +11,12 @@ $primary-palette: map.get($color-config, 'primary');
     }
 
     .mat-headline-2 {
-        color: mat.get-color-from-palette($primary-palette, 500);
+        color: theme.getColor(theme.$primary-palette, 500);
         margin-bottom: 128px;
     }
 
     .mat-headline-5 {
-        color: mat.get-color-from-palette($primary-palette, 500);
+        color: theme.getColor(theme.$primary-palette, 500);
     }
 
     .cta-container {
@@ -36,5 +25,24 @@ $primary-palette: map.get($color-config, 'primary');
         gap: 32px;
         justify-content: center;
         margin-top: 40px;
+    }
+
+    .repoLinkContainer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        justify-content: center;
+        margin-top: 64px;
+
+        &>img{
+            height:48px;
+            width:48px;
+            fill:theme.getColor(theme.$primary-palette, 500);
+        }
+
+        &>a{
+            color:theme.getColor(theme.$primary-palette, 500);
+            margin:0;
+        }
     }
 }
