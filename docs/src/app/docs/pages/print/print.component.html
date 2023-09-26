@@ -1,7 +1,7 @@
 <div style="margin-bottom: 40px;">
     <app-typography variant='headline3' color="primary" colorShade="500">Print</app-typography>
     <app-typography variant="subtitle1">
-        The Print Function is a valuable tool that enables you to display information and messages on the standard
+        The <code>print</code> Function is a valuable tool that enables you to display information and messages on the standard
         output, typically the console or terminal. It serves as a fundamental method for communicating results,
         debugging information, or any relevant data to developers and users during the execution of a program.
     </app-typography>
@@ -10,42 +10,29 @@
 <div style="margin-bottom: 40px;">
     <app-typography variant='headline4' color="primary" colorShade="400">Print Function</app-typography>
     <app-typography variant="subtitle1">
-        To use the print function, simply call it with the data you want to display. The function will output the
+        To use the <code>print</code> function, simply call it with the data you want to display. The function will output the
         provided data in a human-readable format, making it a valuable tool for debugging and inspecting various data
         types in your JavaScript code.
     </app-typography>
 </div>
 
 <ng-container *ngFor="let example of printExamples">
-    <div style="margin-top:16px;margin-bottom: 48px">
-        <app-typography variant="headline5" color="primary" colorShade="400"
-            [style]="{'margin-bottom':'0px'}">{{example.title}}</app-typography>
-        <pre class="language-javascript">
-        <code [innerHTML]="example.codeSnippet"></code>
-    </pre>
-        <app-typography variant="body1">{{example.description}}</app-typography>
-    </div>
+    <app-code-snippet [title]="example.title" [codeSnippet]="example.codeSnippet"
+        [description]="example.description"></app-code-snippet>
 </ng-container>
 
 <div>
     <app-typography variant='headline4' color="primary" colorShade="400">Print Line Function</app-typography>
     <app-typography variant="subtitle1">
-        "printLn" serves as a modified version of the "print" function, with the distinctive feature of appending an
+        <code>printLn</code> serves as a modified version of the <code>print</code> function, with the distinctive feature of appending an
         end-of-line character to the output. This function can be particularly handy when you want to format text neatly
         with line breaks.
-        Here's some additional information along with a code example to illustrate the difference between "print" and
-        "printLn":
+        Here's some additional information along with a code example to illustrate the difference between <code>print</code> and
+        <code>printLn</code>:
     </app-typography>
 </div>
 
 <ng-container *ngFor="let example of printLnExamples">
-    <div style="margin-top:16px;margin-bottom: 48px">
-        <app-typography variant="headline5" color="primary" colorShade="400"
-            [style]="{'margin-bottom':'0px'}">{{example.title}}</app-typography>
-        <pre class="language-javascript">
-        <code [innerHTML]="example.codeSnippet"></code>
-    </pre>
-        <app-typography variant="body1">{{example.description}}</app-typography>
-        <app-typography variant="body1">{{example.explaination}}</app-typography>
-    </div>
+    <app-code-snippet [title]="example.title" [codeSnippet]="example.codeSnippet" [description]="example.description"
+        [explaination]="example.explaination"></app-code-snippet>
 </ng-container>

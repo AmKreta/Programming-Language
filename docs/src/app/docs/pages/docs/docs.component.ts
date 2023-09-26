@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface Topic {
   title: string;
@@ -9,7 +10,7 @@ interface Topic {
   templateUrl: './docs.component.html',
   styleUrls: ['./docs.component.scss']
 })
-export class DocsComponent {
+export class DocsComponent implements OnInit{
   topics: Topic[] = [
     {
       title: 'Print',
@@ -43,5 +44,14 @@ export class DocsComponent {
       title:'Behind the scene',
       routerLink:'./behind-the-scene'
     }
-  ]
+  ];
+
+  constructor(public router:Router){
+
+  }
+
+  ngOnInit(){
+    if(this.router.url==="/docs")
+      this.router.navigate(["./docs/print"]);
+  }
 }
