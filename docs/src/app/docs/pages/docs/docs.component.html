@@ -1,5 +1,5 @@
 <mat-drawer-container class="container" [hasBackdrop]="false">
-    <mat-drawer #drawer [mode]="'side'" opened="true" disableClose="true">
+    <mat-drawer #drawer [mode]="'side'" opened="true" disableClose="true" style="position:fixed; top:6%;">
         <mat-list role="list">
             <mat-list-item role="listitem" *ngFor="let topic of topics">
                 <a [routerLink]="topic.routerLink">{{topic.title}}</a>
@@ -7,7 +7,7 @@
         </mat-list>
     </mat-drawer>
     <mat-drawer-content>
-        <div style="padding:16px">
+        <div style="padding:16px;">
             <router-outlet></router-outlet>
         </div>
         <!-- <button (click)="drawer.toggle()"> toggle</button> -->

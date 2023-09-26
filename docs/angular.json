@@ -31,7 +31,9 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "prismjs/plugins/toolbar/prism-toolbar.css",
+              "prismjs/themes/prism-okaidia.css"
             ],
             "scripts": []
           },

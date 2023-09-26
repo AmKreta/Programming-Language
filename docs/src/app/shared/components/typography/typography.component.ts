@@ -33,11 +33,12 @@ export class TypographyComponent {
   @Input() variant: keyof typeof Variants = 'body1';
   @Input() color: keyof typeof Colors | undefined;
   @Input() colorShade: `${number}00` | number = 500;
+  @Input() style: { [key: string]: string } = {};
 
   public get className() {
     let res = `${Variants[this.variant]}`;
-    if(this.color)
-      res+=` text-${this.color}-${this.colorShade}`;
+    if (this.color)
+      res += ` text-${this.color}-${this.colorShade}`;
     return res;
   }
 }
