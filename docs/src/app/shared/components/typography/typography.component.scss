@@ -1,0 +1,10 @@
+@use '../../shared.styles.scss' as theme;
+
+@each $color in map-keys(theme.$colors) {
+    @each $shade in theme.$shades {
+        $className: text-#{$color}-#{$shade};
+        .#{$className} {
+            color: theme.getColor(map-get(theme.$colors, $color), $shade);
+        }
+    }
+}
