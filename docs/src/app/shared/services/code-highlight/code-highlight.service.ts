@@ -20,12 +20,10 @@ declare var Prism: any;
 })
 export class CodeHighlightService {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { 
-    console.log(Prism);
   }
 
   highlightAll() {
     if (isPlatformBrowser(this.platformId)) {
-      console.log(Prism);
       Prism.highlightAll();
     }
   }
