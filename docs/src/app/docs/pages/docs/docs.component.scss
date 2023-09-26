@@ -1,12 +1,14 @@
 .container{
     height:100%;
     display: flex;
+
 }
 .nav{
     width:400px;
 }
 
-.content{
-    flex-grow: 1;
+.outlet-container{
+    padding:16px;
+    height: 100%;
     overflow-y: scroll;
 }
