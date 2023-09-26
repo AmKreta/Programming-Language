@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import withDestory from '@shared/util/withDestory';
+import { takeUntil } from 'rxjs';
 
 interface Topic {
   title: string;
@@ -10,7 +12,7 @@ interface Topic {
   templateUrl: './docs.component.html',
   styleUrls: ['./docs.component.scss']
 })
-export class DocsComponent implements OnInit{
+export class DocsComponent extends withDestory() implements OnInit {
   topics: Topic[] = [
     {
       title: 'Print',
@@ -41,17 +43,24 @@ export class DocsComponent implements OnInit{
       routerLink: './inbuilt-classes-functions'
     },
     {
-      title:'Behind the scene',
-      routerLink:'./behind-the-scene'
+      title: 'Behind the scene',
+      routerLink: './behind-the-scene'
     }
   ];
 
-  constructor(public router:Router){
+  @ViewChild('outletContainer') outletContainer!: TemplateRef<any>;
 
+  constructor(public router: Router) {
+    super();
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe(ev => {
+      if (ev instanceof NavigationEnd) {
+        (this.outletContainer.elementRef.nativeElement as HTMLDivElement).scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   }
 
-  ngOnInit(){
-    if(this.router.url==="/docs")
+  ngOnInit() {
+    if (this.router.url === "/docs")
       this.router.navigate(["./docs/print"]);
   }
 }
