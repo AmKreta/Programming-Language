@@ -12,9 +12,10 @@ import { ClassComponent } from './pages/class/class.component';
 import { InbuiltClassesFunctionsComponent } from './pages/inbuilt-classes-functions/inbuilt-classes-functions.component';
 import { BehindTheSceneComponent } from './pages/behind-the-scene/behind-the-scene.component';
 import { SharedModule } from '../shared/shared.module';
+import { DataTypesComponent } from './pages/data-types/data-types.component';
 
 @NgModule({
-  declarations: [DocsComponent, PrintComponent, VariablesComponent, OperatorsComponent, FunctionComponent, ClassComponent, InbuiltClassesFunctionsComponent, BehindTheSceneComponent],
+  declarations: [DocsComponent, DataTypesComponent, PrintComponent, VariablesComponent, OperatorsComponent, FunctionComponent, ClassComponent, InbuiltClassesFunctionsComponent, BehindTheSceneComponent],
   imports: [DocsRoutingModule, CommonModule, MatSidenavModule, MatListModule, SharedModule],
 })
 export class DocsModule { }
