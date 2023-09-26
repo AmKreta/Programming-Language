@@ -7,9 +7,9 @@ import { CodeHighlightService } from '@shared/services/code-highlight/code-highl
   styleUrls: ['./code-snippet.component.scss']
 })
 export class CodeSnippetComponent implements AfterViewChecked {
-  @Input({ required: true }) title = '';
+  @Input() title = '';
   @Input({ required: true }) codeSnippet = '';
-  @Input({ required: true }) description = '';
+  @Input() description = '';
   @Input() explaination = '';
 
   public highlighted = false;

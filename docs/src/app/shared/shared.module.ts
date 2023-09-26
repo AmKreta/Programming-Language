@@ -16,7 +16,7 @@ import { CodeSnippetComponent } from './components/code-snippet/code-snippet.com
   ],
   exports: [
     TypographyComponent,
-    CodeSnippetComponent
+    CodeSnippetComponent,
   ],
   providers: [
     CodeHighlightService,

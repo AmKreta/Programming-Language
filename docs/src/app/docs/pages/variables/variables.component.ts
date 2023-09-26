@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConstExample, DataTypesDeclerationExample, LetExample } from './examples';
 
 @Component({
   selector: 'app-variables',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./variables.component.scss']
 })
 export class VariablesComponent {
-
+  letExample = LetExample;
+  constExample = ConstExample;
+  dataTypesDeclerationExample = DataTypesDeclerationExample;
 }
