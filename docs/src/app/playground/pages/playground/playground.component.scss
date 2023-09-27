@@ -1,11 +1,14 @@
+$headerHeight:6%;
+
 .editorHeader {
-    height: 5%;
+    height: $headerHeight;
     display: flex;
     flex-wrap: wrap;
     background-color: #3c3c3c;
     color:#f6f1f1e6;
     &>* {
         min-width: 50%;
+        max-width: 50%;
         height: 100%;
         display: flex;
         align-items: center;
@@ -23,16 +26,18 @@
 }
 
 .editorContainer {
-    height: 95%;
+    height: calc(100% - #{$headerHeight});
     display: flex;
     flex-wrap: wrap;
 
     &>* {
         min-width: 50%;
+        max-width: 50%;
         height: 100%;
     }
 }
 
 .output {
     background-color: #1e1e1e;
+    padding: 8px;
 }

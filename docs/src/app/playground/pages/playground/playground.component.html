@@ -1,15 +1,17 @@
 <div class="editorHeader">
     <div class="space-between">
         <app-typography variant="headline6" [style]="{'margin':'0'}">Happy Coding</app-typography>
-        <button mat-flat-button color="primary">Run</button>
+        <button mat-flat-button color="primary" (click)="runCode()">Run</button>
     </div>
-    <div class="outputHeader">
+    <div class="outputHeader space-between" style="padding-right: 8px;">
        <app-typography variant="headline6" [style]="{'margin':'0'}">Output</app-typography>
+       <button mat-flat-button color="primary" (click)="clear()">Clear</button>
     </div>
 </div>
 <div class="editorContainer">
     <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options" (valueChanged)="onCodeChanged($event)">
     </ngs-code-editor>
     <div class="output">
+        <div style="color:white; margin:2px 0" *ngFor="let output of codeOutput">{{output}}</div>
     </div>
 </div>
