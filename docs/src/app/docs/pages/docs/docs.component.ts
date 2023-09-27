@@ -50,14 +50,14 @@ export class DocsComponent extends withDestory() implements OnInit {
       title: 'Class',
       routerLink: './class'
     },
-    {
-      title: 'In-built Classes and Functions',
-      routerLink: './inbuilt-classes-functions'
-    },
-    {
-      title: 'Behind the scene',
-      routerLink: './behind-the-scene'
-    }
+    // {
+    //   title: 'In-built Classes and Functions',
+    //   routerLink: './inbuilt-classes-functions'
+    // },
+    // {
+    //   title: 'Behind the scene',
+    //   routerLink: './behind-the-scene'
+    // }
   ];
 
   @ViewChild('outletContainer') outletContainer!: TemplateRef<any>;
