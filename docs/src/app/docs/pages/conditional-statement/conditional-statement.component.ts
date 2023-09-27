@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConditionalOperatorExamples, IfElseExamples } from './examples';
 
 @Component({
   selector: 'app-conditional-statement',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./conditional-statement.component.scss']
 })
 export class ConditionalStatementComponent {
-
+  ifElseExamples = IfElseExamples;
+  conditionalOpExamples = ConditionalOperatorExamples;
 }

@@ -1,1 +1,41 @@
-<p>conditional-statement works!</p>
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Conditional Statement</app-typography>
+    <app-typography variant="subtitle1">
+        Conditional statements, also known as conditional statements or conditional expressions, are fundamental
+        constructs in programming languages. They allow you to make decisions and execute different blocks of code based
+        on whether a certain condition is true or false. Conditional statements provide the ability to control the flow
+        of a program, making it possible to create dynamic and responsive code.
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">If-Else Statement</app-typography>
+    <app-typography variant="subtitle1">
+        The if-else statement is a fundamental control structure in programming. It allows you to make decisions in your
+        code based on certain conditions. Here's how it works:
+    </app-typography>
+    <app-typography variant="subtitle1">
+        The if statement is used to evaluate a condition. If the condition is true, the code block associated with the
+        if statement is executed.
+    </app-typography>
+    <app-typography variant="subtitle1">
+        The else statement is optional. If the condition in the if statement is false, the code block associated with
+        the else statement is executed.
+    </app-typography>
+</div>
+
+<ng-container *ngFor="let example of ifElseExamples">
+    <app-code-snippet [title]="example.title" [description]="example.description" [codeSnippet]="example.codeSnippet"></app-code-snippet>
+</ng-container>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Conditional Operator</app-typography>
+    <app-typography variant="subtitle1">
+        The conditional operator, often called the ternary operator, is a concise way to write if-else statements in a
+        single line. It has the following syntax:
+    </app-typography>
+</div>
+
+<ng-container *ngFor="let example of conditionalOpExamples">
+    <app-code-snippet [title]="example.title" [description]="example.description" [codeSnippet]="example.codeSnippet"></app-code-snippet>
+</ng-container>
