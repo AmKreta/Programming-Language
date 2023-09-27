@@ -98,7 +98,15 @@ public:
         START_OF_FILE,
 
         // print
-        PRINT
+        PRINT,
+        PRINT_LN,
+        ENDL,
+
+        // Instantiation
+        NEW,
+
+        // dot operator
+        DOT
     };
 
     static std::vector<std::string> TypeStr;

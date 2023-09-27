@@ -3,9 +3,12 @@
 #include <rVal/rVal.hpp>
 #include <evaluable/evaluable.hpp>
 #include <evaluable/function.hpp>
+#include <evaluable/instance.hpp>
 
 template <typename T>
 class RValConst;
+
+class ClassDecleration;
 
 std::shared_ptr<RVal> visitorFn(Visitor*, RVal*);
 
@@ -116,3 +119,5 @@ typedef RValConst<std::shared_ptr<void>> NullConst;
 typedef RValConst<std::shared_ptr<void>> UndefinedConst;
 
 typedef RValConst<std::shared_ptr<Function>> FunctionConst;
+typedef RValConst<std::shared_ptr<ClassDecleration>> ClassDeclerationConst;
+typedef RValConst<std::shared_ptr<Instance>> InstanceConst;

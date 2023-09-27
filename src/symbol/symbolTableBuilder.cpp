@@ -3,6 +3,7 @@
 #include <evaluable/rValueConstFactory.hpp>
 #include <exception/exceptionFactory.hpp>
 #include <symbol/symbolFactory.hpp>
+#include <typeinfo>
 
 SymbolTableBuilder::SymbolTableBuilder(Parser parser) : ast(parser.parse()), rootSymbolTable(nullptr), currentSymbolTable(nullptr) {}
 
@@ -90,10 +91,56 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitFunction(Function *function)
 {
     auto fnConst = RValConstFactory::createFunctionConstSharedPtr(function->getSharedPtr());
     auto funSymbol = SymbolFactory::createFuncSymbol(this->currentSymbolTable->getScopeLevel(), fnConst);
-    this->currentSymbolTable->addSymbol(function->getName(), funSymbol);
+    auto symbols = this->currentSymbolTable->getSymbolsMap();
+    auto hoistedSymbol = symbols.find(function->getName());
+    if (hoistedSymbol != symbols.end() && hoistedSymbol->second == nullptr)
+        this->currentSymbolTable->replaceSymbol(function->getName(), funSymbol);
+    else
+        this->currentSymbolTable->addSymbol(function->getName(), funSymbol);
     // building symbol table for new execution context
     auto symbolTableBuilder = SymbolTableBuilder(function->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
     symbolTableBuilder.buildForFunction(function->getSharedPtr());
+    return nullptr;
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitClassDecleration(ClassDecleration *classDecleration)
+{
+    auto classDeclConst = RValConstFactory::createClassDeclerationConstSharedPtr(classDecleration->getSharedPtr());
+    auto classSymbol = SymbolFactory::createClassSymbol(this->currentSymbolTable->getScopeLevel(), classDeclConst);
+    this->currentSymbolTable->addSymbol(classDecleration->getName(), classSymbol);
+    auto symbolTableBuilder = SymbolTableBuilder(classDecleration->getSharedPtr(), std::make_shared<SymbolTable>(this->currentSymbolTable));
+    symbolTableBuilder.buildForClass(classDecleration->getSharedPtr());
+    return nullptr;
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitInstance(Instance *instance)
+{
+    return nullptr;
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitDotOperator(DotOperator *dotOperator)
+{
+    auto instanceExpr = dotOperator->getInstanceExpr()->acceptVisitor(this);
+    //auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
+    // if (!instanceConst)
+    //     throw ExceptionFactory::create("dot operator can only be used with instances");
+    // auto instance = instanceConst->getData();
+    // auto classSymbol = instance->getClassSymbol();
+    // auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+    // auto classDecl = classDeclConst->getData();
+    // auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+    // auto symbolTableBuilder = SymbolTableBuilder(classDecl, std::make_shared<SymbolTable>(this->currentSymbolTable));
+    // symbolTableBuilder.resolveInstanceMember(dotOperator);
+    return nullptr;
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::visitNew(New *newObj)
+{
+    auto className = newObj->getClassName();
+    this->currentSymbolTable->getSymbol(className);
+    auto args = newObj->getArgs();
+    for (auto arg : args)
+        arg->acceptVisitor(this);
     return nullptr;
 }
 
@@ -191,7 +238,6 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::build()
         runable->acceptVisitor(this);
         return this->rootSymbolTable;
     }
-    auto evaluable = std::dynamic_pointer_cast<Evaluable>(this->ast);
     throw ExceptionFactory::create("while building symbol table got evaluble , expected runable");
 }
 
@@ -208,4 +254,74 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForFunction(std::shared_pt
     auto statementList = function->getCompoundStatement();
     statementList->acceptVisitor(this);
     return this->rootSymbolTable;
+}
+
+std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForClass(std::shared_ptr<ClassDecleration> classDecleration)
+{
+    classDecleration->setCorospondingSymbolTable(this->rootSymbolTable);
+    auto &members = classDecleration->getMembers();
+    // adding all functions in scope
+    for (auto [name, fn] : members)
+        if (name != "constructor")
+            this->rootSymbolTable->addSymbol(name, nullptr);
+    
+    // adding a temp instance
+    auto className = classDecleration->getName();
+    auto classSymbol = this->rootSymbolTable->getEnclosingScope()->getSymbol(className);
+    auto tempInstance = std::make_shared<Instance>(classSymbol, classDecleration->getDataMembers());
+    auto tempInstanceConst = RValConstFactory::createInstanceConstSharedPtr(tempInstance);
+    this->rootSymbolTable->addSymbol("this", SymbolFactory::createVarSymbol(this->rootSymbolTable->getScopeLevel(), tempInstanceConst));
+
+    // adding data members
+    auto constructorFn = members.find("constructor");
+    if (constructorFn != members.end())
+    {
+        // adding data members to symbol table
+        auto constructor = constructorFn->second;
+        auto statements = constructor->getCompoundStatement();
+        auto statementList = statements->getStatementList();
+        for (auto statement : statementList)
+        {
+            auto expressionStatement = std::dynamic_pointer_cast<ExpressionStatement>(statement);
+            if (!expressionStatement)
+                continue;
+            auto expression = expressionStatement->getExpression();
+            auto binaryOp = std::dynamic_pointer_cast<BinaryOperation>(expression);
+            if (!binaryOp)
+                continue;
+            if (binaryOp->getOperation() != Token::Type::ASSIGNMENT)
+                continue;
+            auto leftChild = binaryOp->getLeftChild();
+            auto dotOperator = std::dynamic_pointer_cast<DotOperator>(leftChild);
+            if (!dotOperator)
+                continue;
+            auto instanceExpr = dotOperator->getInstanceExpr();
+            auto var = std::dynamic_pointer_cast<Variable>(instanceExpr);
+            auto instanceName = var->getVarName();
+            if (instanceName != "this")
+                continue;
+            auto instanceMember = dotOperator->getMember();
+            var = std::dynamic_pointer_cast<Variable>(instanceMember);
+            if (!var)
+                continue;
+            auto memberName = var->getVarName();
+            classDecleration->setDataMember(memberName);
+        }
+        constructor->acceptVisitor(this);
+    }
+    
+    for (auto [name, fn] : members)
+        if (name != "constructor")
+            fn->acceptVisitor(this);
+    return this->rootSymbolTable;
+}
+
+std::shared_ptr<RVal> SymbolTableBuilder::resolveInstanceMember(DotOperator *dotOperator)
+{
+    // only called with class symbol as root symbol table,
+    // so this member is already present in root symbol table
+    // or we get error if it's not present
+    // auto member = dotOperator->getMember()->acceptVisitor(this);
+    // return member;
+    return nullptr;
 }

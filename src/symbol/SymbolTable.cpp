@@ -2,6 +2,7 @@
 #include <exception/exceptionFactory.hpp>
 #include <iostream>
 #include <evaluable/rValConst.hpp>
+#include <evaluable/classDecleration.hpp>
 
 SymbolTable::SymbolTable(std::shared_ptr<SymbolTable> enclosingScope, bool shouldDestroyChildren) : enclosingScope(enclosingScope), scopeLevel(enclosingScope ? enclosingScope->getScopeLevel() + 1 : 0), symbols({}), children({}), shouldDestroyChildren(shouldDestroyChildren) {}
 
@@ -25,6 +26,17 @@ void SymbolTable::setSymbol(std::string name, std::shared_ptr<RVal> value)
         auto symbol = this->symbols[name];
         symbol->setValue(value);
         symbol->setIsInTemporalDeadZone(false);
+    }
+    else
+        throw ExceptionFactory::create("symbol not found", name);
+}
+
+void SymbolTable::replaceSymbol(std::string name, std::shared_ptr<Symbol> value)
+{
+    if (this->symbols.find(name) != this->symbols.end())
+    {
+        this->symbols[name] = value;
+        value->setIsInTemporalDeadZone(false);
     }
     else
         throw ExceptionFactory::create("symbol not found", name);
@@ -60,8 +72,11 @@ void SymbolTable::print(int ident)
 {
     std::cout << std::endl
               << std::string(ident, ' ') << "Entering Scope level " << this->scopeLevel;
-    for (auto child : this->children)
-        child->print((ident + 1) * 2);
+    if (this->children.size() == 0)
+        std::cout << std::endl;
+    else
+        for (auto child : this->children)
+            child->print((ident + 1) * 2);
     if (this->symbols.size())
     {
         std::cout << std::endl;
@@ -73,6 +88,12 @@ void SymbolTable::print(int ident)
                 auto fnConst = std::dynamic_pointer_cast<FunctionConst>(symbol->getValue());
                 if (symbol->getScopeLevel() == this->scopeLevel)
                     fnConst->getData()->getCorospondingSymbolTable()->print((ident + 1) * 2);
+            }
+            else if (symbol->getType() == Symbol::Type::CLASS)
+            {
+                auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(symbol->getValue());
+                if (symbol->getScopeLevel() == this->scopeLevel)
+                    classDeclConst->getData()->getCorospondingSymbolTable()->print((ident + 1) * 2);
             }
         }
     }

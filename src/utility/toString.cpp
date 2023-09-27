@@ -3,6 +3,7 @@
 #include <token/token.hpp>
 #include <sstream>
 #include <exception/exceptionFactory.hpp>
+#include <evaluable/classDecleration.hpp>
 
 std::string ToString::convertNumberConst(std::shared_ptr<NumberConst> num)
 {
@@ -95,6 +96,20 @@ std::string ToString::convert(std::shared_ptr<RVal> rval)
         oss << "]";
         return oss.str();
     }
+    if (type == RVal::Type::INSTANCE)
+    {
+         auto instance = std::dynamic_pointer_cast<InstanceConst>(rval);
+        auto classConst = instance->getData()->getClassSymbol()->getValue();
+        auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classConst);
+        auto classDecleration = classDeclConst->getData();
+        auto name = classDecleration->getName();
+        std::ostringstream oss;
+        oss << "[Instance - ";
+        oss << name;
+        oss << "]";
+        return oss.str();
+        return "";
+    }
 
-    throw ExceptionFactory::create("unable to convert" , rval->getTypeString(), "to string");
+    throw ExceptionFactory::create("unable to convert", rval->getTypeString(), "to string");
 }

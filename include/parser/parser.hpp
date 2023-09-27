@@ -3,6 +3,8 @@
 #include <lexer/lexer.hpp>
 #include <evaluable/evaluable.hpp>
 #include <evaluable/indexing.hpp>
+#include <evaluable/classDecleration.hpp>
+#include <evaluable/new.hpp>
 #include <runable/varDecleration.hpp>
 #include <runable/statement.hpp>
 #include <runable/program.hpp>
@@ -47,11 +49,13 @@ private:
 
 public:
     Parser(Lexer);
-    std::shared_ptr<Print> print();
-    std::shared_ptr<Evaluable> indexingOrFunctionCall(std::shared_ptr<Evaluable>);
+    std::shared_ptr<Print> print(bool hasNewLine = false);
+    std::shared_ptr<Evaluable> indexingOrFunctionCallOrDot(std::shared_ptr<Evaluable>);
+    std::shared_ptr<New> parseNew();
     std::shared_ptr<Evaluable> function(bool isAnonymous = false);
+    std::shared_ptr<ClassDecleration> classDecleration();
     std::shared_ptr<RVal> functionCall();
-    std::shared_ptr<Evaluable> P1_factor();                                         // +i, -i, ++i, --i, i++, i--, fn(), !i, rVal etc , logical not, bitwise not
+    std::shared_ptr<Evaluable> P1_factor(bool parseSingleExpression = false);                                         // +i, -i, ++i, --i, i++, i--, fn(), !i, rVal etc , logical not, bitwise not
     std::shared_ptr<Evaluable> P2_mathemetical_multiplicativeExpression();          //*,**,/,%
     std::shared_ptr<Evaluable> P3_mathemetical_addativeExpression();                //, +,-
     std::shared_ptr<Evaluable> P4_bitwise_shiftExpression();                        //<<, >>

@@ -11,6 +11,7 @@
 #include <rVal/rVal.hpp>
 #include <utility/conversionFunctions.hpp>
 #include <symbol/symbolTableBuilder.hpp>
+#include <typeinfo>
 
 Interpreter::Interpreter(Parser *parser, CallStack callStack) : astNode(parser->parse()), callStack(callStack), hasReturned(false) {}
 
@@ -62,7 +63,16 @@ std::shared_ptr<RVal> Interpreter::visitBinaryOperation(BinaryOperation *binaryO
     auto op = binaryOperation->getOperation();
 
     if (op == Token::Type::ASSIGNMENT)
+    {
+        auto left = binaryOperation->getLeftChild();
+        auto dotOperator = std::dynamic_pointer_cast<DotOperator>(left);
+        if (dotOperator)
+        {
+            auto val = binaryOperation->getRightChild()->acceptVisitor(this);
+            return this->dotOperatorAssignment(dotOperator, val);
+        }
         return AssignmentOperation::evaluate(this, binaryOperation->getLeftChild(), binaryOperation->getRightChild(), this->callStack.getActivationRecord());
+    }
 
     auto left = binaryOperation->getLeftChild() ? binaryOperation->getLeftChild()->acceptVisitor(this) : nullptr;
     auto right = binaryOperation->getRightChild() ? binaryOperation->getRightChild()->acceptVisitor(this) : nullptr;
@@ -129,6 +139,8 @@ void Interpreter::visitPrint(Print *print)
         auto res = arg->acceptVisitor(this);
         Console::log(res);
     }
+    if (print->hasNewLine())
+        std::cout << std::endl;
 }
 
 std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
@@ -142,6 +154,8 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         Interpreter interpreter{functionAst, callStack};
         interpreter.interpret(functionCall->getArgs());
         auto res = functionAst->getReturnVal();
+        if(!res)
+            return RValConstFactory::createUndefinedConstSharedPtr();
         return res;
     }
     throw ExceptionFactory::create("expression of type", fn->getTypeString(), "is not callable");
@@ -149,7 +163,7 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
 
 std::shared_ptr<RVal> Interpreter::visitFunction(Function *function)
 {
-    return nullptr;
+    return RValConstFactory::createFunctionConstSharedPtr(function->shared_from_this());
 }
 
 void Interpreter::visitReturn(Return *ret)
@@ -176,6 +190,129 @@ void Interpreter::visitVarDecleration(VarDecleration *varDecleration)
         auto val = expr->acceptVisitor(this);
         activationRecord->setSymbol(name, val);
     }
+}
+
+std::shared_ptr<RVal> Interpreter::visitClassDecleration(ClassDecleration *classDecleration)
+{
+    return nullptr;
+}
+
+std::shared_ptr<RVal> Interpreter::visitInstance(Instance *instance)
+{
+    return RValConstFactory::createInstanceConstSharedPtr(instance->shared_from_this());
+}
+
+std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
+{
+    auto instanceExpr = dotOperator->getInstanceExpr()->acceptVisitor(this);
+    auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
+    if (!instanceConst)
+        throw ExceptionFactory::create("dot operator can only be used with instances");
+    auto instance = instanceConst->getData();
+    auto classSymbol = instance->getClassSymbol();
+    auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+    auto classDecl = classDeclConst->getData();
+    auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+    CallStack callStack{classSymbolTable};
+    Interpreter interpreter{classDecl, callStack};
+    auto member = interpreter.resolveInstanceMember(dotOperator, instance);
+    return member;
+    // return nullptr;
+}
+
+std::shared_ptr<RVal> Interpreter::resolveInstanceMember(DotOperator *dotOperator, std::shared_ptr<Instance> instance)
+{
+    auto member = dotOperator->getMember();
+    auto var = std::dynamic_pointer_cast<Variable>(member);
+    if (var)
+    {
+        auto varName = var->getVarName();
+        auto member = instance->getDataMembers().find(varName);
+        if (member != instance->getDataMembers().end())
+            return member->second;
+        return RValConstFactory::createUndefinedConstSharedPtr();
+    }
+    auto instanceConst = std::dynamic_pointer_cast<Instance>(member);
+    if (instanceConst)
+        return instanceConst->acceptVisitor(this);
+    auto funCall = std::dynamic_pointer_cast<FunctionCall>(member);
+    if (funCall)
+    {
+        this->callStack.getGlobalScope()->setSymbol("this", RValConstFactory::createInstanceConstSharedPtr(instance));
+        auto res = funCall->acceptVisitor(this);
+        this->callStack.getGlobalScope()->setSymbol("this", RValConstFactory::createUndefinedConstSharedPtr());
+        return res;
+    }
+    return RValConstFactory::createUndefinedConstSharedPtr();
+}
+
+std::shared_ptr<RVal> Interpreter::dotOperatorAssignment(std::shared_ptr<DotOperator> dotOperator, std::shared_ptr<RVal> val)
+{
+    auto instanceExpr = dotOperator->getInstanceExpr()->acceptVisitor(this);
+    auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
+    if (!instanceConst)
+        throw ExceptionFactory::create("dot operator can only be used with instances");
+    auto instance = instanceConst->getData();
+    auto classSymbol = instance->getClassSymbol();
+    auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+    auto classDecl = classDeclConst->getData();
+    auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+    CallStack callStack{classSymbolTable};
+    Interpreter interpreter{classDecl, callStack};
+    auto res = interpreter.updateInstanceMember(dotOperator, instance, val);
+    return res;
+}
+
+std::shared_ptr<RVal> Interpreter::updateInstanceMember(std::shared_ptr<DotOperator> dotOperator, std::shared_ptr<Instance> instance, std::shared_ptr<RVal> val)
+{
+    auto member = dotOperator->getMember();
+    auto var = std::dynamic_pointer_cast<Variable>(member);
+    if (var)
+    {
+        auto varName = var->getVarName();
+        auto member = instance->getDataMembers().find(varName);
+        if (member != instance->getDataMembers().end())
+        {
+            instance->getDataMembers()[varName] = val;
+            return val;
+        }
+    }
+    throw ExceptionFactory::create("assignee Instance member should be a variable");
+}
+
+std::shared_ptr<RVal> Interpreter::visitNew(New *newObj)
+{
+    // creating instance
+    auto className = newObj->getClassName();
+    auto classSymbol = this->callStack.getActivationRecord()->getSymbol(className);
+    auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+    auto classDecl = classDeclConst->getData();
+    auto classSmbolTable = classDecl->getCorospondingSymbolTable();
+    auto instance = std::make_shared<Instance>(classSymbol, classDecl->getDataMembers());
+    auto instanceConst = RValConstFactory::createInstanceConstSharedPtr(instance);
+
+    // adding context
+    classSmbolTable->setSymbol("this", instanceConst);
+
+    // creating constructor call function
+    auto constructorSymbol = classSmbolTable->getSymbol("constructor");
+    if (constructorSymbol)
+    {
+        auto constructorfn = constructorSymbol->getValue();
+        auto constructorFnConst = std::dynamic_pointer_cast<FunctionConst>(constructorfn);
+        auto constructor = constructorFnConst->getData();
+        auto constructorCall = std::make_shared<FunctionCall>(constructor, newObj->getArgs());
+
+        // creating dotOperator with instance
+        // eg x = new cls(); x.constructor(...args);
+        auto dotOp = std::make_shared<DotOperator>(instance, constructorCall);
+        dotOp->acceptVisitor(this);
+    }
+
+    // clearing context
+    classSmbolTable->setSymbol("this", RValConstFactory::createUndefinedConstSharedPtr());
+
+    return instanceConst;
 }
 
 void Interpreter::visitIfElse(IfElse *ifElse)
@@ -257,9 +394,10 @@ void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
         {
             auto &params = function->getParams();
             auto activationRecord = this->callStack.getActivationRecord();
-            for(int i=0;i<params.size();i++){
+            for (int i = 0; i < params.size(); i++)
+            {
                 auto &[var, expr] = params[i];
-                if(i<args.size())
+                if (i < args.size())
                     activationRecord->setSymbol(var->getVarName(), args[i]->acceptVisitor(this));
                 else
                     activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
@@ -276,4 +414,8 @@ void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
 CallStack &Interpreter::getCallStack()
 {
     return this->callStack;
+}
+
+std::shared_ptr<RVal> Interpreter::getClassMember()
+{
 }

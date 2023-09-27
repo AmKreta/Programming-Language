@@ -1,6 +1,7 @@
 #include <modules/console.hpp>
 #include <iostream>
 #include <token/token.hpp>
+#include <evaluable/classDecleration.hpp>
 
 void Console::logNumberConst(std::shared_ptr<NumberConst> num)
 {
@@ -9,7 +10,7 @@ void Console::logNumberConst(std::shared_ptr<NumberConst> num)
 
 void Console::logStringConst(std::shared_ptr<StringConst> str)
 {
-    std::cout<<str->getData();
+    std::cout << str->getData();
 }
 
 void Console::logArrayConst(std::shared_ptr<ArrayConst> arr)
@@ -65,6 +66,29 @@ void Console::logFunction(std::shared_ptr<FunctionConst> fn)
     std::cout << "[Function - " << name << "]";
 }
 
+void Console::logInstance(std::shared_ptr<InstanceConst> instanceConst)
+{
+    auto instance = instanceConst->getData();
+    auto dataMembers = instance->getDataMembers();
+    auto classSymbol = instance->getClassSymbol();
+    auto classDeclRVal = classSymbol->getValue();
+    auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classDeclRVal);
+    auto classDecl = classDeclConst->getData();
+    auto className = classDecl->getName();
+    std::cout << className << " {";
+    int i = 0;
+    int size = dataMembers.size();
+    for (auto [key, val] : dataMembers)
+    {
+        std::cout << key;
+        std::cout << " : ";
+        Console::log(val);
+        if (i++ < size - 1)
+            std::cout << ", ";
+    }
+    std::cout << "}";
+}
+
 void Console::log(std::shared_ptr<RVal> rval)
 {
     auto type = rval->getType();
@@ -84,4 +108,6 @@ void Console::log(std::shared_ptr<RVal> rval)
         return Console::logUndefined();
     if (type == RVal::Type::FUNCTION)
         return Console::logFunction(std::dynamic_pointer_cast<FunctionConst>(rval));
+    if (type == RVal::Type::INSTANCE)
+        return Console::logInstance(std::dynamic_pointer_cast<InstanceConst>(rval));
 }

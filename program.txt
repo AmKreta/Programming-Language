@@ -1,0 +1,28 @@
+class Wheels{
+    function constructor(diameter = 100){
+        this.diameter = diameter;
+    }
+};
+
+class Engine{
+    function constructor(hp = 400){
+        this.hp = hp;
+    }
+};
+
+class Car{
+    function constructor(wheels = new Wheels(), engine = new Engine()){
+        this.wheels = wheels;
+        this.engine = engine;
+    }
+
+    function getInfo(){
+        let wheels = this.wheels;
+        let diameter = wheels.diameter;
+        printLn('car with ', diameter,' centimeter wheels and ', this.engine.hp, ' horsepower engine');
+    }
+};
+
+let car = new Car( new Wheels(130), new Engine(700));
+car.getInfo();
+printLn(car);
