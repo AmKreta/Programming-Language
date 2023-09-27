@@ -62,10 +62,10 @@ function performOperation(operation, x, y) {
 // Using the functions
 
 const result1 = performOperation(add, 7, 2); // Passing add as an argument
-console.log("Result of performing addition:", result1);
+print("Result of performing addition:", result1);
 
 const result2 = performOperation(subtract, 15, 6); // Passing subtract as an argument
-console.log("Result of performing subtraction:", result2);`;
+print("Result of performing subtraction:", result2);`;
 
   functionClosureExample = `
 function createCounter() {
@@ -76,7 +76,7 @@ function createCounter() {
 }
 
 const counter = createCounter();
-console.log(counter()); // 1 , count is still accessible
-console.log(counter()); // 2 , count is still accessible
+print(counter()); // 1 , count is still accessible
+print(counter()); // 2 , count is still accessible
 `;
 }
