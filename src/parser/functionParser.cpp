@@ -18,7 +18,7 @@ std::shared_ptr<Evaluable> Parser::function(bool isAnonymous)
     while (this->currentToken.getTokenType() != Token::Type::R_PAREN)
     {
         auto var = std::make_shared<Variable>(this->currentToken.getTokenValue());
-        std::__1::shared_ptr<Evaluable> defaultVal = RValConstFactory::createUndefinedConstSharedPtr();
+        std::shared_ptr<Evaluable> defaultVal = RValConstFactory::createUndefinedConstSharedPtr();
         this->eat(Token::Type::ID);
         if (this->currentToken.getTokenType() == Token::Type::ASSIGNMENT)
         {

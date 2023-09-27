@@ -24,7 +24,7 @@ std::shared_ptr<ForLoop> Parser::forLoop()
 
     // condition can be empty also
     // if no condition, treat it as true
-    std::__1::shared_ptr<Evaluable> condition = RValConstFactory::createBooleanConstSharedPtr(true);
+    std::shared_ptr<Evaluable> condition = RValConstFactory::createBooleanConstSharedPtr(true);
     if (this->currentToken.getTokenType() != Token::Type::SEMI_COLON)
         condition = this->p11_expression();
     this->eat(Token::Type::SEMI_COLON);
