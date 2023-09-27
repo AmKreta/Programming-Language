@@ -1,0 +1,38 @@
+.editorHeader {
+    height: 5%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #3c3c3c;
+    color:#f6f1f1e6;
+    &>* {
+        min-width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.space-between{
+    padding-left:8px;
+    padding-right:24px;
+    justify-content: space-between;
+}
+
+.outputHeader{
+    padding-left:16px;
+}
+
+.editorContainer {
+    height: 95%;
+    display: flex;
+    flex-wrap: wrap;
+
+    &>* {
+        min-width: 50%;
+        height: 100%;
+    }
+}
+
+.output {
+    background-color: #1e1e1e;
+}
