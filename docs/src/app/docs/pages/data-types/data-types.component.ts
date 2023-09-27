@@ -12,16 +12,15 @@ export class DataTypesComponent {
   };
 
   stringExample = {
-    codeSnippet: `name = "Alice"
-    message = 'Hello, World!'`
+    codeSnippet: `name = "Neha;"
+    message = 'Hello, ' + name;`
   };
 
   mapExample = {
     codeSnippet: `
     let person = {
-      'name': "John",
-      'age': 30,
-      'city': "New York"
+      'name': "Amk",
+      'age': 25,
   };
   print(person['name']);  // Accessing value using a key`
   };

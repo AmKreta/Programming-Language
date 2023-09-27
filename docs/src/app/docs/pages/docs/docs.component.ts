@@ -31,6 +31,18 @@ export class DocsComponent extends withDestory() implements OnInit {
       routerLink: './data-types'
     },
     {
+      title:'Conditional Statement',
+      routerLink:'conditional-statement'
+    },
+    {
+      title:'Loops',
+      routerLink:'loops'
+    },
+    {
+      title:'Scope',
+      routerLink:'scope'
+    },
+    {
       title: 'Function',
       routerLink: './functions'
     },

@@ -13,9 +13,12 @@ import { InbuiltClassesFunctionsComponent } from './pages/inbuilt-classes-functi
 import { BehindTheSceneComponent } from './pages/behind-the-scene/behind-the-scene.component';
 import { SharedModule } from '../shared/shared.module';
 import { DataTypesComponent } from './pages/data-types/data-types.component';
+import { ConditionalStatementComponent } from './pages/conditional-statement/conditional-statement.component';
+import { LoopsComponent } from './pages/loops/loops.component';
+import { ScopesComponent } from './pages/scopes/scopes.component';
 
 @NgModule({
-  declarations: [DocsComponent, DataTypesComponent, PrintComponent, VariablesComponent, OperatorsComponent, FunctionComponent, ClassComponent, InbuiltClassesFunctionsComponent, BehindTheSceneComponent],
+  declarations: [DocsComponent, DataTypesComponent, PrintComponent, VariablesComponent, OperatorsComponent, FunctionComponent, ClassComponent, InbuiltClassesFunctionsComponent, BehindTheSceneComponent, ConditionalStatementComponent, LoopsComponent, ScopesComponent],
   imports: [DocsRoutingModule, CommonModule, MatSidenavModule, MatListModule, SharedModule],
 })
 export class DocsModule { }

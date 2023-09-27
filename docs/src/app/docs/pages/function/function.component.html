@@ -1,1 +1,93 @@
-<p>function works!</p>
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Function</app-typography>
+    <app-typography variant="subtitle1">
+        Functions in programming are blocks of reusable code that perform a specific task or set of tasks. They are a
+        fundamental concept in most programming languages, including the Token Programming Language.
+    </app-typography>
+    <app-typography variant="subtitle1">
+        Here are some key concepts related to functions:
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Function Declaration:</app-typography>
+    <app-typography variant="subtitle1">
+        A function declaration is a named block of code that can be called and executed. It typically consists of a
+        name, a list of parameters (if any), a function body, and optionally, a return statement. For example:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionDeclerationExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Function Expression:</app-typography>
+    <app-typography variant="subtitle1">
+        A function expression is similar to a function declaration but is defined as part of an expression. It can be
+        assigned to variables, passed as arguments, or returned from other functions. For example:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionExpressionExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Function Call:</app-typography>
+    <app-typography variant="subtitle1">
+        Invoking or executing a function is called a function call. This is done by using the function name followed by
+        parentheses, optionally passing arguments within the parentheses. For example:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionCallExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Parameters</app-typography>
+    <app-typography variant="subtitle1">
+        Parameters are variables that are declared as part of a function's signature. They act as placeholders for
+        values that are passed when the function is called. For example, a and b in the add function above are
+        parameters.
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionParametersExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Arguments</app-typography>
+    <app-typography variant="subtitle1">
+        Arguments are the actual values that are passed to a function when it is called. In the add(3, 4) call, 3 and 4
+        are arguments that are passed to the add function.
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionArgumentExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Default parameters</app-typography>
+    <app-typography variant="subtitle1">
+        In Token Programming Language, you can provide default values for function parameters. If an argument is not
+        provided when the
+        function is called, the default value is used. For example:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionDefaultParamsExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Functions as First-Class
+        Citizens</app-typography>
+    <app-typography variant="subtitle1">
+        In Token programming language, functions are treated as first-class citizens. This means they can be assigned to
+        variables, passed as arguments to other functions, returned from other functions, and stored in data structures
+        like arrays or objects.
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionAsFirstClassCitizenExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Closure: </app-typography>
+    <app-typography variant="subtitle1">
+        A closure is a function that has access to the variables from its containing (enclosing) function's scope, even
+        after the containing function has finished executing. Closures are often used to create private variables or
+        maintain state. For example:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="functionClosureExample"></app-code-snippet>
+</div>
+
+<app-typography variant="subtitle1">
+    In summary, functions are essential building blocks of code in TypeScript, allowing you to encapsulate logic, reuse
+    code, and create modular and maintainable software. They can take parameters, have default values, and be
+    manipulated as data, making them a versatile and powerful feature of the language.
+</app-typography>

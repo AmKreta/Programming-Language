@@ -10,6 +10,8 @@ import { InbuiltClassesFunctionsComponent } from './pages/inbuilt-classes-functi
 import { BehindTheSceneComponent } from './pages/behind-the-scene/behind-the-scene.component';
 import { LoopsComponent } from './pages/loops/loops.component';
 import { DataTypesComponent } from './pages/data-types/data-types.component';
+import { ConditionalStatementComponent } from './pages/conditional-statement/conditional-statement.component';
+import { ScopesComponent } from './pages/scopes/scopes.component';
 
 const routes: Routes = [
   {
@@ -60,6 +62,21 @@ const routes: Routes = [
         title: 'Behind the scene',
         path: 'behind-the-scene',
         component: BehindTheSceneComponent
+      },
+      {
+        title: 'Conditional Statement',
+        path: 'conditional-statement',
+        component: ConditionalStatementComponent
+      },
+      {
+        title: 'Loops',
+        path: 'loops',
+        component: LoopsComponent
+      },
+      {
+        title: 'Scopes',
+        path: 'scope',
+        component: ScopesComponent
       }
     ]
   },
