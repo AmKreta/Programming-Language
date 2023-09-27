@@ -1,1 +1,28 @@
-<p>loops works!</p>
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Loops</app-typography>
+    <app-typography variant="subtitle1">
+        Loops are a fundamental concept in programming that allow you to execute a block of code repeatedly based on a
+        certain condition or for a specified number of times. Loops are used to automate repetitive tasks, process
+        collections of data, and perform iterations over sequences or ranges of values. There are several types of loops
+        commonly used in programming:
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">For Loop:</app-typography>
+    <app-typography variant="subtitle1">
+        A for loop is used when you know beforehand how many times you want to repeat a block of code. It typically
+        consists of an initialization step, a condition, and an iteration step. The loop continues to execute as long as
+        the condition is true.
+    </app-typography>
+    <app-code-snippet [codeSnippet]="forLoopExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">While Loop: </app-typography>
+    <app-typography variant="subtitle1">
+        A while loop is used when you want to execute a block of code as long as a certain condition is true. The
+        condition is evaluated before each iteration.
+    </app-typography>
+    <app-code-snippet [codeSnippet]="whileLoopExample"></app-code-snippet>
+</div>
