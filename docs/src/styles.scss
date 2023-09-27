@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+a{
+    color:currentColor;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+code{
+    border:1px solid #333;
+    padding:2px 4px;
+    background-color: #ccc;
+    border-radius: 3px;
+}
+
+.title-description-container{
+    margin-bottom: 40px;
+}

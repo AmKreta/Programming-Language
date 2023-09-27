@@ -1,0 +1,52 @@
+.mat-toolbar {
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .logo-icon {
+        font-size: 50px;
+        height: 50px;
+        width: 50px;
+    }
+
+    &:hover{
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    &>a:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    &>.navbar-item{
+        display: flex;
+        align-items: center;
+        gap: 3px;
+    }
+}
+
+:host{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height:100%;
+}
+
+main{
+    height:94%;
+}
+
+.header{
+   height:6%;
+}

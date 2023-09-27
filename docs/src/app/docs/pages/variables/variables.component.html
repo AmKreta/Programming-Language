@@ -1,0 +1,33 @@
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Variables</app-typography>
+    <app-typography variant="subtitle1">
+        Variables in Token programming language are containers that you can use to store, manage, and manipulate data.
+        They provide a way to give a name to a value, making your code more readable and maintainable. Token supports
+        various data types, and you can declare variables using the <code>let</code> and <code>const</code> keywords.
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">
+        Declaring Variables with let and const
+    </app-typography>
+    <app-typography variant="subtitle1">
+        The <code>let</code> keyword is used to declare variables that can be reassigned. You can use let to declare
+        variables in different scopes like functions, loops, or blocks. The <code>const</code> keyword is used to
+        declare variables with a constant value. Once a value is assigned to a const variable, it cannot be reassigned.
+    </app-typography>
+</div>
+
+<app-code-snippet *ngFor="let example of letExample" [codeSnippet]="example.codeSnippet" [title]="example.title"></app-code-snippet>
+<app-code-snippet *ngFor="let example of constExample" [codeSnippet]="example.codeSnippet" [title]="example.title"></app-code-snippet>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">
+        Examples
+    </app-typography>
+    <app-typography variant="subtitle1">
+        Here are some examples of declaring variables with different data types:
+    </app-typography>
+</div>
+
+<app-code-snippet *ngFor="let example of dataTypesDeclerationExample" [codeSnippet]="example.codeSnippet"></app-code-snippet>

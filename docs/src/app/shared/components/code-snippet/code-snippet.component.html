@@ -1,0 +1,9 @@
+<div class="codeSnippet">
+    <app-typography *ngIf="title" variant="headline5" color="primary" colorShade="400"
+        [style]="{'margin-bottom':'0px'}">{{title}}</app-typography>
+    <pre class="language-javascript">
+        <code [innerHTML]="codeSnippet"></code>
+    </pre>
+    <app-typography *ngIf="description" variant="body1" [style]="{'margin-bottom':'0px'}">{{description}}</app-typography>
+    <app-typography *ngIf="explaination" variant="body1">{{explaination}}</app-typography>
+</div>

@@ -1,0 +1,48 @@
+@use '../../../shared/shared.styles' as theme;
+
+.container {
+    text-align: center;
+    margin-top: 128px;
+
+    .icon {
+        height: 150px;
+        width: 150px;
+        font-size: 150px;
+    }
+
+    .mat-headline-2 {
+        color: theme.getColor(theme.$primary-palette, 500);
+        margin-bottom: 128px;
+    }
+
+    .mat-headline-5 {
+        color: theme.getColor(theme.$primary-palette, 500);
+    }
+
+    .cta-container {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .repoLinkContainer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        justify-content: center;
+        margin-top: 40px;
+
+        &>img{
+            height:48px;
+            width:48px;
+            fill:theme.getColor(theme.$primary-palette, 500);
+        }
+
+        &>a{
+            color:theme.getColor(theme.$primary-palette, 500);
+            margin:0;
+        }
+    }
+}

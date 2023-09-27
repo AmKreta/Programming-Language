@@ -1,0 +1,25 @@
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Scopes</app-typography>
+    <app-typography variant="subtitle1">
+        In programming, the term "scope" refers to the context or region within which a variable, function, or other
+        identifier is defined and can be accessed. Scopes are essential for managing the visibility and lifetime of
+        identifiers in your code. Understanding scopes is crucial for preventing naming conflicts, optimizing memory
+        usage, and writing maintainable code.
+    </app-typography>
+    <app-typography variant="subtitle1">
+        Here are some key concepts related to scopes and the scope of a variable:
+    </app-typography>
+</div>
+
+<ng-container *ngFor="let scopeType of scopesTypes">
+    <div class="title-description-container">
+        <app-typography variant='headline4' color="primary" colorShade="500">{{scopeType.title}}:</app-typography>
+        <app-typography variant="subtitle1">{{scopeType.defination}}</app-typography>
+    </div>
+</ng-container>
+
+<app-typography variant="subtitle1">Here's an example in JavaScript to illustrate scope and shadowing:</app-typography>
+
+<ng-container *ngFor="let example of scopeExamples">
+    <app-code-snippet [codeSnippet]="example.codeSnippet" [description]="example.description"></app-code-snippet>
+</ng-container>

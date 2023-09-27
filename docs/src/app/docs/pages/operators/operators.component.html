@@ -1,0 +1,60 @@
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Operators</app-typography>
+    <app-typography variant="subtitle1">
+        Operators in Token programming language are symbols or keywords that are used to perform various operations on
+        variables and
+        values. Token programming language supports different types of operators, including unary, binary, and ternary
+        operators, each
+        serving specific purposes.
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Unary Operator</app-typography>
+    <app-typography variant="subtitle1">
+        A unary operator is an operator that operates on a single operand, which means it works with only one value.
+        Unary operators are used to perform various operations like negation, increment, or type conversion on a single
+        operand. Examples include the unary plus +, unary minus -, logical NOT !, and bitwise NOT ~ operators.
+    </app-typography>
+</div>
+
+<ng-container *ngFor="let example of unaryOperatorExamples">
+    <app-code-snippet [title]="example.title" [codeSnippet]="example.codeSnippet"
+        [description]="example.description"></app-code-snippet>
+</ng-container>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Binary Operator</app-typography>
+    <app-typography variant="subtitle1">
+        A binary operator is an operator that operates on two operands, which means it works with two values. Binary
+        operators are used to perform operations like addition, subtraction, multiplication, and comparison between two
+        values. Examples include arithmetic operators like +, -, *, and relational operators like <,>, and ==.
+    </app-typography>
+</div>
+
+<ng-container *ngFor="let example of binaryOperatorExamples">
+    <app-code-snippet [title]="example.title" [codeSnippet]="example.codeSnippet"
+        [description]="example.description"></app-code-snippet>
+</ng-container>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Ternary Operator</app-typography>
+    <app-typography variant="subtitle1">
+        A ternary operator is a conditional operator that takes three operands. It is used for making decisions in code
+        based on a condition. The ternary operator evaluates a condition and returns one of two values depending on
+        whether the condition is true or false. It is written in the form <code>condition ? value_if_true : value_if_false.</code>
+        The ternary operator is a concise way to write conditional expressions.
+    </app-typography>
+</div>
+
+<ng-container *ngFor="let example of ternaryOperatorExamples">
+    <app-code-snippet [title]="example.title" [codeSnippet]="example.codeSnippet"
+        [description]="example.description"></app-code-snippet>
+</ng-container>
+
+<app-typography variant="subtitle1">
+    Operators are fundamental in Token programming language for performing various operations and making decisions in
+    your code.
+    Understanding how to use them correctly is crucial for writing effective and efficient Token programming language
+    programs.
+</app-typography>
