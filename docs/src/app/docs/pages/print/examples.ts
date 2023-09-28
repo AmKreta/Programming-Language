@@ -44,7 +44,7 @@ const PrintExamples = [
         this.a = 5;
         this.b = 6;
         }
-    }
+    };
     
     let x = new cls();  
     print(x); 
