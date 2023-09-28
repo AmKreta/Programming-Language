@@ -71,7 +71,7 @@ std::unordered_map<std::string, std::shared_ptr<Symbol>> &SymbolTable::getSymbol
 void SymbolTable::print(int ident)
 {
     std::cout << std::endl
-              << std::string(ident, ' ') << "Entering Scope level " << this->scopeLevel;
+              << std::string(ident, ' ') << "Entering Scope level " << this->scopeLevel<<" having "<<this->children.size()<<" children...";
     if (this->children.size() == 0)
         std::cout << std::endl;
     else
