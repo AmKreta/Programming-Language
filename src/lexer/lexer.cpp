@@ -1,6 +1,7 @@
 #include <lexer/lexer.hpp>
 #include <token/tokenFactory.hpp>
 #include <sstream>
+#include <exception/exceptionFactory.hpp>
 
 Lexer::Lexer(std::string input) : input(input), line(1), column(1), currentPosition(0) {}
 
@@ -36,9 +37,26 @@ void Lexer::skipSkippable()
             this->input[this->currentPosition] == '\t' ||
             this->input[this->currentPosition] == ' '))
         this->advance();
+    if (this->peek() == "//")
+    {
+        // single line comment
+        while (this->currentPosition < this->input.size() && this->input[this->currentPosition] != '\n')
+            this->advance();
+        this->skipSkippable(); // skipping further values
+    }
+    else if (this->peek() == "/*")
+    {
+        // multi line comment
+        while (this->currentPosition < this->input.size() && this->peek() != "*/")
+            this->advance();
+        this->advance(2); // skipping "*/"
+        if (this->currentPosition >= this->input.size())
+            throw ExceptionFactory::create("maybe you forgot to close a multi line comment");
+        this->skipSkippable();
+    }
 }
 
-std::string Lexer::peek(int position = 1)
+std::string Lexer::peek(int position)
 {
     if (this->currentPosition + position < this->input.size())
         return this->input.substr(this->currentPosition, position + 1);

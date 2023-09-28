@@ -16,7 +16,7 @@ public:
     void advance(int); // advances the cursor one step ahead and keeps track of line and col
     int getLine();
     int getColumn();
-    std::string peek(int);
+    std::string peek(int position=1);
     void skipSkippable(); // skips whitespace, nextline, tabs etc
     Token getNextToken();
     Token getCurrentToken();
