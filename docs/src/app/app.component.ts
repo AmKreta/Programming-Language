@@ -14,7 +14,6 @@ export class AppComponent {
     routerLink:string
   }[]=[
     {icon:'insert_drive_file', title:'Docs', routerLink:'/docs'},
-    {icon:'code', title:'Playground', routerLink:'/playground'},
-    {icon:'person-pin', title:'About Me', routerLink:"/about-me"}
+    {icon:'code', title:'Playground', routerLink:'/playground'}
   ]
 }
