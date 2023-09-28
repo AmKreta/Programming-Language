@@ -4,7 +4,6 @@ CallStack::CallStack(std::shared_ptr<SymbolTable> symbolTable) : scopes({symbolT
 
 void CallStack::pushScope()
 {
-
     auto currentScopeLevel = this->scopes.size() - 1;
     auto corospondingST = this->scopes[currentScopeLevel];
     auto children = corospondingST->getChildren();
@@ -33,7 +32,7 @@ void CallStack::skipScope()
 void CallStack::incrementChildIndex()
 {
     auto scopeLevel = this->scopes.size() - 1;
-    auto corospondingST = this->scopes[scopeLevel];
+    auto corospondingST = this->scopes[scopeLevel-1];
     auto siblings = corospondingST->getChildren(); // siblings of corosponding symbol table
 
     if (this->childIndex + 1 < siblings.size())
