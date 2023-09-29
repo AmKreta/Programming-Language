@@ -37,18 +37,26 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   consoleLog: any; // original console log function
   codeOutput$ = new Subject<string>();
   codeOutput: string[] = [];
+  codeErrors: string[] = [];
 
   public onCodeChanged(value: string) {
     this.code = value;
   }
 
   public runCode() {
-    if (this.wasmModule)
-      (this.wasmModule as any).run(this.code);
+    this.codeErrors = [];
+    try {
+      if (this.wasmModule)
+        (this.wasmModule as any).run(this.code);
+    }
+    catch (err: any) {
+      this.codeErrors = ["error: "+err.message]
+    }
   }
 
   public clear() {
     this.codeOutput = [];
+    this.codeErrors = [];
   }
 
   ngOnInit() {

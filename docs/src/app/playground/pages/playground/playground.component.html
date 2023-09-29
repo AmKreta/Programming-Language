@@ -12,6 +12,7 @@
     <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options" (valueChanged)="onCodeChanged($event)">
     </ngs-code-editor>
     <div class="output">
-        <div style="color:white; margin:2px 0" *ngFor="let output of codeOutput">{{output}}</div>
+        <div style="color:white; margin:3px 0" *ngFor="let output of codeOutput">{{output}}</div>
+        <div style="color:red; margin:3px 0" *ngFor="let output of codeErrors">{{output}}</div>
     </div>
 </div>
