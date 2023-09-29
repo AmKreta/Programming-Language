@@ -1,15 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CodeModel } from '@ngstack/code-editor';
-import { Subject, scan } from 'rxjs';
+import { Subject, scan, takeUntil } from 'rxjs';
+import withDestory from '@shared/util/withDestory';
 
 // wasm Module
+
+type Log = { isLog: boolean, text: string };
 
 @Component({
   selector: 'app-playground',
   templateUrl: './playground.component.html',
   styleUrls: ['./playground.component.scss']
 })
-export class PlaygroundComponent implements OnInit, OnDestroy {
+export class PlaygroundComponent extends withDestory() implements OnInit, OnDestroy {
   theme = 'vs-dark';
 
   codeModel: CodeModel = {
@@ -35,28 +38,25 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
   wasmModule: any;
   code = '';
   consoleLog: any; // original console log function
-  codeOutput$ = new Subject<string>();
-  codeOutput: string[] = [];
-  codeErrors: string[] = [];
+  codeOutput$ = new Subject<Log>();
+  codeOutput: Log[] = [];
 
   public onCodeChanged(value: string) {
     this.code = value;
   }
 
   public runCode() {
-    this.codeErrors = [];
     try {
       if (this.wasmModule)
         (this.wasmModule as any).run(this.code);
     }
     catch (err: any) {
-      this.codeErrors = ["error: "+err.message]
+      console.log(err)
     }
   }
 
   public clear() {
     this.codeOutput = [];
-    this.codeErrors = [];
   }
 
   ngOnInit() {
@@ -74,16 +74,20 @@ export class PlaygroundComponent implements OnInit, OnDestroy {
       return (...args: any[]) => {
         let textContent = Array.prototype.slice.call(args).join(' ');
         originalConsoleLog(textContent);
-        this.codeOutput$.next(textContent);
+        if (textContent.startsWith('Exception:'))
+          this.codeOutput$.next({ isLog: false, text: textContent });
+        else 
+          this.codeOutput$.next({ isLog: true, text: textContent });
       }
     })(console.log.bind(console))
 
     this.codeOutput$
-      //.pipe(scan((acc, val)=>acc + val || ''))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(res => this.codeOutput.push(res));
   }
 
-  ngOnDestroy(): void {
+  override ngOnDestroy(): void {
+    super.ngOnDestroy();
     console.log = this.consoleLog;
   }
 }

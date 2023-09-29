@@ -4,15 +4,25 @@
         <button mat-flat-button color="primary" (click)="runCode()">Run</button>
     </div>
     <div class="outputHeader space-between" style="padding-right: 8px;">
-       <app-typography variant="headline6" [style]="{'margin':'0'}">Output</app-typography>
-       <button mat-flat-button color="primary" (click)="clear()">Clear</button>
+        <app-typography variant="headline6" [style]="{'margin':'0'}">Output</app-typography>
+        <button mat-flat-button color="primary" (click)="clear()">Clear</button>
     </div>
 </div>
 <div class="editorContainer">
     <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options" (valueChanged)="onCodeChanged($event)">
     </ngs-code-editor>
     <div class="output">
-        <div style="color:white; margin:3px 0" *ngFor="let output of codeOutput">{{output}}</div>
-        <div style="color:red; margin:3px 0" *ngFor="let output of codeErrors">{{output}}</div>
+        <ng-container *ngFor="let output of codeOutput">
+            <ng-container [ngTemplateOutlet]="output.isLog ?log :error"
+                [ngTemplateOutletContext]="{$implicit:output.text}"></ng-container>
+        </ng-container>
     </div>
 </div>
+
+<ng-template #log let-output>
+    <div style="color:white; margin:3px 0">{{output}}</div>
+</ng-template>
+
+<ng-template #error let-output>
+    <div style="color:red; margin:3px 0">{{output}}</div>
+</ng-template>
