@@ -41,7 +41,7 @@ public:
     void visitReturn(Return *) override;
     void visitPrint(Print *) override;
     CallStack &getCallStack();
-    void interpret(std::vector<std::shared_ptr<Evaluable>> args = {});
+    void interpret(std::vector<std::shared_ptr<RVal>> args = {});
     std::shared_ptr<RVal> resolveInstanceMember(DotOperator *, std::shared_ptr<Instance>);
     std::shared_ptr<RVal> dotOperatorAssignment(std::shared_ptr<DotOperator>, std::shared_ptr<RVal>);
     std::shared_ptr<RVal> updateInstanceMember(std::shared_ptr<DotOperator>, std::shared_ptr<Instance>, std::shared_ptr<RVal>);
