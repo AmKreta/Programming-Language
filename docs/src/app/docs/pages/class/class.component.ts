@@ -19,7 +19,7 @@ export class ClassComponent {
     function getFullName() {
       return this.firstName + ' ' + this.lastName;
     }
-  }
+  };
   
   // Create an instance of the 'Person' class using the 'new' keyword
   const person1 = new Person('John', 'Doe');
