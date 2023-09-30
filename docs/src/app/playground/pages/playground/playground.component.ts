@@ -60,13 +60,16 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
   }
 
   ngOnInit() {
-    const script = document.createElement('script');
-    script.src = 'assets/wasm-compiled-program/main.js';
-    document.getElementsByTagName('head')[0].appendChild(script);
-    script.onload = () => {
-      console.log(this.wasmModule);
-      this.wasmModule = (window as any).Module;
-    }
+    if(!(window as any).Module){
+      const script = document.createElement('script');
+      script.src = 'assets/wasm-compiled-program/main.js';
+      document.getElementsByTagName('head')[0].appendChild(script);
+      script.onload = () => {
+        console.log(this.wasmModule);
+        this.wasmModule = (window as any).Module;
+      }
+     }
+     else this.wasmModule = (window as any).Module;
 
     // intercepting console.log
     this.consoleLog = console.log;
