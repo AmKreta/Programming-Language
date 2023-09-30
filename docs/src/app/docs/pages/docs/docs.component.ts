@@ -12,7 +12,7 @@ interface Topic {
   templateUrl: './docs.component.html',
   styleUrls: ['./docs.component.scss']
 })
-export class DocsComponent extends withDestory() implements OnInit {
+export class DocsComponent extends withDestory() {
   topics: Topic[] = [
     {
       title: 'Print',
@@ -69,10 +69,5 @@ export class DocsComponent extends withDestory() implements OnInit {
         (this.outletContainer?.elementRef?.nativeElement as HTMLDivElement)?.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
-  }
-
-  ngOnInit() {
-    if (this.router.url === "/docs")
-      this.router.navigate(["./docs/print"]);
   }
 }
