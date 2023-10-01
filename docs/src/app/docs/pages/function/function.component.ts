@@ -71,7 +71,7 @@ print("Result of performing subtraction:", result2);`;
 function createCounter() {
   let count = 0;
   return function () {
-    return ++count;
+    return count = count + 1;
   };
 }
 
