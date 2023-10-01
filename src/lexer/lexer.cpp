@@ -324,9 +324,9 @@ Token Lexer::readID() // reads keywords and identifires
         return TokenFactory::build(Token::Type::UNDEFINED);
 
     // collection data type
-    if (input == "Array")
+    if (input == "array")
         return TokenFactory::build(Token::Type::ARRAY);
-    if (input == "Object")
+    if (input == "object")
         return TokenFactory::build(Token::Type::OBJECT);
 
     // function data type

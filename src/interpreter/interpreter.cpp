@@ -154,7 +154,7 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         Interpreter interpreter{functionAst, callStack};
         interpreter.interpret(functionCall->getArgs());
         auto res = functionAst->getReturnVal();
-        if(!res)
+        if (!res)
             return RValConstFactory::createUndefinedConstSharedPtr();
         return res;
     }
@@ -205,18 +205,46 @@ std::shared_ptr<RVal> Interpreter::visitInstance(Instance *instance)
 std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
 {
     auto instanceExpr = dotOperator->getInstanceExpr()->acceptVisitor(this);
-    auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
-    if (!instanceConst)
-        throw ExceptionFactory::create("dot operator can only be used with instances");
-    auto instance = instanceConst->getData();
-    auto classSymbol = instance->getClassSymbol();
-    auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
-    auto classDecl = classDeclConst->getData();
-    auto classSymbolTable = classDecl->getCorospondingSymbolTable();
-    CallStack callStack{classSymbolTable};
-    Interpreter interpreter{classDecl, callStack};
-    auto member = interpreter.resolveInstanceMember(dotOperator, instance);
-    return member;
+
+    if (instanceExpr->getType() == RVal::Type::ARRAY)
+    {
+        auto arrConst = std::dynamic_pointer_cast<ArrayConst>(instanceExpr);
+        auto arr = arrConst->getData();
+        auto classSymbol = this->callStack.getGlobalScope()->getSymbol("Array");
+        std::unordered_map<std::string, std::shared_ptr<RVal>> dataMembers{{"val", arrConst}};
+        auto arrInstance = std::make_shared<Instance>(classSymbol, dataMembers);
+        auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+        auto classDecl = classDeclConst->getData();
+        auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+        CallStack callStack{classSymbolTable};
+        Interpreter interpreter{classDecl, callStack};
+        auto member = interpreter.resolveInstanceMember(dotOperator, arrInstance);
+        return member;
+    }
+    // else if (instanceExpr->getType() == RVal::Type::MAP)
+    // {
+    // }
+    // else if (instanceExpr->getType() == RVal::Type::STRING)
+    // {
+    // }
+    // else if (instanceExpr->getType() == RVal::Type::NUMBER)
+    // {
+    // }
+    else if (instanceExpr->getType() == RVal::Type::INSTANCE)
+    {
+        auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
+        if (!instanceConst)
+            throw ExceptionFactory::create("dot operator can only be used with instances");
+        auto instance = instanceConst->getData();
+        auto classSymbol = instance->getClassSymbol();
+        auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+        auto classDecl = classDeclConst->getData();
+        auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+        CallStack callStack{classSymbolTable};
+        Interpreter interpreter{classDecl, callStack};
+        auto member = interpreter.resolveInstanceMember(dotOperator, instance);
+        return member;
+    }
     // return nullptr;
 }
 
