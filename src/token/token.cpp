@@ -117,14 +117,17 @@ std::vector<std::string> Token::TypeStr = {
     "RETURN",
     "END OF FILE",
     "START_OF_FILE",
-    
+
     // print
     "PRINT",
     "PRINT_LN",
-    "ENDL"
-    
+    "ENDL",
+
+    // bridge functions
+    "__BRIDGE__FUNCTIONS__",
+
     // Instantiation
     "NEW",
-    
+
     // dot operator
     "DOT"};

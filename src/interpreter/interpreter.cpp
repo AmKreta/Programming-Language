@@ -12,6 +12,7 @@
 #include <utility/conversionFunctions.hpp>
 #include <symbol/symbolTableBuilder.hpp>
 #include <typeinfo>
+#include <bootstrap/bootstrap.hpp>
 
 Interpreter::Interpreter(Parser *parser, CallStack callStack) : astNode(parser->parse()), callStack(callStack), hasReturned(false) {}
 
@@ -141,6 +142,18 @@ void Interpreter::visitPrint(Print *print)
     }
     if (print->hasNewLine())
         std::cout << std::endl;
+}
+
+std::shared_ptr<RVal> Interpreter::visitBridgeFnExpr(BridgeFnExpr *bridgeFnExpr)
+{
+    auto valExpr = bridgeFnExpr->getValueExpr();
+    auto val = valExpr->acceptVisitor(this);
+    auto fnName = bridgeFnExpr->getFnName();
+    auto args = bridgeFnExpr->getArgs();
+    RValPointerArray argsarr;
+    for(auto arg : args)
+        argsarr.push_back(arg->acceptVisitor(this));
+    return Bootstrap::bridgeFunction(val, fnName, argsarr);
 }
 
 std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)

@@ -4,7 +4,7 @@ auto arrayBootstrapString = R"(class Array{
     }
 
     function push(val){
-        print(val);
+       __BRIDGE__FUNCTIONS__(this.val, 'push', [val]);
     }
 
     function pop(){

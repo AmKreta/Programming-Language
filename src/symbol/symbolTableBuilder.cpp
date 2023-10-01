@@ -118,19 +118,24 @@ std::shared_ptr<RVal> SymbolTableBuilder::visitInstance(Instance *instance)
     return nullptr;
 }
 
+std::shared_ptr<RVal> SymbolTableBuilder::visitBridgeFnExpr(BridgeFnExpr *bridgeFnExpr)
+{
+    return nullptr;
+}
+
 std::shared_ptr<RVal> SymbolTableBuilder::visitDotOperator(DotOperator *dotOperator)
 {
     auto instanceExpr = dotOperator->getInstanceExpr()->acceptVisitor(this);
-    //auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
-    // if (!instanceConst)
-    //     throw ExceptionFactory::create("dot operator can only be used with instances");
-    // auto instance = instanceConst->getData();
-    // auto classSymbol = instance->getClassSymbol();
-    // auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
-    // auto classDecl = classDeclConst->getData();
-    // auto classSymbolTable = classDecl->getCorospondingSymbolTable();
-    // auto symbolTableBuilder = SymbolTableBuilder(classDecl, std::make_shared<SymbolTable>(this->currentSymbolTable));
-    // symbolTableBuilder.resolveInstanceMember(dotOperator);
+    // auto instanceConst = std::dynamic_pointer_cast<InstanceConst>(instanceExpr);
+    //  if (!instanceConst)
+    //      throw ExceptionFactory::create("dot operator can only be used with instances");
+    //  auto instance = instanceConst->getData();
+    //  auto classSymbol = instance->getClassSymbol();
+    //  auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+    //  auto classDecl = classDeclConst->getData();
+    //  auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+    //  auto symbolTableBuilder = SymbolTableBuilder(classDecl, std::make_shared<SymbolTable>(this->currentSymbolTable));
+    //  symbolTableBuilder.resolveInstanceMember(dotOperator);
     return nullptr;
 }
 
@@ -264,7 +269,7 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForClass(std::shared_ptr<C
     for (auto [name, fn] : members)
         if (name != "constructor")
             this->rootSymbolTable->addSymbol(name, nullptr);
-    
+
     // adding a temp instance
     auto className = classDecleration->getName();
     auto classSymbol = this->rootSymbolTable->getEnclosingScope()->getSymbol(className);
@@ -309,7 +314,7 @@ std::shared_ptr<SymbolTable> SymbolTableBuilder::buildForClass(std::shared_ptr<C
         }
         constructor->acceptVisitor(this);
     }
-    
+
     for (auto [name, fn] : members)
         if (name != "constructor")
             fn->acceptVisitor(this);

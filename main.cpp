@@ -11,7 +11,7 @@
 
 void run(std::string input)
 {
-    input = input + Bootstrap::bootstrapArray();
+    input = Bootstrap::bootstrapArray()+input;
     std::cout << std::endl
               << input
               << std::endl
