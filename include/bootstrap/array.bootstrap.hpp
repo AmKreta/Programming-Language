@@ -83,20 +83,4 @@ auto arrayBootstrapString = R"(class Array{
                 return i;
         }
     }
-
-    function reverse(){
-
-    }
-
-    function sort(fn){
-
-    }
-
-    function join(){
-
-    }
-
-    function toString(){
-
-    }
 };)";
