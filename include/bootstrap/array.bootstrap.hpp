@@ -15,7 +15,7 @@ auto arrayBootstrapString = R"(class Array{
         return __BRIDGE__FUNCTIONS__(this.val, 'slice', [start, end]);
     }
 
-    function splice(start,end, val){
+    function splice(start,end, vals=[]){
     }
 
     function length(){
@@ -23,7 +23,10 @@ auto arrayBootstrapString = R"(class Array{
     }
 
     function forEach(fn){
-       
+       let x = this.val;
+       let len = this.length();
+       for(let i=0;i<len;i = i+1)
+        fn(x[i],i);
     }
 
     function map(){
