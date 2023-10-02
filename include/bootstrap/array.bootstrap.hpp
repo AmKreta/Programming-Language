@@ -16,7 +16,7 @@ auto arrayBootstrapString = R"(class Array{
     }
 
     function splice(start,numElements, vals=[]){
-        return __BRIDGE__FUNCTIONS__(this.val, 'length', [start, numElements, vals]);
+        return __BRIDGE__FUNCTIONS__(this.val, 'splice', [start, numElements, vals]);
     }
 
     function length(){
@@ -86,7 +86,7 @@ auto arrayBootstrapString = R"(class Array{
     }
 
     function reverse(){
-
+        __BRIDGE__FUNCTIONS__(this.val, 'reverse');
     }
 
 };)";

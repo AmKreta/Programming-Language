@@ -8,7 +8,7 @@ auto arrayBootstrapString = R"(class String{
     }
 
     function splice(start,numElements, vals=[]){
-        return __BRIDGE__FUNCTIONS__(this.val, 'length', [start, numElements, vals]);
+        return __BRIDGE__FUNCTIONS__(this.val, 'splice', [start, numElements, vals]);
     }
 
     function length(){

@@ -65,4 +65,26 @@ std::shared_ptr<RVal> Bootstrap::arrayBridgeFunction(RValPointerArray &val, std:
         }
         throw ExceptionFactory::create("Array.slice expects first arg as number, got ", args[0]->getTypeString());
     }
+    else if (method == "splice")
+    {
+        if (args[0]->getType() != RVal::Type::NUMBER)
+            throw ExceptionFactory::create("Array.splice expects second arg as number, got ", args[1]->getTypeString());
+        auto startConst = std::dynamic_pointer_cast<NumberConst>(args[0]);
+        auto start = static_cast<int>(startConst->getData());
+        if (args[1]->getType() != RVal::Type::NUMBER)
+            throw ExceptionFactory::create("Array.splice expects second arg as number, got ", args[1]->getTypeString());
+        auto deleteCountConst = std::dynamic_pointer_cast<NumberConst>(args[1]);
+        auto deleteCount = static_cast<int>(startConst->getData());
+        if (args[2]->getType() != RVal::Type::ARRAY)
+            throw ExceptionFactory::create("Array.splice expects second arg as array, got ", args[1]->getTypeString());
+        auto arrConst = std::dynamic_pointer_cast<ArrayConst>(args[2]);
+        auto &arr = arrConst->getData();
+        auto spliced = splice(val, start, deleteCount, arr);
+        return RValConstFactory::createArrayConstSharedPtr(spliced);
+    }
+    else if (method == "reverse")
+    {
+        std::reverse(val.begin(), val.end());
+        return RValConstFactory::createUndefinedConstSharedPtr();
+    }
 }
