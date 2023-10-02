@@ -151,7 +151,7 @@ std::shared_ptr<RVal> Interpreter::visitBridgeFnExpr(BridgeFnExpr *bridgeFnExpr)
     auto fnName = bridgeFnExpr->getFnName();
     auto args = bridgeFnExpr->getArgs();
     RValPointerArray argsarr;
-    for(auto arg : args)
+    for (auto arg : args)
         argsarr.push_back(arg->acceptVisitor(this));
     return Bootstrap::bridgeFunction(val, fnName, argsarr);
 }
@@ -165,9 +165,9 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         auto &functionAst = fnConst->getData();
         CallStack callStack{functionAst->getCorospondingSymbolTable()};
         Interpreter interpreter{functionAst, callStack};
-        auto& argsExpr = functionCall->getArgs();
+        auto &argsExpr = functionCall->getArgs();
         auto args = std::vector<std::shared_ptr<RVal>>();
-        for(auto expr : argsExpr)
+        for (auto expr : argsExpr)
             args.push_back(expr->acceptVisitor(this));
         interpreter.interpret(args);
         auto res = functionAst->getReturnVal();
@@ -389,6 +389,8 @@ void Interpreter::visitForLoop(ForLoop *forLoop)
     forLoop->getInitializations()->acceptVisitor(this);
     while (ConversionFunctions::RValToBool(forLoop->getCondition()->acceptVisitor(this)))
     {
+        if (this->hasReturned)
+            break;
         forLoop->getStatementList()->acceptVisitor(this);
         forLoop->getUpdates()->acceptVisitor(this);
     }
@@ -399,7 +401,11 @@ void Interpreter::visitWhileLoop(WhileLoop *whileLoop)
 {
     this->callStack.pushScope();
     while (ConversionFunctions::RValToBool(whileLoop->getCondition()->acceptVisitor(this)))
+    {
+        if (this->hasReturned)
+            break;
         whileLoop->getCompoundStatement()->acceptVisitor(this);
+    }
     this->callStack.popScope();
 }
 

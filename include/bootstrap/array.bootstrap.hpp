@@ -63,19 +63,32 @@ auto arrayBootstrapString = R"(class Array{
         return acc;
     }
 
-    function find(){
-
+    function find(fn){
+        let len =  __BRIDGE__FUNCTIONS__(this.val, 'length');
+        let x = this.val;
+        for(let i=0;i<len;i = i+1){
+            let val = x[i];
+            let match = fn(val, i);
+            if(match)
+                return val;
+        }
     }
 
-    function findIndex(){
-
+    function findIndex(fn){
+        let len =  __BRIDGE__FUNCTIONS__(this.val, 'length');
+        let x = this.val;
+        for(let i=0;i<len;i = i+1){
+            let val = x[i];
+            if(fn(val, i))
+                return i;
+        }
     }
 
     function reverse(){
 
     }
 
-    function sort(){
+    function sort(fn){
 
     }
 
