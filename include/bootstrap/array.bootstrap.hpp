@@ -23,8 +23,8 @@ auto arrayBootstrapString = R"(class Array{
     }
 
     function forEach(fn){
-       let x = this.val;
        let len = this.length();
+       let x = this.val;
        for(let i=0;i<len;i = i+1)
         fn(x[i],i);
     }

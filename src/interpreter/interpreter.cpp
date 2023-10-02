@@ -283,9 +283,11 @@ std::shared_ptr<RVal> Interpreter::resolveInstanceMember(DotOperator *dotOperato
     auto funCall = std::dynamic_pointer_cast<FunctionCall>(member);
     if (funCall)
     {
-        this->callStack.getGlobalScope()->setSymbol("this", RValConstFactory::createInstanceConstSharedPtr(instance));
+        this->callStack.getActivationRecord()->setSymbol("this", RValConstFactory::createInstanceConstSharedPtr(instance));
         auto res = funCall->acceptVisitor(this);
-        this->callStack.getGlobalScope()->setSymbol("this", RValConstFactory::createUndefinedConstSharedPtr());
+        // this is making consicutive fn call break
+        // because this is setting to undefined
+        // this->callStack.getGlobalScope()->setSymbol("this", RValConstFactory::createUndefinedConstSharedPtr());
         return res;
     }
     return RValConstFactory::createUndefinedConstSharedPtr();
