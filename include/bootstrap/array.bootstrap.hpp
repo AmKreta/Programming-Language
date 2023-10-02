@@ -53,8 +53,14 @@ auto arrayBootstrapString = R"(class Array{
         return res;
     }
 
-    function reduce(){
-
+    function reduce(fn, acc = 0){
+        let len =  __BRIDGE__FUNCTIONS__(this.val, 'length');
+        let x = this.val;
+        for(let i=0;i<len;i = i+1){
+            let val = x[i];
+            acc = fn(acc, val);
+        }
+        return acc;
     }
 
     function find(){
