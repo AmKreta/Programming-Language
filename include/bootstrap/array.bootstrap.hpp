@@ -23,18 +23,25 @@ auto arrayBootstrapString = R"(class Array{
     }
 
     function forEach(fn){
-       let len = this.length();
+       let len = __BRIDGE__FUNCTIONS__(this.val, 'length');
        let x = this.val;
        for(let i=0;i<len;i = i+1)
         fn(x[i],i);
     }
 
-    function map(){
-
+    function map(fn){
+        let res = [];
+        let len =  __BRIDGE__FUNCTIONS__(this.val, 'length');
+        let x = this.val;
+        for(let i=0;i<len;i = i+1){
+            let val = x[i];
+            __BRIDGE__FUNCTIONS__(res, 'push', [fn(val, i)]);
+        }
+        return res;
     }
 
     function filter(){
-
+        
     }
 
     function reduce(){
