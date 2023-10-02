@@ -11,8 +11,8 @@ auto arrayBootstrapString = R"(class Array{
         return __BRIDGE__FUNCTIONS__(this.val, 'pop');
     }
 
-    function split(start, end){
-        
+    function slice(start, end){
+        return __BRIDGE__FUNCTIONS__(this.val, 'slice', [start, end]);
     }
 
     function splice(start,end, val){
