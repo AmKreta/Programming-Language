@@ -26,4 +26,7 @@ std::shared_ptr<RVal> Bootstrap::arrayBridgeFunction(RValPointerArray& val, std:
             val.push_back(args[i]);
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
+    if(method == "length"){
+        return RValConstFactory::createNumberConstSharedPtr(val.size());
+    }
 }

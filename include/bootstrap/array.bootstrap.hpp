@@ -4,27 +4,26 @@ auto arrayBootstrapString = R"(class Array{
     }
 
     function push(val){
-       __BRIDGE__FUNCTIONS__(this.val, 'push', [val]);
+       return __BRIDGE__FUNCTIONS__(this.val, 'push', [val]);
     }
 
     function pop(){
-        
-    }
-
-    function clone(){
-
+        return __BRIDGE__FUNCTIONS__(this.val, 'pop');
     }
 
     function split(start, end){
-
+        
     }
 
     function splice(start,end, val){
-
     }
 
-    function forEach(){
+    function length(){
+        return __BRIDGE__FUNCTIONS__(this.val, 'length');
+    }
 
+    function forEach(fn){
+       
     }
 
     function map(){
