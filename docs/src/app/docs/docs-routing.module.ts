@@ -77,6 +77,10 @@ const routes: Routes = [
         title: 'Scopes',
         path: 'scope',
         component: ScopesComponent
+      },
+      {
+        path:'**',
+        redirectTo:'print'
       }
     ]
   },

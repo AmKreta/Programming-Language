@@ -165,7 +165,11 @@ std::shared_ptr<RVal> Interpreter::visitFunctionCall(FunctionCall *functionCall)
         auto &functionAst = fnConst->getData();
         CallStack callStack{functionAst->getCorospondingSymbolTable()};
         Interpreter interpreter{functionAst, callStack};
-        interpreter.interpret(functionCall->getArgs());
+        auto& argsExpr = functionCall->getArgs();
+        auto args = std::vector<std::shared_ptr<RVal>>();
+        for(auto expr : argsExpr)
+            args.push_back(expr->acceptVisitor(this));
+        interpreter.interpret(args);
         auto res = functionAst->getReturnVal();
         if (!res)
             return RValConstFactory::createUndefinedConstSharedPtr();
@@ -421,7 +425,7 @@ void Interpreter::visitProgram(Program *program)
     compoundStatement->acceptVisitor(this);
 }
 
-void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
+void Interpreter::interpret(std::vector<std::shared_ptr<RVal>> args)
 {
     auto program = std::dynamic_pointer_cast<Program>(this->astNode);
     if (program)
@@ -439,7 +443,7 @@ void Interpreter::interpret(std::vector<std::shared_ptr<Evaluable>> args)
             {
                 auto &[var, expr] = params[i];
                 if (i < args.size())
-                    activationRecord->setSymbol(var->getVarName(), args[i]->acceptVisitor(this));
+                    activationRecord->setSymbol(var->getVarName(), args[i]);
                 else
                     activationRecord->setSymbol(var->getVarName(), expr->acceptVisitor(this));
             }

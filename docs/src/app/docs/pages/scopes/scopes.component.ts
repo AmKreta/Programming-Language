@@ -20,16 +20,16 @@ export class ScopesComponent {
           function innerFunction() {
               let innerVar = "I'm in innerFunction";
               let globalVar = "I'm a local var Shadowing global var";
-              console.log(innerVar); // Accesses the inner variable
-              console.log(outerVar); // Accesses the outer variable
-              console.log(globalVar); // Accesses the locally defined globalVar
+              print(innerVar); // Accesses the inner variable
+              print(outerVar); // Accesses the outer variable
+              print(globalVar); // Accesses the locally defined globalVar
           }
       
           innerFunction();
           
-          console.log(innerVar); // Error: innerVar is not defined here
-          console.log(outerVar); // Accesses the outer variable
-          console.log(globalVar); // Accesses the global variable
+          //print(innerVar); Error: innerVar is not defined here
+          print(outerVar); // Accesses the outer variable
+          print(globalVar); // Accesses the global variable
       }
       
       outerFunction();
