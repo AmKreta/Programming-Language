@@ -40,8 +40,17 @@ auto arrayBootstrapString = R"(class Array{
         return res;
     }
 
-    function filter(){
-        
+    function filter(fn){
+        let res = [];
+        let len =  __BRIDGE__FUNCTIONS__(this.val, 'length');
+        let x = this.val;
+        for(let i=0;i<len;i = i+1){
+            let val = x[i];
+            let result = fn(val, i);
+            if(result)
+            __BRIDGE__FUNCTIONS__(res, 'push', [val]);
+        }
+        return res;
     }
 
     function reduce(){
