@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { DocsSidebarService } from '@shared/services/docs-sidebar/docs-sidebar.service';
 import withDestory from '@shared/util/withDestory';
 import { takeUntil } from 'rxjs';
 
@@ -73,29 +74,13 @@ export class DocsComponent extends withDestory() {
   ];
 
   @ViewChild('outletContainer') outletContainer!: TemplateRef<any>;
-  showAside = true;
 
-  constructor(public router: Router) {
+  constructor(public router: Router, public docsSidebarService:DocsSidebarService) {
     super();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe(ev => {
       if (ev instanceof NavigationEnd) {
         (this.outletContainer?.elementRef?.nativeElement as HTMLDivElement)?.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
-  }
-
-  toggleAside = (show: boolean) => {
-    if (window.innerWidth < 800)
-      this.showAside = show;
-  }
-
-  swipeRight() {
-    if (window.innerWidth < 800)
-      this.showAside = true;
-  }
-
-  swipeLeft() {
-    if (window.innerWidth < 800)
-      this.showAside = false;
   }
 }

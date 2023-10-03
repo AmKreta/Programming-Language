@@ -15,11 +15,11 @@
 </mat-drawer-container> -->
 
 <div class="container">
-    <aside *ngIf="showAside">
+    <aside *ngIf="docsSidebarService.showDocsMenu">
         <app-typography variant='headline3' color="primary" colorShade="500" [style]="{'margin-top':'16px', 'margin-left':'16px' }">Topics</app-typography>
         <a *ngFor="let topic of topics" [routerLink]="topic.routerLink">{{topic.title}}</a>
     </aside>
-    <div class="outlet-container" #outletContainer (click)="toggleAside(false)" appSwipe (onSwipeLeft)="swipeLeft()" (onSwipeRight)="swipeRight()">
+    <div class="outlet-container" #outletContainer>
         <router-outlet></router-outlet>
     </div>
 </div>

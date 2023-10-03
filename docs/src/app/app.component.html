@@ -3,7 +3,7 @@
     <mat-icon aria-hidden="false" fontIcon="token" class="logo-icon"></mat-icon>
     <span>Token</span>
   </a>
-  <nav *ngIf="!showFooter">
+  <nav *ngIf="!isSmallScreen">
     <ng-container *ngFor="let item of navBarList">
       <ng-container *ngTemplateOutlet="
           navBarItems;
@@ -17,8 +17,11 @@
   <router-outlet></router-outlet>
 </main>
 
-<mat-toolbar *ngIf="showFooter" color="primary" class="mat-elevation-z1 footer">
+<mat-toolbar *ngIf="isSmallScreen" color="primary" class="mat-elevation-z1 footer">
   <nav>
+    <mat-icon *ngIf="(docSidebarService.showHambuggerMenu$ | async) && !docSidebarService.showDocsMenu" fontIcon="menu" (click)="docSidebarService.toggleDocsMenu()"></mat-icon>
+    <mat-icon *ngIf="(docSidebarService.showHambuggerMenu$ | async) && docSidebarService.showDocsMenu" fontIcon="close" (click)="docSidebarService.toggleDocsMenu()"></mat-icon>
+
     <ng-container *ngFor="let item of navBarList">
       <ng-container *ngTemplateOutlet="
           navBarItems;

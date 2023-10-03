@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CodeModel } from '@ngstack/code-editor';
-import { Subject, fromEvent, interval, scan, takeUntil, throttle } from 'rxjs';
+import { Subject, takeUntil} from 'rxjs';
 import withDestory from '@shared/util/withDestory';
+import { IsSmallScreenService } from '@shared/services/isSmallScreen/is-small-screen.service';
 
 // wasm Module
 
@@ -54,6 +55,10 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
   codeOutput: Log[] = [];
   isSmallScreen=false;
 
+  constructor(private isSmallScreenService:IsSmallScreenService){
+    super();
+  }
+
   public onCodeChanged(value: string) {
     this.code = value;
   }
@@ -96,12 +101,11 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => this.codeOutput.push(res));
 
-    fromEvent(window, 'resize')
-      .pipe(
-        takeUntil(this.destroy$),
-        throttle(() => interval(500))
-      )
-      .subscribe(this.checkIfSmallScreen)
+      this
+      .isSmallScreenService
+      .isSmallScreen$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res=>this.isSmallScreen = res);
   }
 
   override ngOnDestroy(): void {

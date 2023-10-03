@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DocsSidebarService } from '@shared/services/docs-sidebar/docs-sidebar.service';
+import { IsSmallScreenService } from '@shared/services/isSmallScreen/is-small-screen.service';
 import withDestory from '@shared/util/withDestory';
-import { fromEvent, interval, takeUntil, throttle } from 'rxjs';
+import { takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,24 +21,20 @@ export class AppComponent extends withDestory() implements OnInit {
       { icon: 'code', title: 'Playground', routerLink: '/playground' }
     ]
 
-  showFooter = false;
+  isSmallScreen = false;
 
-  setShowFooter = () => {
-    this.showFooter = window.innerWidth < 800;
-  }
-
-  checkIfSmallScreen(){
-    this.showFooter = window.innerWidth < 800;
+  constructor(
+    private isSmallScreenService:IsSmallScreenService,
+    public docSidebarService:DocsSidebarService
+  ){
+    super();
   }
 
   ngOnInit() {
-    this.checkIfSmallScreen();
-    
-    fromEvent(window, 'resize')
-      .pipe(
-        takeUntil(this.destroy$),
-        throttle(() => interval(500))
-      )
-      .subscribe(this.checkIfSmallScreen)
+    this
+    .isSmallScreenService
+    .isSmallScreen$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res=>this.isSmallScreen = res);
   }
 }
