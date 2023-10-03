@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TypographyComponent } from './components/typography/typography.component';
 import { CodeHighlightService } from './services/code-highlight/code-highlight.service';
 import { CodeSnippetComponent } from './components/code-snippet/code-snippet.component';
+import { SwipeDirective } from './directives/swipe/swipe.directive';
 
 
 
@@ -10,6 +11,7 @@ import { CodeSnippetComponent } from './components/code-snippet/code-snippet.com
   declarations: [
     TypographyComponent,
     CodeSnippetComponent,
+    SwipeDirective,
   ],
   imports: [
     CommonModule
@@ -17,6 +19,7 @@ import { CodeSnippetComponent } from './components/code-snippet/code-snippet.com
   exports: [
     TypographyComponent,
     CodeSnippetComponent,
+    SwipeDirective
   ],
   providers: [
     CodeHighlightService,

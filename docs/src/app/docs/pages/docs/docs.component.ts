@@ -31,16 +31,16 @@ export class DocsComponent extends withDestory() {
       routerLink: './data-types'
     },
     {
-      title:'Conditional Statement',
-      routerLink:'conditional-statement'
+      title: 'Conditional Statement',
+      routerLink: 'conditional-statement'
     },
     {
-      title:'Loops',
-      routerLink:'loops'
+      title: 'Loops',
+      routerLink: 'loops'
     },
     {
-      title:'Scope',
-      routerLink:'scope'
+      title: 'Scope',
+      routerLink: 'scope'
     },
     {
       title: 'Function',
@@ -51,16 +51,16 @@ export class DocsComponent extends withDestory() {
       routerLink: './class'
     },
     {
-      title:'Array',
-      routerLink:'./array'
+      title: 'Array',
+      routerLink: './array'
     },
     {
-      title:'Map',
-      routerLink:'./map'
+      title: 'Map',
+      routerLink: './map'
     },
     {
-      title:'String',
-      routerLink:'./string'
+      title: 'String',
+      routerLink: './string'
     }
     // {
     //   title: 'In-built Classes and Functions',
@@ -73,6 +73,7 @@ export class DocsComponent extends withDestory() {
   ];
 
   @ViewChild('outletContainer') outletContainer!: TemplateRef<any>;
+  showAside = true;
 
   constructor(public router: Router) {
     super();
@@ -81,5 +82,20 @@ export class DocsComponent extends withDestory() {
         (this.outletContainer?.elementRef?.nativeElement as HTMLDivElement)?.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
+  }
+
+  toggleAside = (show: boolean) => {
+    if (window.innerWidth < 800)
+      this.showAside = show;
+  }
+
+  swipeRight() {
+    if (window.innerWidth < 800)
+      this.showAside = true;
+  }
+
+  swipeLeft() {
+    if (window.innerWidth < 800)
+      this.showAside = false;
   }
 }
