@@ -1,8 +1,8 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { DocsSidebarService } from '@shared/services/docs-sidebar/docs-sidebar.service';
 import withDestory from '@shared/util/withDestory';
-import { takeUntil } from 'rxjs';
+import {takeUntil } from 'rxjs';
 
 interface Topic {
   title: string;
@@ -75,7 +75,10 @@ export class DocsComponent extends withDestory() {
 
   @ViewChild('outletContainer') outletContainer!: TemplateRef<any>;
 
-  constructor(public router: Router, public docsSidebarService:DocsSidebarService) {
+  constructor(
+    public router: Router,
+    public docsSidebarService: DocsSidebarService
+  ) {
     super();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe(ev => {
       if (ev instanceof NavigationEnd)
@@ -83,7 +86,12 @@ export class DocsComponent extends withDestory() {
     });
   }
 
-  closeAside(){
-   this.docsSidebarService.toggleDocsMenu();
+  closeAside() {
+    if(this.docsSidebarService.showDocsMenu)
+      this.docsSidebarService.toggleDocsMenu();
+  }
+
+  toggleAside() {
+    this.docsSidebarService.toggleDocsMenu();
   }
 }

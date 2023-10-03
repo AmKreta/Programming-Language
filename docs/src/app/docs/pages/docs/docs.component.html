@@ -15,7 +15,7 @@
 </mat-drawer-container> -->
 
 <div class="container">
-    <aside *ngIf="docsSidebarService.showDocsMenu" (click)="closeAside()">
+    <aside *ngIf="docsSidebarService.showDocsMenu" (click)="toggleAside()">
         <app-typography variant='headline3' color="primary" colorShade="500" [style]="{'margin-top':'16px', 'margin-left':'16px' }">Topics</app-typography>
         <a *ngFor="let topic of topics" [routerLink]="topic.routerLink" [routerLinkActive]="'activeRouterLink'">{{topic.title}}</a>
     </aside>
