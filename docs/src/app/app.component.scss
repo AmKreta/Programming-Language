@@ -55,11 +55,15 @@ main{
 
 @media only screen and (max-width : theme.$breakPoint-mid){
     main{
-        height: 88%;
+        height: 86%;
+    }
+
+    .header{
+        height:7%;
     }
 
     .footer{
-        height:6%;
+        height:7%;
 
         nav{
             width:100%;

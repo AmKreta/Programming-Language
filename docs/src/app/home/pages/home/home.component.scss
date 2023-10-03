@@ -2,17 +2,21 @@
 
 .container {
     text-align: center;
-    margin-top: 128px;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-evenly;
 
     .icon {
         height: 150px;
         width: 150px;
         font-size: 150px;
+        margin: 0 auto;
     }
 
     .mat-headline-2 {
         color: theme.getColor(theme.$primary-palette, 500);
-        margin-bottom: 128px;
     }
 
     .mat-headline-5 {
@@ -24,7 +28,6 @@
         align-items: center;
         gap: 32px;
         justify-content: center;
-        margin-top: 40px;
     }
 
     .repoLinkContainer {
@@ -32,7 +35,6 @@
         align-items: center;
         gap: 16px;
         justify-content: center;
-        margin-top: 40px;
 
         &>img{
             height:48px;
