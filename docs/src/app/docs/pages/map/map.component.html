@@ -1,1 +1,24 @@
-<p>map works!</p>
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Maps</app-typography>
+    <app-typography variant="subtitle1">
+        A Map is a collection of key-value pairs. It allows you to store and retrieve values based on
+        their associated keys. Unlike objects, keys in a Map can be of any data type, making it a versatile choice for
+        various data storage needs.
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Declaring a Map</app-typography>
+    <app-typography variant="subtitle1">
+        You can declare a map using curley brackets {{'{}'}} and initialize it with values:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="mapDeclExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Common Map Methods</app-typography>
+</div>
+
+<ng-container *ngFor="let example of mapExamples">
+   <app-code-snippet [codeSnippet]="example.codeSnippet" [title]="example.title" [description]="example.description"></app-code-snippet>
+</ng-container>
