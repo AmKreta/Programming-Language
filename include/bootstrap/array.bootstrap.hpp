@@ -90,4 +90,8 @@ auto arrayBootstrapString = R"(class Array{
         __BRIDGE__FUNCTIONS__(this.val, 'reverse');
     }
 
+    function clone(){
+        return  __BRIDGE__FUNCTIONS__(this.val, 'clone');
+    }
+
 };)";

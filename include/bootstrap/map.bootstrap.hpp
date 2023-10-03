@@ -20,4 +20,8 @@ auto mapBootstrapString = R"(class Map{
         let res = __BRIDGE__FUNCTIONS__(this.val, 'getValues');
         return res;
     }
+
+    function clone(){
+        return  __BRIDGE__FUNCTIONS__(this.val, 'clone');
+    }
 };)";

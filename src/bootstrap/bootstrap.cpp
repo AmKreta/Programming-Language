@@ -111,6 +111,10 @@ std::shared_ptr<RVal> Bootstrap::arrayBridgeFunction(RValPointerArray &val, std:
         std::reverse(val.begin(), val.end());
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
+    else if(method == "clone"){
+        auto res = std::vector(val.begin(), val.end());
+        return RValConstFactory::createArrayConstSharedPtr(res);
+    }
     throw ExceptionFactory::create("method ", method, " is not present in class Array.");
 }
 
@@ -143,6 +147,10 @@ std::shared_ptr<RVal> Bootstrap::mapBridgeFunction(RValPointerMap &val, std::str
         for (auto &[_, vals] : val)
             values.push_back(vals);
         return RValConstFactory::createArrayConstSharedPtr(values);
+    }
+    else if(method == "clone"){
+        auto res = RValPointerMap(val.begin(), val.end());
+        return RValConstFactory::createMapConstSharedPtr(res);
     }
     throw ExceptionFactory::create("method ", method, " is not present in class Map.");
 }
