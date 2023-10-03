@@ -1,1 +1,23 @@
-<p>string works!</p>
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Strings</app-typography>
+    <app-typography variant="subtitle1">
+        A string is a sequence of characters. It is used to represent text and is one of the primitive
+        data types. Token programming language provides a wide range of methods to manipulate and work with strings efficiently.
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Declaring an Array</app-typography>
+    <app-typography variant="subtitle1">
+        You can declare a string using single or double quotes and initialize it with values:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="stringDeclExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Common String Methods</app-typography>
+</div>
+
+<ng-container *ngFor="let example of stringExamples">
+    <app-code-snippet [codeSnippet]="example.codeSnippet" [title]="example.title" [description]="example.description"></app-code-snippet>
+ </ng-container>
