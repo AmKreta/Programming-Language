@@ -1,1 +1,24 @@
-<p>array works!</p>
+<div class="title-description-container">
+    <app-typography variant='headline3' color="primary" colorShade="500">Array</app-typography>
+    <app-typography variant="subtitle1">
+        An array is a data structure in JavaScript that can hold multiple values of different data types. It is a
+        fundamental and versatile concept used to store and manipulate collections of data. Arrays are zero-indexed,
+        which means the first element is accessed using index 0, the second with index 1, and so on.
+    </app-typography>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Declaring an Array</app-typography>
+    <app-typography variant="subtitle1">
+        You can declare an array using square brackets [] and initialize it with values:
+    </app-typography>
+    <app-code-snippet [codeSnippet]="arrayDeclExample"></app-code-snippet>
+</div>
+
+<div class="title-description-container">
+    <app-typography variant='headline4' color="primary" colorShade="500">Common Array Methods</app-typography>
+</div>
+
+<ng-container *ngFor="let example of arrayExamples">
+   <app-code-snippet [codeSnippet]="example.codeSnippet" [title]="example.title" [description]="example.description"></app-code-snippet>
+</ng-container>

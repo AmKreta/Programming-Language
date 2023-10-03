@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import ArrayExample from './array.example';
 
 @Component({
   selector: 'app-array',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./array.component.scss']
 })
 export class ArrayComponent {
-
+  arrayDeclExample=`
+  let fruits = ["apple", "banana", "cherry"];`;
+  arrayExamples = ArrayExample;
 }
