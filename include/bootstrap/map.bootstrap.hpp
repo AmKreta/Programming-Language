@@ -7,7 +7,7 @@ auto mapBootstrapString = R"(class Map{
         __BRIDGE__FUNCTIONS__(this.val, 'insert', [key, val]);
     }
 
-    function remove(key){
+    function delete(key){
         __BRIDGE__FUNCTIONS__(this.val, 'remove', [key]);
     }
 

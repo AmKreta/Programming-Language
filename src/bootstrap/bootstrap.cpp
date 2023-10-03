@@ -112,7 +112,7 @@ std::shared_ptr<RVal> Bootstrap::mapBridgeFunction(RValPointerMap &val, std::str
     }
     else if (method == "remove")
     {
-        if (args.size() == 0 || args.size() == 1)
+        if (args.size() == 0)
             throw ExceptionFactory::create("map.delete(key) needs a key to delete in map");
         val.erase(args[0]);
         return RValConstFactory::createUndefinedConstSharedPtr();
