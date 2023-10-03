@@ -4,7 +4,7 @@ auto stringBootstrapString = R"(class String{
     }
 
     function slice(start, end){
-       print(start, end);
+        return __BRIDGE__FUNCTIONS__(this.val, 'slice', [start, end]);
     }
 
     function length(){
@@ -19,24 +19,24 @@ auto stringBootstrapString = R"(class String{
         return __BRIDGE__FUNCTIONS__(this.val, 'split', [delimeter]);
     }
 
-    function includes(){
-
+    function includes(substr){
+        return __BRIDGE__FUNCTIONS__(this.val, 'includes', [substr]);
     }
 
-    function replace(){
-
+    function replace(oldStr, newStr){
+        return __BRIDGE__FUNCTIONS__(this.val, 'replace', [oldStr, newStr]);
     }
 
-    function replaceAll(){
-
+    function replaceAll(oldStr, newStr){
+        return __BRIDGE__FUNCTIONS__(this.val, 'replaceAll', [oldStr, newStr]);
     }
 
-    function findIndex(){
-        
+    function findIndex(substr){
+        return __BRIDGE__FUNCTIONS__(this.val, 'findIndex', [substr]);
     }
 
-    function findIndex(){
-
+    function clone(){
+        return __BRIDGE__FUNCTIONS__(this.val, 'clone');
     }
 
 };)";

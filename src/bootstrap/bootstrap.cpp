@@ -236,7 +236,6 @@ std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::str
     {
         if (args.size() == 0 || (args[0]->getType() != RVal::Type::STRING))
             throw ExceptionFactory::create("string.findIndex(substr) expects a strings a arguments.");
-        size_t pos = 0;
         auto substrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
         auto &substr = substrConst->getData();
         size_t pos = substr.find(substr);
