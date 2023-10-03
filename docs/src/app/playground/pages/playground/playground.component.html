@@ -1,23 +1,49 @@
-<div class="editorHeader">
-    <div class="space-between">
-        <app-typography variant="headline6" [style]="{'margin':'0'}">Happy Coding</app-typography>
-        <button mat-flat-button color="primary" (click)="runCode()">Run</button>
+<ng-container *ngTemplateOutlet="isSmallScreen?smallScreen:largeScreen"></ng-container>
+
+<ng-template #largeScreen>
+    <div class="editorHeader">
+        <div class="space-between">
+            <app-typography variant="headline6" [style]="{'margin':'0'}">Happy Coding</app-typography>
+            <button mat-flat-button color="primary" (click)="runCode()">Run</button>
+        </div>
+        <div class="outputHeader space-between" style="padding-right: 8px;">
+            <app-typography variant="headline6" [style]="{'margin':'0'}">Output</app-typography>
+            <button mat-flat-button color="primary" (click)="clear()">Clear</button>
+        </div>
     </div>
-    <div class="outputHeader space-between" style="padding-right: 8px;">
-        <app-typography variant="headline6" [style]="{'margin':'0'}">Output</app-typography>
-        <button mat-flat-button color="primary" (click)="clear()">Clear</button>
+    <div class="editorContainer">
+        <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options"
+            (valueChanged)="onCodeChanged($event)">
+        </ngs-code-editor>
+        <div class="output">
+            <ng-container *ngFor="let output of codeOutput">
+                <ng-container [ngTemplateOutlet]="output.isLog ?log :error"
+                    [ngTemplateOutletContext]="{$implicit:output.text}"></ng-container>
+            </ng-container>
+        </div>
     </div>
-</div>
-<div class="editorContainer">
-    <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options" (valueChanged)="onCodeChanged($event)">
-    </ngs-code-editor>
-    <div class="output">
-        <ng-container *ngFor="let output of codeOutput">
-            <ng-container [ngTemplateOutlet]="output.isLog ?log :error"
-                [ngTemplateOutletContext]="{$implicit:output.text}"></ng-container>
-        </ng-container>
+</ng-template>
+
+<ng-template #smallScreen>
+    <div class="container">
+        <div class="space-between">
+            <app-typography variant="headline6" [style]="{'margin':'0'}">Happy Coding</app-typography>
+            <button mat-flat-button color="primary" (click)="runCode()">Run</button>
+        </div>
+        <ngs-code-editor class="ide input" [theme]="theme" [codeModel]="codeModel" [options]="options"
+            (valueChanged)="onCodeChanged($event)"></ngs-code-editor>
+        <div class="outputHeader space-between" style="padding-right: 8px;">
+            <app-typography variant="headline6" [style]="{'margin':'0'}">Output</app-typography>
+            <button mat-flat-button color="primary" (click)="clear()">Clear</button>
+        </div>
+        <div class="ide output">
+            <ng-container *ngFor="let output of codeOutput">
+                <ng-container [ngTemplateOutlet]="output.isLog ?log :error"
+                    [ngTemplateOutletContext]="{$implicit:output.text}"></ng-container>
+            </ng-container>
+        </div>
     </div>
-</div>
+</ng-template>
 
 <ng-template #log let-output>
     <div style="color:white; margin:3px 0">{{output}}</div>

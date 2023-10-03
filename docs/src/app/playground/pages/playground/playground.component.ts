@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CodeModel } from '@ngstack/code-editor';
-import { Subject, scan, takeUntil } from 'rxjs';
+import { Subject, fromEvent, interval, scan, takeUntil, throttle } from 'rxjs';
 import withDestory from '@shared/util/withDestory';
 
 // wasm Module
 
 type Log = { isLog: boolean, text: string };
-let logger$:Subject<Log> | null = null;
+let logger$: Subject<Log> | null = null;
 
 console.log = ((originalConsoleLog: Function) => {
   return (...args: any[]) => {
@@ -14,7 +14,7 @@ console.log = ((originalConsoleLog: Function) => {
     originalConsoleLog(textContent);
     if (textContent.startsWith('Exception:'))
       logger$?.next({ isLog: false, text: textContent });
-    else 
+    else
       logger$?.next({ isLog: true, text: textContent });
   }
 })(console.log.bind(console));
@@ -52,6 +52,7 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
   consoleLog: any; // original console log function
   codeOutput$ = new Subject<Log>();
   codeOutput: Log[] = [];
+  isSmallScreen=false;
 
   public onCodeChanged(value: string) {
     this.code = value;
@@ -71,10 +72,14 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
     this.codeOutput = [];
   }
 
+  checkIfSmallScreen() {
+    this.isSmallScreen = window.innerWidth < 800;
+  }
+
   ngOnInit() {
     logger$ = this.codeOutput$;
-    
-    if(!(window as any).Module){
+
+    if (!(window as any).Module) {
       const script = document.createElement('script');
       script.src = 'assets/wasm-compiled-program/main.js';
       document.getElementsByTagName('head')[0].appendChild(script);
@@ -82,12 +87,21 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
         console.log(this.wasmModule);
         this.wasmModule = (window as any).Module;
       }
-     }
-     else this.wasmModule = (window as any).Module;
+    }
+    else this.wasmModule = (window as any).Module;
+
+    this.checkIfSmallScreen();
 
     this.codeOutput$
       .pipe(takeUntil(this.destroy$))
       .subscribe(res => this.codeOutput.push(res));
+
+    fromEvent(window, 'resize')
+      .pipe(
+        takeUntil(this.destroy$),
+        throttle(() => interval(500))
+      )
+      .subscribe(this.checkIfSmallScreen)
   }
 
   override ngOnDestroy(): void {
