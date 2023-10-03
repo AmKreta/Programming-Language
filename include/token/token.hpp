@@ -81,7 +81,7 @@ public:
         WHILE,
         DO,
 
-        //CONDITIONAL
+        // CONDITIONAL
         IF,
         ELIF,
         ELSE,
@@ -91,7 +91,7 @@ public:
         SINGLE_QUOTE,
         DOUBLE_QUOTE,
         BACK_TICK,
-                
+
         // return
         RETURN,
         END_OF_FILE,
@@ -101,6 +101,9 @@ public:
         PRINT,
         PRINT_LN,
         ENDL,
+
+        // BRIDGE_FUNCTIONS
+        __BRIDGE__FUNCTIONS__,
 
         // Instantiation
         NEW,
@@ -115,6 +118,7 @@ private:
     Token::Type type;
     std::string value;
     Token(Token::Type, std::string);
+
 public:
     Token::Type getTokenType();
     std::string getTokenValue();

@@ -10,6 +10,7 @@
 #include <evaluable/functionCall.hpp>
 #include <exception/exceptionFactory.hpp>
 #include <evaluable/new.hpp>
+#include <evaluable/bridgeFnExpr.hpp>
 
 std::shared_ptr<Evaluable> Parser::P1_factor(bool parseSingleExpression)
 {
@@ -188,6 +189,37 @@ std::shared_ptr<Evaluable> Parser::P1_factor(bool parseSingleExpression)
     if (this->currentToken.getTokenType() == Token::Type::CLASS)
     {
         throw ExceptionFactory::create("Class decleration cant be assigned");
+    }
+
+    if(this->currentToken.getTokenType() == Token::Type::__BRIDGE__FUNCTIONS__)
+    {
+        this->eat(Token::Type::__BRIDGE__FUNCTIONS__);
+        this->eat(Token::Type::L_PAREN);
+        auto valExpr = this->P1_factor();
+        this->eat(Token::Type::COMMA);
+        auto name = this->currentToken.getTokenValue();
+        this->eat(Token::Type::STRING_CONST);
+        auto args = std::vector<std::shared_ptr<Evaluable>>();
+        if(this->currentToken.getTokenType() == Token::Type::R_PAREN){
+            this->eat(Token::Type::R_PAREN);
+            return std::make_shared<BridgeFnExpr>(valExpr, name, args);
+        }
+        // reading params
+        this->eat(Token::Type::COMMA);
+        this->eat(Token::Type::L_BRACKET);
+        if(this->currentToken.getTokenType() == Token::Type::R_BRACKET){
+            this->eat(Token::Type::R_PAREN);
+            return std::make_shared<BridgeFnExpr>(valExpr, name, args);
+        }
+        args.push_back(this->P1_factor());
+        while (this->currentToken.getTokenType() == Token::Type::COMMA)
+        {
+           this->eat(Token::Type::COMMA);
+           args.push_back(this->P1_factor());
+        }
+        this->eat(Token::Type::R_BRACKET);
+        this->eat(Token::Type::R_PAREN);
+        return std::make_shared<BridgeFnExpr>(valExpr, name, args);
     }
 
     throw ExceptionFactory::create("misplaced or unsupported token", this->currentToken.getTokenTypeString(), this->currentToken.getTokenValue());

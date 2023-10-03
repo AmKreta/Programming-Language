@@ -30,6 +30,7 @@ public:
     std::shared_ptr<RVal> visitInstance(Instance *) override;
     std::shared_ptr<RVal> visitDotOperator(DotOperator *) override;
     std::shared_ptr<RVal> visitNew(New*) override;
+    std::shared_ptr<RVal> visitBridgeFnExpr(BridgeFnExpr*) override;
     void visitVarDecleration(VarDecleration *) override;
     void visitIfElse(IfElse *) override;
     void visitProgram(Program *) override;

@@ -7,13 +7,15 @@
 #include <chrono>
 #include <fstream>
 #include <filesystem>
+#include <bootstrap/bootstrap.hpp>
 
 void run(std::string input)
 {
-    std::cout << std::endl
-              << input
-              << std::endl
-              << std::endl;
+    input = Bootstrap::bootstrapArray()+ Bootstrap::bootstrapMap() + input;
+    // std::cout << std::endl
+    //           << input
+    //           << std::endl
+    //           << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
     Lexer lexer{input};
     Parser parser{lexer};
@@ -28,10 +30,10 @@ void run(std::string input)
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "executed successfully in " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " millisecond ........" << std::endl
               << std::endl;
-    // std::cout << std::endl
-    //           << "\ncontent of symbol table\n"
-    //           << std::endl;
-    // interpreter.getCallStack().getGlobalScope()->print();
+    // // std::cout << std::endl
+    // //           << "\ncontent of symbol table\n"
+    // //           << std::endl;
+    // // interpreter.getCallStack().getGlobalScope()->print();
 }
 
 void printTokens(std::string input)
@@ -45,7 +47,7 @@ int main()
 {
     std::filesystem::path cwd = std::filesystem::current_path();
     std::fstream file;
-    file.open(cwd /".."/"program.txt", std::ios::in);
+    file.open(cwd / ".." / "program.txt", std::ios::in);
     if (!file)
         std::cout << "File not created!";
     else

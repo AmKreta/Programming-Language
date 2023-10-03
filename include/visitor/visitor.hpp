@@ -15,6 +15,7 @@
 #include <evaluable/instance.hpp>
 #include <evaluable/dotOperator.hpp>
 #include <evaluable/new.hpp>
+#include <evaluable/bridgeFnExpr.hpp>
 
 #include <runable/program.hpp>
 #include <runable/compoundStatement.hpp>
@@ -42,7 +43,8 @@ public:
     virtual std::shared_ptr<RVal> visitClassDecleration(ClassDecleration *) = 0;
     virtual std::shared_ptr<RVal> visitInstance(Instance *) = 0;
     virtual std::shared_ptr<RVal> visitDotOperator(DotOperator *) = 0;
-    virtual std::shared_ptr<RVal> visitNew(New*) = 0;
+    virtual std::shared_ptr<RVal> visitNew(New *) = 0;
+    virtual std::shared_ptr<RVal> visitBridgeFnExpr(BridgeFnExpr *) = 0;
     virtual void visitVarDecleration(VarDecleration *) = 0;
     virtual void visitIfElse(IfElse *) = 0;
     virtual void visitProgram(Program *) = 0;
