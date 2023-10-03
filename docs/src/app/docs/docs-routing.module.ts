@@ -12,6 +12,9 @@ import { LoopsComponent } from './pages/loops/loops.component';
 import { DataTypesComponent } from './pages/data-types/data-types.component';
 import { ConditionalStatementComponent } from './pages/conditional-statement/conditional-statement.component';
 import { ScopesComponent } from './pages/scopes/scopes.component';
+import { ArrayComponent } from './pages/array/array.component';
+import { MapComponent } from './pages/map/map.component';
+import { StringComponent } from './pages/string/string.component';
 
 const routes: Routes = [
   {
@@ -79,9 +82,24 @@ const routes: Routes = [
         component: ScopesComponent
       },
       {
-        path:'**',
-        redirectTo:'print'
-      }
+        title: 'Array',
+        path: 'array',
+        component: ArrayComponent
+      },
+      {
+        title: 'Map',
+        path: 'map',
+        component: MapComponent
+      },
+      {
+        title: 'String',
+        path: 'string',
+        component: StringComponent
+      },
+      {
+        path: '**',
+        redirectTo: 'print'
+      },
     ]
   },
 ];

@@ -16,9 +16,12 @@ import { DataTypesComponent } from './pages/data-types/data-types.component';
 import { ConditionalStatementComponent } from './pages/conditional-statement/conditional-statement.component';
 import { LoopsComponent } from './pages/loops/loops.component';
 import { ScopesComponent } from './pages/scopes/scopes.component';
+import { ArrayComponent } from './pages/array/array.component';
+import { MapComponent } from './pages/map/map.component';
+import { StringComponent } from './pages/string/string.component';
 
 @NgModule({
-  declarations: [DocsComponent, DataTypesComponent, PrintComponent, VariablesComponent, OperatorsComponent, FunctionComponent, ClassComponent, InbuiltClassesFunctionsComponent, BehindTheSceneComponent, ConditionalStatementComponent, LoopsComponent, ScopesComponent],
+  declarations: [DocsComponent, DataTypesComponent, PrintComponent, VariablesComponent, OperatorsComponent, FunctionComponent, ClassComponent, InbuiltClassesFunctionsComponent, BehindTheSceneComponent, ConditionalStatementComponent, LoopsComponent, ScopesComponent, ArrayComponent, MapComponent, StringComponent],
   imports: [DocsRoutingModule, CommonModule, MatSidenavModule, MatListModule, SharedModule],
 })
 export class DocsModule { }

@@ -50,6 +50,18 @@ export class DocsComponent extends withDestory() {
       title: 'Class',
       routerLink: './class'
     },
+    {
+      title:'Array',
+      routerLink:'./array'
+    },
+    {
+      title:'Map',
+      routerLink:'./map'
+    },
+    {
+      title:'String',
+      routerLink:'./string'
+    }
     // {
     //   title: 'In-built Classes and Functions',
     //   routerLink: './inbuilt-classes-functions'
