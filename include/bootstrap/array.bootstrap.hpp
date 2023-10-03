@@ -83,6 +83,7 @@ auto arrayBootstrapString = R"(class Array{
             if(fn(val, i))
                 return i;
         }
+        return -1;
     }
 
     function reverse(){

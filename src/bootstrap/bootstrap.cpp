@@ -2,6 +2,7 @@
 #include <bootstrap/bootstrap.hpp>
 #include <bootstrap/array.bootstrap.hpp>
 #include <bootstrap/map.bootstrap.hpp>
+#include <bootstrap/string.bootstrap.hpp>
 #include <evaluable/rValueConstFactory.hpp>
 #include <utility/arr.util.hpp>
 
@@ -13,6 +14,11 @@ std::string Bootstrap::bootstrapArray()
 std::string Bootstrap::bootstrapMap()
 {
     return mapBootstrapString;
+}
+
+std::string Bootstrap::bootstrapString()
+{
+    return stringBootstrapString;
 }
 
 std::shared_ptr<RVal> Bootstrap::bridgeFunction(std::shared_ptr<RVal> val, std::string method, RValPointerArray &args)
@@ -28,6 +34,12 @@ std::shared_ptr<RVal> Bootstrap::bridgeFunction(std::shared_ptr<RVal> val, std::
         auto mapConst = std::dynamic_pointer_cast<MapConst>(val);
         auto &map = mapConst->getData();
         return Bootstrap::mapBridgeFunction(map, method, args);
+    }
+    else if (val->getType() == RVal::Type::STRING)
+    {
+        auto strConst = std::dynamic_pointer_cast<StringConst>(val);
+        auto &str = strConst->getData();
+        return Bootstrap::stringBridgeFunction(str, method, args);
     }
     return RValConstFactory::createUndefinedConstSharedPtr();
 }
@@ -99,6 +111,7 @@ std::shared_ptr<RVal> Bootstrap::arrayBridgeFunction(RValPointerArray &val, std:
         std::reverse(val.begin(), val.end());
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
+    throw ExceptionFactory::create("method ", method, " is not present in class Array.");
 }
 
 std::shared_ptr<RVal> Bootstrap::mapBridgeFunction(RValPointerMap &val, std::string method, RValPointerArray &args)
@@ -131,8 +144,98 @@ std::shared_ptr<RVal> Bootstrap::mapBridgeFunction(RValPointerMap &val, std::str
             values.push_back(vals);
         return RValConstFactory::createArrayConstSharedPtr(values);
     }
+    throw ExceptionFactory::create("method ", method, " is not present in class Map.");
 }
 
-std::shared_ptr<RVal> stringBridgeFunction(std::string &val, std::string method, RValPointerArray &args)
+std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::string method, RValPointerArray &args)
 {
+    if (method == "slice")
+    {
+        if (args.size() < 2 || (args[0]->getType() != RVal::Type::NUMBER || args[1]->getType() != RVal::Type::NUMBER))
+            throw ExceptionFactory::create("string.replace(old, new) expects two strings as arguments.");
+        int start = std::dynamic_pointer_cast<NumberConst>(args[0])->getData();
+        int end = std::dynamic_pointer_cast<NumberConst>(args[1])->getData();
+        if (start < 0)
+            start += val.size();
+        if (end < 0)
+            end += val.size();
+
+        if (start < 0)
+            start = 0;
+        if (end > static_cast<int>(val.size()))
+            end = val.size();
+
+        if (start >= end)
+            return RValConstFactory::createStringConstSharedPtr("");
+
+        auto res = val.substr(start, end - start);
+        return RValConstFactory::createStringConstSharedPtr(res);
+    }
+    else if (method == "length")
+        return RValConstFactory::createNumberConstSharedPtr(val.size());
+    else if (method == "reverse")
+    {
+        std::reverse(val.begin(), val.end());
+        return RValConstFactory::createUndefinedConstSharedPtr();
+    }
+    else if (method == "includes")
+    {
+        if (args.size() == 0 || args[0]->getType() != RVal::Type::STRING)
+            throw ExceptionFactory::create("string.includes(substr) expects a string as argument.");
+        auto subStrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
+        auto substr = subStrConst->getData();
+        auto res = val.find(substr) != std::string::npos;
+        return RValConstFactory::createBooleanConstSharedPtr(res);
+    }
+    else if (method == "replace")
+    {
+        if (args.size() < 2 || (args[0]->getType() != RVal::Type::STRING || args[1]->getType() != RVal::Type::STRING))
+            throw ExceptionFactory::create("string.replace(old, new) expects two strings as arguments.");
+        size_t pos = 0;
+        auto oldSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
+        auto &oldSubstr = oldSubstrConst->getData();
+        auto newSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
+        auto &newSubstr = oldSubstrConst->getData();
+        while ((pos = val.find(oldSubstr, pos)) != std::string::npos)
+        {
+            val.replace(pos, oldSubstr.length(), newSubstr);
+            pos += newSubstr.length();
+        }
+        RValConstFactory::createUndefinedConstSharedPtr();
+    }
+    else if (method == "replaceAll")
+    {
+        if (args.size() < 2 || (args[0]->getType() != RVal::Type::STRING || args[1]->getType() != RVal::Type::STRING))
+            throw ExceptionFactory::create("string.replace(old, new) expects two strings as arguments.");
+        size_t pos = 0;
+        auto oldSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
+        auto &oldSubstr = oldSubstrConst->getData();
+        auto newSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
+        auto &newSubstr = oldSubstrConst->getData();
+        while ((pos = val.find(oldSubstr, pos)) != std::string::npos)
+        {
+            val.replace(pos, oldSubstr.length(), newSubstr);
+            pos += newSubstr.length();
+        }
+        RValConstFactory::createUndefinedConstSharedPtr();
+    }
+    else if (method == "clone")
+    {
+        auto str = std::string(val.begin(), val.end());
+        return RValConstFactory::createStringConstSharedPtr(str);
+    }
+    else if (method == "findIndex")
+    {
+        if (args.size() == 0 || (args[0]->getType() != RVal::Type::STRING))
+            throw ExceptionFactory::create("string.findIndex(substr) expects a strings a arguments.");
+        size_t pos = 0;
+        auto substrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
+        auto &substr = substrConst->getData();
+        size_t pos = substr.find(substr);
+        auto res = -1;
+        if (pos != std::string::npos)
+            res = static_cast<int>(pos);
+        return RValConstFactory::createNumberConstSharedPtr(res);
+    }
+    throw ExceptionFactory::create("method ", method, " is not present in class string.");
 }

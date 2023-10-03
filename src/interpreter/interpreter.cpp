@@ -244,8 +244,8 @@ std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
         auto map = mapConst->getData();
         auto classSymbol = this->callStack.getGlobalScope()->getSymbol("Map");
         std::unordered_map<std::string, std::shared_ptr<RVal>> dataMembers{{"val", mapConst}};
-        auto mapInstance =  std::make_shared<Instance>(classSymbol, dataMembers);
-         auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+        auto mapInstance = std::make_shared<Instance>(classSymbol, dataMembers);
+        auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
         auto classDecl = classDeclConst->getData();
         auto classSymbolTable = classDecl->getCorospondingSymbolTable();
         CallStack callStack{classSymbolTable};
@@ -253,9 +253,21 @@ std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
         auto member = interpreter.resolveInstanceMember(dotOperator, mapInstance);
         return member;
     }
-    // else if (instanceExpr->getType() == RVal::Type::STRING)
-    // {
-    // }
+    else if (instanceExpr->getType() == RVal::Type::STRING)
+    {
+        auto stringConst = std::dynamic_pointer_cast<StringConst>(instanceExpr);
+        auto map = stringConst->getData();
+        auto classSymbol = this->callStack.getGlobalScope()->getSymbol("Map");
+        std::unordered_map<std::string, std::shared_ptr<RVal>> dataMembers{{"val", stringConst}};
+        auto stringInstance = std::make_shared<Instance>(classSymbol, dataMembers);
+        auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());
+        auto classDecl = classDeclConst->getData();
+        auto classSymbolTable = classDecl->getCorospondingSymbolTable();
+        CallStack callStack{classSymbolTable};
+        Interpreter interpreter{classDecl, callStack};
+        auto member = interpreter.resolveInstanceMember(dotOperator, stringInstance);
+        return member;
+    }
     // else if (instanceExpr->getType() == RVal::Type::NUMBER)
     // {
     // }

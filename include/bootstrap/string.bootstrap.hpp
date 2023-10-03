@@ -1,10 +1,10 @@
-auto arrayBootstrapString = R"(class String{
+auto stringBootstrapString = R"(class String{
     function constructor(str=''){
         this.val = str;   
     }
 
     function slice(start, end){
-        return __BRIDGE__FUNCTIONS__(this.val, 'slice', [start, end]);
+       print(start, end);
     }
 
     function length(){
@@ -15,11 +15,11 @@ auto arrayBootstrapString = R"(class String{
         return __BRIDGE__FUNCTIONS__(this.val, 'reverse');
     }
 
-    split(delimeter=''){
+    function split(delimeter=''){
         return __BRIDGE__FUNCTIONS__(this.val, 'split', [delimeter]);
     }
 
-    function include(){
+    function includes(){
 
     }
 
@@ -33,6 +33,10 @@ auto arrayBootstrapString = R"(class String{
 
     function findIndex(){
         
+    }
+
+    function findIndex(){
+
     }
 
 };)";
