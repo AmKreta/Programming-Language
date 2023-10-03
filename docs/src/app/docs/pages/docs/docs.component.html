@@ -17,9 +17,9 @@
 <div class="container">
     <aside *ngIf="docsSidebarService.showDocsMenu">
         <app-typography variant='headline3' color="primary" colorShade="500" [style]="{'margin-top':'16px', 'margin-left':'16px' }">Topics</app-typography>
-        <a *ngFor="let topic of topics" [routerLink]="topic.routerLink">{{topic.title}}</a>
+        <a *ngFor="let topic of topics" [routerLink]="topic.routerLink" [routerLinkActive]="'activeRouterLink'">{{topic.title}}</a>
     </aside>
-    <div class="outlet-container" #outletContainer>
+    <div class="outlet-container" #outletContainer (click)="docsSidebarService.toggleDocsMenu()">
         <router-outlet></router-outlet>
     </div>
 </div>

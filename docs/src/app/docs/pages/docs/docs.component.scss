@@ -25,6 +25,11 @@ aside{
     }
 }
 
+.activeRouterLink{
+    color:theme.getColor();
+    text-decoration: underline;
+}
+
 @media only screen and (max-width : theme.$breakPoint-mid){
     :host{
         position:relative;

@@ -80,6 +80,7 @@ export class DocsComponent extends withDestory() {
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe(ev => {
       if (ev instanceof NavigationEnd) {
         (this.outletContainer?.elementRef?.nativeElement as HTMLDivElement)?.scrollTo({ top: 0, behavior: 'smooth' });
+        this.docsSidebarService.showDocsMenu = false;
       }
     });
   }
