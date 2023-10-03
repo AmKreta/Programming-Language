@@ -35,6 +35,8 @@ export class AppComponent extends withDestory() implements OnInit {
     .isSmallScreenService
     .isSmallScreen$
     .pipe(takeUntil(this.destroy$))
-    .subscribe(res=>this.isSmallScreen = res);
+    .subscribe(res=>{
+      this.isSmallScreen = res
+    });
   }
 }

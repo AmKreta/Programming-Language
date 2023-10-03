@@ -9,23 +9,26 @@ import { IsSmallScreenService } from '../isSmallScreen/is-small-screen.service';
 export class DocsSidebarService {
 
   showHambuggerMenu$ = new BehaviorSubject<boolean>(false);
-  showDocsMenu = false;
+  showDocsMenu = true;
+  isSmallScreen = false;
 
   constructor(
     private router: Router,
-    private isSmallScreenService:IsSmallScreenService
+    private isSmallScreenService: IsSmallScreenService
   ) {
     this.router.events.subscribe(ev => {
       if (ev instanceof NavigationEnd)
         this.showHambuggerMenu$.next(ev.url.includes("/docs"));
     });
-    this.isSmallScreenService.isSmallScreen$.subscribe(res=>{
-      if(!res)
+    this.isSmallScreenService.isSmallScreen$.subscribe(res => {
+      this.isSmallScreen = res;
+      if (!res)
         this.showDocsMenu = true;
     })
   }
 
   toggleDocsMenu() {
+    if (this.isSmallScreen)
       this.showDocsMenu = !this.showDocsMenu;
   }
 }

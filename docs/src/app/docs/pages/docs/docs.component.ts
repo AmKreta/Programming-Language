@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { DocsSidebarService } from '@shared/services/docs-sidebar/docs-sidebar.service';
 import withDestory from '@shared/util/withDestory';
 import { takeUntil } from 'rxjs';
@@ -78,10 +78,12 @@ export class DocsComponent extends withDestory() {
   constructor(public router: Router, public docsSidebarService:DocsSidebarService) {
     super();
     this.router.events.pipe(takeUntil(this.destroy$)).subscribe(ev => {
-      if (ev instanceof NavigationEnd) {
+      if (ev instanceof NavigationEnd)
         (this.outletContainer?.elementRef?.nativeElement as HTMLDivElement)?.scrollTo({ top: 0, behavior: 'smooth' });
-        this.docsSidebarService.showDocsMenu = false;
-      }
     });
+  }
+
+  closeAside(){
+   this.docsSidebarService.toggleDocsMenu();
   }
 }
