@@ -19,7 +19,7 @@
         <app-typography variant='headline3' color="primary" colorShade="500" [style]="{'margin-top':'16px', 'margin-left':'16px' }">Topics</app-typography>
         <a *ngFor="let topic of topics" [routerLink]="topic.routerLink" [routerLinkActive]="'activeRouterLink'">{{topic.title}}</a>
     </aside>
-    <div class="outlet-container" #outletContainer (click)="docsSidebarService.showDocsMenu = false">
+    <div class="outlet-container" #outletContainer (click)="closeAside()">
         <router-outlet></router-outlet>
     </div>
 </div>
