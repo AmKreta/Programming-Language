@@ -7,10 +7,6 @@ auto arrayBootstrapString = R"(class String{
         return __BRIDGE__FUNCTIONS__(this.val, 'slice', [start, end]);
     }
 
-    function splice(start,numElements, vals=[]){
-        return __BRIDGE__FUNCTIONS__(this.val, 'splice', [start, numElements, vals]);
-    }
-
     function length(){
         return __BRIDGE__FUNCTIONS__(this.val, 'length');
     }
@@ -21,6 +17,22 @@ auto arrayBootstrapString = R"(class String{
 
     split(delimeter=''){
         return __BRIDGE__FUNCTIONS__(this.val, 'split', [delimeter]);
+    }
+
+    function include(){
+
+    }
+
+    function replace(){
+
+    }
+
+    function replaceAll(){
+
+    }
+
+    function findIndex(){
+        
     }
 
 };)";

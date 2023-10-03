@@ -11,11 +11,11 @@
 
 void run(std::string input)
 {
-    input = Bootstrap::bootstrapArray()+input;
-    std::cout << std::endl
-              << input
-              << std::endl
-              << std::endl;
+    input = Bootstrap::bootstrapArray()+ Bootstrap::bootstrapMap() + input;
+    // std::cout << std::endl
+    //           << input
+    //           << std::endl
+    //           << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
     Lexer lexer{input};
     Parser parser{lexer};

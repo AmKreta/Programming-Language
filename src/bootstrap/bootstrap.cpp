@@ -1,12 +1,18 @@
 #include <exception/exceptionFactory.hpp>
 #include <bootstrap/bootstrap.hpp>
 #include <bootstrap/array.bootstrap.hpp>
+#include <bootstrap/map.bootstrap.hpp>
 #include <evaluable/rValueConstFactory.hpp>
 #include <utility/arr.util.hpp>
 
 std::string Bootstrap::bootstrapArray()
 {
     return arrayBootstrapString;
+}
+
+std::string Bootstrap::bootstrapMap()
+{
+    return mapBootstrapString;
 }
 
 std::shared_ptr<RVal> Bootstrap::bridgeFunction(std::shared_ptr<RVal> val, std::string method, RValPointerArray &args)
@@ -16,6 +22,12 @@ std::shared_ptr<RVal> Bootstrap::bridgeFunction(std::shared_ptr<RVal> val, std::
         auto arrConst = std::dynamic_pointer_cast<ArrayConst>(val);
         auto &arr = arrConst->getData();
         return Bootstrap::arrayBridgeFunction(arr, method, args);
+    }
+    else if (val->getType() == RVal::Type::MAP)
+    {
+        auto mapConst = std::dynamic_pointer_cast<MapConst>(val);
+        auto &map = mapConst->getData();
+        return Bootstrap::mapBridgeFunction(map, method, args);
     }
     return RValConstFactory::createUndefinedConstSharedPtr();
 }
@@ -87,4 +99,40 @@ std::shared_ptr<RVal> Bootstrap::arrayBridgeFunction(RValPointerArray &val, std:
         std::reverse(val.begin(), val.end());
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
+}
+
+std::shared_ptr<RVal> Bootstrap::mapBridgeFunction(RValPointerMap &val, std::string method, RValPointerArray &args)
+{
+    if (method == "insert")
+    {
+        if (args.size() == 0 || args.size() == 1)
+            throw ExceptionFactory::create("map.insert(key, val) need a key and a value to insert in map");
+        val.insert(std::pair(args[0], args[1]));
+        return RValConstFactory::createUndefinedConstSharedPtr();
+    }
+    else if (method == "remove")
+    {
+        if (args.size() == 0 || args.size() == 1)
+            throw ExceptionFactory::create("map.delete(key) needs a key to delete in map");
+        val.erase(args[0]);
+        return RValConstFactory::createUndefinedConstSharedPtr();
+    }
+    else if (method == "getKeys")
+    {
+        RValPointerArray keys;
+        for (auto &[key, _] : val)
+            keys.push_back(key);
+        return RValConstFactory::createArrayConstSharedPtr(keys);
+    }
+    else if (method == "getValues")
+    {
+        RValPointerArray values;
+        for (auto &[_, vals] : val)
+            values.push_back(vals);
+        return RValConstFactory::createArrayConstSharedPtr(values);
+    }
+}
+
+std::shared_ptr<RVal> stringBridgeFunction(std::string &val, std::string method, RValPointerArray &args)
+{
 }

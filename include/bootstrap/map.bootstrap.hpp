@@ -1,4 +1,4 @@
-auto arrayBootstrapString = R"(class Map{
+auto mapBootstrapString = R"(class Map{
     function constructor(val = {}){
         this.val = val;
     }
