@@ -257,7 +257,7 @@ std::shared_ptr<RVal> Interpreter::visitDotOperator(DotOperator *dotOperator)
     {
         auto stringConst = std::dynamic_pointer_cast<StringConst>(instanceExpr);
         auto map = stringConst->getData();
-        auto classSymbol = this->callStack.getGlobalScope()->getSymbol("Map");
+        auto classSymbol = this->callStack.getGlobalScope()->getSymbol("String");
         std::unordered_map<std::string, std::shared_ptr<RVal>> dataMembers{{"val", stringConst}};
         auto stringInstance = std::make_shared<Instance>(classSymbol, dataMembers);
         auto classDeclConst = std::dynamic_pointer_cast<ClassDeclerationConst>(classSymbol->getValue());

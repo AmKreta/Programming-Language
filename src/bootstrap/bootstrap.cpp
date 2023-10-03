@@ -167,7 +167,6 @@ std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::str
             start += val.size();
         if (end < 0)
             end += val.size();
-
         if (start < 0)
             start = 0;
         if (end > static_cast<int>(val.size()))
@@ -243,6 +242,25 @@ std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::str
         if (pos != std::string::npos)
             res = static_cast<int>(pos);
         return RValConstFactory::createNumberConstSharedPtr(res);
+    }
+    else if(method == "split"){
+    RValPointerArray result;
+    std::string delimiter = "";
+    if(args[0]->getType()!=RVal::Type::STRING)
+        throw ExceptionFactory::create("string.findIndex(delimiter) expects a strings a arguments got ", args[0]->getTypeString());
+    delimiter = std::dynamic_pointer_cast<StringConst>(args[0])->getData();
+    size_t start = 0;
+    size_t end = val.find(delimiter);
+
+    while (end != std::string::npos) {
+        auto res = RValConstFactory::createStringConstSharedPtr(val.substr(start, end - start));
+        result.push_back(res);
+        start = end + 1;
+        end = val.find(delimiter, start);
+    }
+    auto res = RValConstFactory::createStringConstSharedPtr(val.substr(start, end));
+    result.push_back(res);
+    return RValConstFactory::createArrayConstSharedPtr(result);
     }
     throw ExceptionFactory::create("method ", method, " is not present in class string.");
 }

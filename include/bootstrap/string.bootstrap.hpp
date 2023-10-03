@@ -15,7 +15,7 @@ auto stringBootstrapString = R"(class String{
         return __BRIDGE__FUNCTIONS__(this.val, 'reverse');
     }
 
-    function split(delimeter=''){
+    function split(delimeter=' '){
         return __BRIDGE__FUNCTIONS__(this.val, 'split', [delimeter]);
     }
 
