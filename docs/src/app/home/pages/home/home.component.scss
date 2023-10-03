@@ -52,6 +52,7 @@
 
 @media only screen and (max-width : theme.$breakPoint-mid) {
     p.mat-headline-5 {
-        font-size: 20px;
+        font-size: 16px;
+        padding:0 8px;
     }
 }
