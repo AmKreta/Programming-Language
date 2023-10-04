@@ -54,7 +54,8 @@ std::shared_ptr<RVal> Bootstrap::arrayBridgeFunction(RValPointerArray &val, std:
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
 
-    else if(method == "pop"){
+    else if (method == "pop")
+    {
         auto res = val.back();
         val.pop_back();
         return res;
@@ -117,7 +118,8 @@ std::shared_ptr<RVal> Bootstrap::arrayBridgeFunction(RValPointerArray &val, std:
         std::reverse(val.begin(), val.end());
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
-    else if(method == "clone"){
+    else if (method == "clone")
+    {
         auto res = std::vector(val.begin(), val.end());
         return RValConstFactory::createArrayConstSharedPtr(res);
     }
@@ -154,7 +156,8 @@ std::shared_ptr<RVal> Bootstrap::mapBridgeFunction(RValPointerMap &val, std::str
             values.push_back(vals);
         return RValConstFactory::createArrayConstSharedPtr(values);
     }
-    else if(method == "clone"){
+    else if (method == "clone")
+    {
         auto res = RValPointerMap(val.begin(), val.end());
         return RValConstFactory::createMapConstSharedPtr(res);
     }
@@ -184,13 +187,16 @@ std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::str
         auto res = val.substr(start, end - start);
         return RValConstFactory::createStringConstSharedPtr(res);
     }
+   
     else if (method == "length")
         return RValConstFactory::createNumberConstSharedPtr(val.size());
+    
     else if (method == "reverse")
     {
         std::reverse(val.begin(), val.end());
         return RValConstFactory::createUndefinedConstSharedPtr();
     }
+    
     else if (method == "includes")
     {
         if (args.size() == 0 || args[0]->getType() != RVal::Type::STRING)
@@ -200,22 +206,21 @@ std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::str
         auto res = val.find(substr) != std::string::npos;
         return RValConstFactory::createBooleanConstSharedPtr(res);
     }
+
     else if (method == "replace")
     {
         if (args.size() < 2 || (args[0]->getType() != RVal::Type::STRING || args[1]->getType() != RVal::Type::STRING))
             throw ExceptionFactory::create("string.replace(old, new) expects two strings as arguments.");
-        size_t pos = 0;
         auto oldSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
         auto &oldSubstr = oldSubstrConst->getData();
-        auto newSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
-        auto &newSubstr = oldSubstrConst->getData();
-        while ((pos = val.find(oldSubstr, pos)) != std::string::npos)
-        {
+        auto newSubstrConst = std::dynamic_pointer_cast<StringConst>(args[1]);
+        auto &newSubstr = newSubstrConst->getData();
+        size_t pos = val.find(oldSubstr, 0);
+        if(pos!=std::string::npos)
             val.replace(pos, oldSubstr.length(), newSubstr);
-            pos += newSubstr.length();
-        }
-        RValConstFactory::createUndefinedConstSharedPtr();
+        return RValConstFactory::createUndefinedConstSharedPtr();
     }
+    
     else if (method == "replaceAll")
     {
         if (args.size() < 2 || (args[0]->getType() != RVal::Type::STRING || args[1]->getType() != RVal::Type::STRING))
@@ -223,20 +228,22 @@ std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::str
         size_t pos = 0;
         auto oldSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
         auto &oldSubstr = oldSubstrConst->getData();
-        auto newSubstrConst = std::dynamic_pointer_cast<StringConst>(args[0]);
-        auto &newSubstr = oldSubstrConst->getData();
+        auto newSubstrConst = std::dynamic_pointer_cast<StringConst>(args[1]);
+        auto &newSubstr = newSubstrConst->getData();
         while ((pos = val.find(oldSubstr, pos)) != std::string::npos)
         {
             val.replace(pos, oldSubstr.length(), newSubstr);
             pos += newSubstr.length();
         }
-        RValConstFactory::createUndefinedConstSharedPtr();
+        return RValConstFactory::createUndefinedConstSharedPtr();
     }
+    
     else if (method == "clone")
     {
         auto str = std::string(val.begin(), val.end());
         return RValConstFactory::createStringConstSharedPtr(str);
     }
+   
     else if (method == "findIndex")
     {
         if (args.size() == 0 || (args[0]->getType() != RVal::Type::STRING))
@@ -249,24 +256,27 @@ std::shared_ptr<RVal> Bootstrap::stringBridgeFunction(std::string &val, std::str
             res = static_cast<int>(pos);
         return RValConstFactory::createNumberConstSharedPtr(res);
     }
-    else if(method == "split"){
-    RValPointerArray result;
-    std::string delimiter = "";
-    if(args[0]->getType()!=RVal::Type::STRING)
-        throw ExceptionFactory::create("string.findIndex(delimiter) expects a strings a arguments got ", args[0]->getTypeString());
-    delimiter = std::dynamic_pointer_cast<StringConst>(args[0])->getData();
-    size_t start = 0;
-    size_t end = val.find(delimiter);
+    
+    else if (method == "split")
+    {
+        RValPointerArray result;
+        std::string delimiter = "";
+        if (args[0]->getType() != RVal::Type::STRING)
+            throw ExceptionFactory::create("string.split(delimiter) expects a strings a arguments got ", args[0]->getTypeString());
+        delimiter = std::dynamic_pointer_cast<StringConst>(args[0])->getData();
+        size_t start = 0;
+        size_t end = val.find(delimiter);
 
-    while (end != std::string::npos) {
-        auto res = RValConstFactory::createStringConstSharedPtr(val.substr(start, end - start));
+        while (end != std::string::npos)
+        {
+            auto res = RValConstFactory::createStringConstSharedPtr(val.substr(start, end - start));
+            result.push_back(res);
+            start = end + 1;
+            end = val.find(delimiter, start);
+        }
+        auto res = RValConstFactory::createStringConstSharedPtr(val.substr(start, end));
         result.push_back(res);
-        start = end + 1;
-        end = val.find(delimiter, start);
-    }
-    auto res = RValConstFactory::createStringConstSharedPtr(val.substr(start, end));
-    result.push_back(res);
-    return RValConstFactory::createArrayConstSharedPtr(result);
+        return RValConstFactory::createArrayConstSharedPtr(result);
     }
     throw ExceptionFactory::create("method ", method, " is not present in class string.");
 }
