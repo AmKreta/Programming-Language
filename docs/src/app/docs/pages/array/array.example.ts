@@ -4,7 +4,7 @@ export default [
         codeSnippet:`
 const fruits = ["apple", "banana", "cherry"];
 fruits.push("date");
-// fruits now contains ["apple", "banana", "cherry", "date"]`,
+print(fruits);// fruits now contains ["apple", "banana", "cherry", "date"]`,
         description:'Adds one or more elements to the end of an array and returns the new length of the array.'
     },
     {
@@ -12,7 +12,7 @@ fruits.push("date");
         codeSnippet:`
 const fruits = ["apple", "banana", "cherry"];
 const removedFruit = fruits.pop();
-// removedFruit is "date", and fruits is now ["apple", "banana", "cherry"]`,
+print(removedFruit,', ',fruits);// removedFruit is "date", and fruits is now ["apple", "banana", "cherry"]`,
         description:'Removes the last element from an array and returns that element.'
     },
     {
@@ -20,15 +20,15 @@ const removedFruit = fruits.pop();
         codeSnippet:`
 const fruits = ["apple", "banana", "cherry"];
 const slicedFruits = fruits.slice(1, 3);
-// slicedFruits is ["banana", "cherry"]`,
+print(slicedFruits,', ',fruits);// slicedFruits is ["banana", "cherry"]`,
         description:'Returns a shallow copy of a portion of an array into a new array object.'
     },
     {
         title:'splice(from, deleteCount, [...elementsToPush])',
         codeSnippet:`
 const fruits = ["apple", "banana", "cherry"];
-fruits.splice(1, 1, "grape");
-// fruits is now ["apple", "grape", "cherry"]`,
+const splicedFruits = fruits.splice(1, 1, ["grape"]);
+print(splicedFruits,', ', fruits);// fruits is now ["apple", "grape", "cherry"]`,
         description:'Changes the contents of an array by removing or replacing existing elements and/or adding new elements in place and returns array of removed elements.'
     },
     {
@@ -36,7 +36,7 @@ fruits.splice(1, 1, "grape");
         codeSnippet:`
 const fruits = ["apple", "banana", "cherry"];
 const count = fruits.length();
-// count is 3`,
+print(count);// count is 3`,
         description:'Returns the number of elements in an array.'
     },
     {
