@@ -54,6 +54,7 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
   codeOutput$ = new Subject<Log>();
   codeOutput: Log[] = [];
   isSmallScreen=false;
+  showError = true;
 
   constructor(private isSmallScreenService:IsSmallScreenService){
     super();
@@ -112,4 +113,6 @@ export class PlaygroundComponent extends withDestory() implements OnInit, OnDest
     super.ngOnDestroy();
     logger$ = null;
   }
+
+  togleShowError = ()=> this.showError=!this.showError;
 }

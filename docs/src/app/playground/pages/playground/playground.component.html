@@ -11,6 +11,10 @@
             <button mat-flat-button color="primary" (click)="clear()">Clear</button>
         </div>
     </div>
+    <div *ngIf="showError" class="errorContainer">
+        <span>Doens't works on window machine......working continously to resolve this issue</span>
+        <span class="close-btn" (click)="togleShowError()">x</span>
+    </div>
     <div class="editorContainer">
         <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options"
             (valueChanged)="onCodeChanged($event)">

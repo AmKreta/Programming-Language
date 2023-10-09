@@ -1,13 +1,14 @@
 @use '../../../shared/shared.styles.scss' as theme;
 
-$headerHeight:6%;
+$headerHeight: 6%;
 
 .editorHeader {
     height: $headerHeight;
     display: flex;
     flex-wrap: wrap;
     background-color: #3c3c3c;
-    color:#f6f1f1e6;
+    color: #f6f1f1e6;
+
     &>* {
         min-width: 50%;
         max-width: 50%;
@@ -17,14 +18,28 @@ $headerHeight:6%;
     }
 }
 
-.space-between{
-    padding-left:8px;
-    padding-right:24px;
+.errorContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background-color:theme.getColor(theme.$warn, 300);
+}
+
+.close-btn{
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.space-between {
+    padding-left: 8px;
+    padding-right: 24px;
     justify-content: space-between;
 }
 
-.outputHeader{
-    padding-left:16px;
+.outputHeader {
+    padding-left: 16px;
 }
 
 .editorContainer {
@@ -46,29 +61,30 @@ $headerHeight:6%;
     padding: 8px;
 }
 
-@media only screen and (max-width : theme.$breakPoint-mid){
-    .container{
+@media only screen and (max-width : theme.$breakPoint-mid) {
+    .container {
         display: flex;
         align-items: stretch;
         flex-direction: column;
         height: 100%;
 
-        .ide{
-            &.input{
-                height:35vh;
+        .ide {
+            &.input {
+                height: 35vh;
             }
-            &.output{
+
+            &.output {
                 flex-grow: 1;
             }
         }
     }
 
-    .space-between{
+    .space-between {
         display: flex;
         align-items: center;
         background-color: #1e1e1e;
-        color:white;
-        border:1px solid #333;
-        padding:8px;
+        color: white;
+        border: 1px solid #333;
+        padding: 8px;
     }
 }
