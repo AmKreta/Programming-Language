@@ -59,6 +59,8 @@ $headerHeight: 6%;
 .output {
     background-color: #1e1e1e;
     padding: 8px;
+    overflow: scroll;
+    white-space: nowrap;
 }
 
 @media only screen and (max-width : theme.$breakPoint-mid) {
