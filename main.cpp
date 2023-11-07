@@ -6,17 +6,17 @@
 #include <callStack/callStack.hpp>
 #include <chrono>
 #include <fstream>
-#include <filesystem>
 #include <bootstrap/bootstrap.hpp>
+#include <emscripten/bind.h>
 
 void run(std::string input)
 {
-    input = Bootstrap::bootstrapArray()+ Bootstrap::bootstrapMap() + Bootstrap::bootstrapString() + input;
     // std::cout << std::endl
     //           << input
     //           << std::endl
     //           << std::endl;
     auto start = std::chrono::high_resolution_clock::now();
+    input = Bootstrap::bootstrapArray()+ Bootstrap::bootstrapMap() + Bootstrap::bootstrapString() + input;
     Lexer lexer{input};
     Parser parser{lexer};
     SymbolTableBuilder stb{parser};
@@ -30,10 +30,10 @@ void run(std::string input)
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "executed successfully in " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " millisecond ........" << std::endl
               << std::endl;
-    // // std::cout << std::endl
-    // //           << "\ncontent of symbol table\n"
-    // //           << std::endl;
-    // // interpreter.getCallStack().getGlobalScope()->print();
+    // std::cout << std::endl
+    //           << "\ncontent of symbol table\n"
+    //           << std::endl;
+    // interpreter.getCallStack().getGlobalScope()->print();
 }
 
 void printTokens(std::string input)
@@ -45,17 +45,11 @@ void printTokens(std::string input)
 
 int main()
 {
-    std::filesystem::path cwd = std::filesystem::current_path();
-    std::fstream file;
-    file.open(cwd / ".." / "program.txt", std::ios::in);
-    if (!file)
-        std::cout << "File not created!";
-    else
-    {
-        std::string content((std::istreambuf_iterator<char>(file)),
-                            (std::istreambuf_iterator<char>()));
-        run(content);
-        file.close();
-    }
+  
     return 0;
+}
+
+EMSCRIPTEN_BINDINGS(my_module)
+{
+    emscripten::function("run", &run);
 }
